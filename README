@@ -1,0 +1,11 @@
+Collecty (by the IPFire Project)
+
+Collecty is a small daemon written in python that collects
+system information data and stores it into RRDs.
+
+It is written to replace collectd in IPFire 3.x.
+
+
+Links:
+	* http://oss.oetiker.ch/rrdtool/
+
