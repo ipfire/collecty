@@ -1,0 +1,20 @@
+#!/usr/bin/python
+
+import os
+import sys
+
+from collecty import Collecty
+
+c = Collecty()
+
+if len(sys.argv) > 1:
+	for file in sys.argv[1:]:
+		c.read_config(file)
+else:
+	c.read_config("/etc/collecty/collecty.conf")
+
+if not c.instances:
+	print >>sys.stderr, "Error: No instances were configured."
+	sys.exit(1)
+
+c.run()
