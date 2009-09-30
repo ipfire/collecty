@@ -11,4 +11,11 @@ TODO LIST
 	* Better error handling of mistakes in the config file.
 
 	* Write more plugins.
+		* CPU Usage (almost done).
+		* Load Average (almost done).
+		* Memory Usage (almost done).
+		* Disk space (with standby).
+		* Network usage:
+			Bridge (AREA) plus slave interfaces in the same graph (LINE).
 
+		* (QoS - very expensive work.)
