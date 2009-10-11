@@ -3,12 +3,21 @@
 import os
 import sys
 
+import optparse
+
 from collecty import Collecty
 
 c = Collecty()
 
-if len(sys.argv) > 1:
-	for file in sys.argv[1:]:
+# Parse command line options
+op = optparse.OptionParser(usage="usage: %prog [options] <configfile1> ... <configfileN>")
+op.add_option("-d", "--daemon", action="store_true", default=False,
+		help="Run as a daemon in background.")
+
+(options, configfiles) = op.parse_args()
+
+if configfiles:
+	for file in configfiles:
 		c.read_config(file)
 else:
 	c.read_config("/etc/collecty/collecty.conf")
