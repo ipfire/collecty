@@ -97,11 +97,10 @@ class Plugin(Thread):
 					  "day"  : "-25h",
 					  "week" : "-360h" }
 
+		args.append("--start")
 		if intervals.has_key(interval):
-			args.append("--start")
 			args.append(intervals[interval])
 		else:
-			args.append("--start")
 			args.append(interval)
 
 		info = { "file" : self.file }
