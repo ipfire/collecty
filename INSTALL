@@ -1,0 +1,6 @@
+
+Requirements:
+	* Python 2.6 or any later version.
+	* Python-daemon (a python module for handling daemons).
+	* Python-rrdtool (a python module for handling round-robin databases).
+
