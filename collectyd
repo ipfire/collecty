@@ -3,6 +3,7 @@
 import os
 import sys
 
+import daemon
 import optparse
 
 import collecty
@@ -26,4 +27,9 @@ if not c.instances:
 	print >>sys.stderr, "Error: No instances were configured."
 	sys.exit(1)
 
-c.run()
+if options.daemon:
+	with daemon.DaemonContext(stdout=sys.stdout, stderr=sys.stderr):
+		c.run()
+else:
+	c.run()
+
