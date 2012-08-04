@@ -22,8 +22,8 @@ NAME = collecty
 VERSION = 0.0.1
 
 DESTDIR =
-PYTHON_VER := $(shell python --version 2>&1 | awk '{ print $$NF }')
-PYTHON_DIR = $(DESTDIR)/usr/lib/python$(PYTHON_VER)/site-packages/$(NAME)/
+PYTHON_VER := $(shell python -c "import platform; print '.'.join(platform.python_version_tuple()[:2])")
+PYTHON_DIR = $(DESTDIR)/usr/lib/python$(PYTHON_VER)/site-packages/
 
 all:
 
