@@ -19,23 +19,27 @@
 #                                                                             #
 ###############################################################################
 
+from __future__ import division
+
 import base
 
 from ..i18n import _
 
 class PluginMemory(base.Plugin):
-	_name = "Memory Usage Plugin"
-	_type = "mem"
+	name = "memory"
+	description = "Memory Usage Plugin"
 
-	_rrd = ["DS:used:GAUGE:120:0:100",
-			"DS:cached:GAUGE:120:0:100",
-			"DS:buffered:GAUGE:120:0:100",
-			"DS:free:GAUGE:120:0:100",
-			"DS:swap:GAUGE:120:0:100",
-			"RRA:AVERAGE:0.5:1:2160",
-			"RRA:AVERAGE:0.5:5:2016",
-			"RRA:AVERAGE:0.5:15:2880",
-			"RRA:AVERAGE:0.5:60:8760" ]
+	rrd_schema = [
+		"DS:used:GAUGE:120:0:100",
+		"DS:cached:GAUGE:120:0:100",
+		"DS:buffered:GAUGE:120:0:100",
+		"DS:free:GAUGE:120:0:100",
+		"DS:swap:GAUGE:120:0:100",
+		"RRA:AVERAGE:0.5:1:2160",
+		"RRA:AVERAGE:0.5:5:2016",
+		"RRA:AVERAGE:0.5:15:2880",
+		"RRA:AVERAGE:0.5:60:8760",
+	]
 
 	_graph = [ "DEF:used=%(file)s:used:AVERAGE",
 			   "DEF:cached=%(file)s:cached:AVERAGE",
@@ -78,32 +82,43 @@ class PluginMemory(base.Plugin):
 			     "GPRINT:swapmin:%12s\:" % _("Minimum") + " %6.2lf",
 			     "GPRINT:swapavg:%12s\:" % _("Average") + " %6.2lf\\n", ]
 
-	def __init__(self, collecty, **kwargs):
-		Plugin.__init__(self, collecty, **kwargs)
+	@classmethod
+	def autocreate(cls, collecty, **kwargs):
+		# Every system has got memory.
+		return cls(collecty, **kwargs)
 
-	def collect(self):
-		ret = "%s" % self.time()
-		f = open("/proc/meminfo")
-		for line in f.readlines():
-			if line.startswith("MemTotal:"):
-				total = float(line.split()[1])
-			if line.startswith("MemFree:"):
-				free = float(line.split()[1])
-			elif line.startswith("Buffers:"):
-				buffered = float(line.split()[1])
-			elif line.startswith("Cached:"):
-				cached = float(line.split()[1])
-			elif line.startswith("SwapTotal:"):
-				swapt = float(line.split()[1])
-			elif line.startswith("SwapFree:"):
-				swapf = float(line.split()[1])
+	def read(self):
+		f = None
 
-		f.close()
+		try:
+			ret = "%s" % self.now
 
-		ret += ":%s" % ((total - (free + buffered + cached)) * 100 / total)
-		ret += ":%s" % (cached * 100 / total)
-		ret += ":%s" % (buffered * 100 / total)
-		ret += ":%s" % (free * 100 / total)
-		ret += ":%s" % ((swapt - swapf) * 100 / swapt)
+			f = open("/proc/meminfo")
+			for line in f.readlines():
+				if line.startswith("MemTotal:"):
+					total = float(line.split()[1])
+				if line.startswith("MemFree:"):
+					free = float(line.split()[1])
+				elif line.startswith("Buffers:"):
+					buffered = float(line.split()[1])
+				elif line.startswith("Cached:"):
+					cached = float(line.split()[1])
+				elif line.startswith("SwapTotal:"):
+					swapt = float(line.split()[1])
+				elif line.startswith("SwapFree:"):
+					swapf = float(line.split()[1])
 
-		return ret
+			ret += ":%s" % ((total - (free + buffered + cached)) * 100 / total)
+			ret += ":%s" % (cached * 100 / total)
+			ret += ":%s" % (buffered * 100 / total)
+			ret += ":%s" % (free * 100 / total)
+
+			if swapt:
+				ret += ":%s" % ((swapt - swapf) * 100 / swapt)
+			else:
+				ret += ":0"
+
+			self.data.append(ret)
+		finally:
+			if f:
+				f.close()
