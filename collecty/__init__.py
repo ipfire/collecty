@@ -19,12 +19,14 @@
 #                                                                             #
 ###############################################################################
 
-
 import signal
+import time
 
 import ConfigParser as configparser
 
 import plugins
+
+from i18n import _
 
 # Initialize logging.
 import logging
@@ -67,12 +69,31 @@ class Collecty(object):
 			self.instances.append(i)
 
 	def run(self):
-		signal.signal(signal.SIGTERM, lambda *args: self.shutdown())
+		# Register signal handlers.
+		self.register_signal_handler()
 
+		# Start all plugin instances.
 		for i in self.instances:
 			i.start()
 
+		# As long as at least one thread is alive, the main process
+		# is in a while loop.
+		while any([i.isAlive() for i in self.instances]):
+			time.sleep(0.5)
+
+		log.debug(_("No thread running. Exiting main thread."))
+
 	def shutdown(self):
+		log.debug(_("Received shutdown signal"))
+
+		# Propagating shutdown to all threads.
 		for i in self.instances:
-			self.debug("Stopping %s..." % i)
 			i.shutdown()
+
+	def register_signal_handler(self):
+		for s in (signal.SIGTERM, signal.SIGINT):
+			signal.signal(s, self.signal_handler)
+
+	def signal_handler(self, *args, **kwargs):
+		# Shutdown this application.
+		self.shutdown()

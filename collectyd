@@ -19,36 +19,21 @@
 #                                                                             #
 ###############################################################################
 
-import os
-import sys
-
-import daemon
 import optparse
+import sys
 
 import collecty
 
-c = collecty.Collecty()
-
-# Parse command line options
+# Parse command line options.
 op = optparse.OptionParser(usage="usage: %prog [options] <configfile1> ... <configfileN>")
 op.add_option("-d", "--daemon", action="store_true", default=False,
 		help="Run as a daemon in background.")
 (options, configfiles) = op.parse_args()
 
-if configfiles:
-	for file in configfiles:
-		c.read_config(file)
-else:
-	# Load default config file
-	c.read_config("/etc/collecty/collecty.conf")
+# Initialize the application.
+c = collecty.Collecty()
 
-if not c.instances:
-	print >>sys.stderr, "Error: No instances were configured."
-	sys.exit(1)
+# Run.
+c.run()
 
-if options.daemon:
-	with daemon.DaemonContext(stdout=sys.stdout, stderr=sys.stderr):
-		c.run()
-else:
-	c.run()
-
+sys.exit(0)

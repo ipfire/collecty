@@ -22,14 +22,13 @@
 import logging
 import os
 import rrdtool
+import threading
 import time
-
-from threading import Thread
 
 from ..constants import *
 from ..i18n import _
 
-class Plugin(Thread):
+class Plugin(threading.Thread):
 	# The name of this plugin.
 	name = None
 
@@ -43,7 +42,9 @@ class Plugin(Thread):
 	default_interval = 60
 
 	def __init__(self, collecty, **kwargs):
-		Thread.__init__(self)
+		threading.Thread.__init__(self, name=self.description)
+		self.daemon = True
+
 		self.collecty = collecty
 
 		# Check if this plugin was configured correctly.
@@ -134,7 +135,7 @@ class Plugin(Thread):
 		if not self.data:
 			return
 
-		self.collecty.debug(_("Saving data from %s...") % self)
+		self.log.debug(_("Submitting data to database. %d entries.") % len(self.data))
 		rrdtool.update(self.file, *self.data)
 		self.data = []
 
