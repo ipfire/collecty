@@ -19,6 +19,8 @@
 #                                                                             #
 ###############################################################################
 
+from __future__ import division
+
 import base
 
 from ..i18n import _
@@ -90,9 +92,14 @@ class PluginCPU(base.Plugin):
 			   "GPRINT:idlemin:%12s\:" % _("Minimum") + " %6.2lf",
 			   "GPRINT:idleavg:%12s\:" % _("Average") + " %6.2lf\\n", ]
 
+	@classmethod
+	def autocreate(cls, collecty, **kwargs):
+		# Every system has got at least one CPU.
+		return cls(collecty, **kwargs)
+
 	def read(self):
 		"""
-			Reads the CPU usage in jiffies.
+			Reads the CPU usage.
 		"""
 		f = None
 
@@ -120,7 +127,7 @@ class PluginCPU(base.Plugin):
 				full = sum([int(e) for e in entry])
 
 				for i in range(len(entry)):
-					entry[i] = float(entry[i]) * 100
+					entry[i] = int(entry[i]) * 100
 					entry[i] = "%s" % (entry[i] / full)
 
 				entry.insert(0, "%s" % self.now)
