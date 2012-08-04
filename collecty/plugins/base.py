@@ -139,7 +139,7 @@ class Plugin(threading.Thread):
 		rrdtool.update(self.file, *self.data)
 		self.data = []
 
-	def __read(self, *args, **kwargs):
+	def _read(self, *args, **kwargs):
 		"""
 			This method catches errors from the read() method and logs them.
 		"""
@@ -150,7 +150,7 @@ class Plugin(threading.Thread):
 		except Exception, e:
 			self.log.critical(_("Unhandled exception in read()!"), exc_info=True)
 
-	def __submit(self, *args, **kwargs):
+	def _submit(self, *args, **kwargs):
 		"""
 			This method catches errors from the submit() method and logs them.
 		"""
@@ -168,7 +168,7 @@ class Plugin(threading.Thread):
 		while self.running:
 			if counter == 0:
 				self.log.debug(_("Collecting..."))
-				self.__read()
+				self._read()
 
 				self.log.debug(_("Sleeping for %.4fs.") % self.interval)
 
@@ -177,7 +177,7 @@ class Plugin(threading.Thread):
 			time.sleep(self.heartbeat)
 			counter -= 1
 
-		self.__submit()
+		self._submit()
 		self.log.debug(_("Stopped."))
 
 	def shutdown(self):

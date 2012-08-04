@@ -44,9 +44,17 @@ class ConfigError(Exception):
 	pass
 
 class Collecty(object):
+	# The default interval, when all data is written to disk.
+	SUBMIT_INTERVAL = 300
+
+	HEARTBEAT = 2
+
 	def __init__(self):
 		self.config = configparser.ConfigParser()
 		self.instances = []
+
+		# Indicates whether this process should be running or not.
+		self.running = True
 
 		# Add all automatic plugins.
 		self.add_autocreate_plugins()
@@ -101,15 +109,39 @@ class Collecty(object):
 		for i in self.instances:
 			i.start()
 
-		# As long as at least one thread is alive, the main process
-		# is in a while loop.
-		while any([i.isAlive() for i in self.instances]):
-			time.sleep(0.5)
+		# Regularly submit all data to disk.
+		counter = self.SUBMIT_INTERVAL / self.HEARTBEAT
+		while self.running:
+			time.sleep(self.HEARTBEAT)
+			counter -= 1
+
+			if counter == 0:
+				self.submit_all()
+				counter = self.SUBMIT_INTERVAL / self.HEARTBEAT
+
+		# Wait until all instances are finished.
+		while self.instances:
+			for instance in self.instances[:]:
+				if not instance.isAlive():
+					log.debug(_("%s is not alive anymore. Removing.") % instance)
+					self.instances.remove(instance)
+
+			# Wait a bit.
+			time.sleep(0.1)
 
 		log.debug(_("No thread running. Exiting main thread."))
 
+	def submit_all(self):
+		"""
+			Submit all data right now.
+		"""
+		for i in self.instances:
+			i._submit()
+
 	def shutdown(self):
 		log.debug(_("Received shutdown signal"))
+
+		self.running = False
 
 		# Propagating shutdown to all threads.
 		for i in self.instances:
