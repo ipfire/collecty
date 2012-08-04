@@ -1,3 +1,4 @@
+#!/usr/bin/python
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -18,26 +19,20 @@
 #                                                                             #
 ###############################################################################
 
-NAME = collecty
-VERSION = 0.0.1
+import gettext
 
-DESTDIR =
-PYTHON_VER := $(shell python --version 2>&1 | awk '{ print $$NF }')
-PYTHON_DIR = $(DESTDIR)/usr/lib/python$(PYTHON_VER)/site-packages/$(NAME)/
+TEXTDOMAIN = "collecty"
 
-all:
+N_ = lambda x: x
 
-dist:
-	git archive --format=tar --prefix=$(NAME)-$(VERSION)/ HEAD | gzip -9 \
-		> $(NAME)-$(VERSION).tar.gz
+def _(singular, plural=None, n=None):
+	"""
+		A function that returnes the translation of a string if available.
 
-install:
-	-mkdir -pv $(PYTHON_DIR)
-	cp -rvf collecty $(PYTHON_DIR)
-	install -v -m 755 collectyd $(DESTDIR)/usr/sbin
+		The language is taken from the system environment.
+	"""
+	if not plural is None:
+		assert n is not None
+		return gettext.dngettext(TEXTDOMAIN, singular, plural, n)
 
-	-mkdir -pv $(DESTDIR)/var/rrd
-
-	# Install configuration
-	-mkdir -pv $(DESTDIR)/etc/$(NAME)/
-	cp -vf example.conf $(DESTDIR)/etc/$(NAME)/$(NAME).conf
+	return gettext.dgettext(TEXTDOMAIN, singular)

@@ -26,8 +26,7 @@ import time
 
 from threading import Thread
 
-import gettext
-_ = lambda x: gettext.ldgettext("collecty", x)
+from ..i18n import _
 
 registered_plugins = []
 
