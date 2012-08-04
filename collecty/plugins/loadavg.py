@@ -26,16 +26,18 @@ import base
 from ..i18n import _
 
 class PluginLoadAvg(base.Plugin):
-	_name = "Loadaverage Plugin"
-	_type = "load"
+	name = "loadavg"
+	description = "Load Average Plugin"
 
-	_rrd = ["DS:load1:GAUGE:120:0:U",
-			"DS:load5:GAUGE:120:0:U",
-			"DS:load15:GAUGE:120:0:U",
-			"RRA:AVERAGE:0.5:1:2160",
-			"RRA:AVERAGE:0.5:5:2016",
-			"RRA:AVERAGE:0.5:15:2880",
-			"RRA:AVERAGE:0.5:60:8760" ]
+	rrd_schema = [
+		"DS:load1:GAUGE:120:0:U",
+		"DS:load5:GAUGE:120:0:U",
+		"DS:load15:GAUGE:120:0:U",
+		"RRA:AVERAGE:0.5:1:2160",
+		"RRA:AVERAGE:0.5:5:2016",
+		"RRA:AVERAGE:0.5:15:2880",
+		"RRA:AVERAGE:0.5:60:8760",
+	]
 
 	_graph = [ "DEF:load1=%(file)s:load1:AVERAGE",
 			   "DEF:load5=%(file)s:load5:AVERAGE",
@@ -64,11 +66,13 @@ class PluginLoadAvg(base.Plugin):
 			   "LINE:load5#dd8800",
 			   "LINE:load1#dd0000", ]
 
-	def __init__(self, collecty, **kwargs):
-		Plugin.__init__(self, collecty, **kwargs)
+	@classmethod
+	def autocreate(cls, collecty, **kwargs):
+		return cls(collecty, **kwargs)
 
-	def collect(self):
-		ret = "%s" % self.time()
+	def read(self):
+		data = "%s" % self.now
 		for load in os.getloadavg():
-			ret += ":%s" % load
-		return ret
+			data += ":%s" % load
+
+		self.data.append(data)
