@@ -48,7 +48,27 @@ class Collecty(object):
 		self.config = configparser.ConfigParser()
 		self.instances = []
 
+		# Add all automatic plugins.
+		self.add_autocreate_plugins()
+
 		log.info(_("Collecty successfully initialized."))
+
+	def add_autocreate_plugins(self):
+		for plugin in plugins.registered_plugins:
+			if not hasattr(plugin, "autocreate"):
+				continue
+
+			ret = plugin.autocreate(self)
+			if not ret:
+				continue
+
+			if not type(ret) == type([]):
+				ret = [ret,]
+
+			log.debug(_("Plugin '%(name)s' registered %(number)s instance(s).") % \
+				{ "name" : plugin.name, "number" : len(ret) })
+
+			self.instances += ret
 
 	def read_config(self, config):
 		self.config.read(config)
