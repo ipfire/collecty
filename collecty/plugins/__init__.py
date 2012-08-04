@@ -19,6 +19,8 @@
 #                                                                             #
 ###############################################################################
 
+from base import Timer
+
 import cpu
 import loadavg
 import memory

@@ -28,6 +28,34 @@ import time
 from ..constants import *
 from ..i18n import _
 
+class Timer(object):
+	def __init__(self, timeout, heartbeat=1):
+		self.timeout = timeout
+		self.heartbeat = heartbeat
+
+		self.reset()
+
+	def reset(self):
+		# Save start time.
+		self.start = time.time()
+
+		# Has this timer been killed?
+		self.killed = False
+
+	@property
+	def elapsed(self):
+		return time.time() - self.start
+
+	def cancel(self):
+		self.killed = True
+
+	def wait(self):
+		while self.elapsed < self.timeout and not self.killed:
+			time.sleep(self.heartbeat)
+
+		return self.elapsed > self.timeout
+
+
 class Plugin(threading.Thread):
 	# The name of this plugin.
 	name = None
@@ -56,10 +84,6 @@ class Plugin(threading.Thread):
 		self.log = logging.getLogger("collecty.plugins.%s" % self.name)
 		self.log.propagate = 1
 
-		# Keepalive options
-		self.heartbeat = 2
-		self.running = True
-
 		self.data = []
 
 		# Create the database file.
@@ -67,6 +91,10 @@ class Plugin(threading.Thread):
 
 		# Run some custom initialization.
 		self.init()
+
+		# Keepalive options
+		self.running = True
+		self.timer = Timer(self.interval)
 
 		self.log.info(_("Successfully initialized."))
 	
@@ -164,18 +192,14 @@ class Plugin(threading.Thread):
 	def run(self):
 		self.log.debug(_("Started."))
 
-		counter = 0
 		while self.running:
-			if counter == 0:
+			# Reset the timer.
+			self.timer.reset()
+
+			# Wait until the timer has successfully elapsed.
+			if self.timer.wait():
 				self.log.debug(_("Collecting..."))
 				self._read()
-
-				self.log.debug(_("Sleeping for %.4fs.") % self.interval)
-
-				counter = self.interval / self.heartbeat
-
-			time.sleep(self.heartbeat)
-			counter -= 1
 
 		self._submit()
 		self.log.debug(_("Stopped."))
@@ -183,6 +207,10 @@ class Plugin(threading.Thread):
 	def shutdown(self):
 		self.log.debug(_("Received shutdown signal."))
 		self.running = False
+
+		# Kill any running timers.
+		if self.timer:
+			self.timer.cancel()
 
 	@property
 	def now(self):

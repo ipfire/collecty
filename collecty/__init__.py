@@ -47,14 +47,13 @@ class Collecty(object):
 	# The default interval, when all data is written to disk.
 	SUBMIT_INTERVAL = 300
 
-	HEARTBEAT = 2
-
 	def __init__(self):
 		self.config = configparser.ConfigParser()
 		self.instances = []
 
 		# Indicates whether this process should be running or not.
 		self.running = True
+		self.timer = plugins.Timer(self.SUBMIT_INTERVAL, heartbeat=2)
 
 		# Add all automatic plugins.
 		self.add_autocreate_plugins()
@@ -110,14 +109,11 @@ class Collecty(object):
 			i.start()
 
 		# Regularly submit all data to disk.
-		counter = self.SUBMIT_INTERVAL / self.HEARTBEAT
 		while self.running:
-			time.sleep(self.HEARTBEAT)
-			counter -= 1
+			self.timer.reset()
 
-			if counter == 0:
+			if self.timer.wait():
 				self.submit_all()
-				counter = self.SUBMIT_INTERVAL / self.HEARTBEAT
 
 		# Wait until all instances are finished.
 		while self.instances:
@@ -142,6 +138,8 @@ class Collecty(object):
 		log.debug(_("Received shutdown signal"))
 
 		self.running = False
+		if self.timer:
+			self.timer.cancel()
 
 		# Propagating shutdown to all threads.
 		for i in self.instances:
