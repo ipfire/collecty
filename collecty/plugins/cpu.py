@@ -24,19 +24,22 @@ import base
 from ..i18n import _
 
 class PluginCPU(base.Plugin):
-	_name = "CPU Usage Plugin"
-	_type = "cpu"
+	name = "cpu"
+	description = "CPU Usage Plugin"
 
-	_rrd = [ "DS:user:GAUGE:120:0:100",
-			 "DS:nice:GAUGE:120:0:100",
-			 "DS:sys:GAUGE:120:0:100",
-			 "DS:idle:GAUGE:120:0:100",
-			 "DS:wait:GAUGE:120:0:100",
-			 "DS:interrupt:GAUGE:120:0:100",
-			 "RRA:AVERAGE:0.5:1:2160",
-			 "RRA:AVERAGE:0.5:5:2016",
-			 "RRA:AVERAGE:0.5:15:2880",
-			 "RRA:AVERAGE:0.5:60:8760" ]
+	rrd_schema = [
+		"DS:user:GAUGE:120:0:U",
+		"DS:nice:GAUGE:120:0:U",
+		"DS:sys:GAUGE:120:0:U",
+		"DS:idle:GAUGE:120:0:U",
+		"DS:wait:GAUGE:120:0:U",
+		"DS:irq:GAUGE:120:0:U",
+		"DS:sirq:GAUGE:120:0:U",
+		"RRA:AVERAGE:0.5:1:2160",
+		"RRA:AVERAGE:0.5:5:2016",
+		"RRA:AVERAGE:0.5:15:2880",
+		"RRA:AVERAGE:0.5:60:8760",
+	]
 
 	_graph = [ "DEF:user=%(file)s:user:AVERAGE",
 			   "DEF:nice=%(file)s:nice:AVERAGE",
@@ -87,34 +90,44 @@ class PluginCPU(base.Plugin):
 			   "GPRINT:idlemin:%12s\:" % _("Minimum") + " %6.2lf",
 			   "GPRINT:idleavg:%12s\:" % _("Average") + " %6.2lf\\n", ]
 
-	def __init__(self, collecty, **kwargs):
-		Plugin.__init__(self, collecty, **kwargs)
+	def read(self):
+		"""
+			Reads the CPU usage in jiffies.
+		"""
+		f = None
 
-	def collect(self):
-		ret = "%s" % self.time()
-		f = open("/proc/stat")
-		for line in f.readlines():
-			if not line.startswith("cpu"):
-				continue
-			a = line.split()
-			if len(a) < 6:
-				continue
+		try:
+			f = open("/proc/stat")
 
-			user = float(a[1])
-			nice = float(a[2])
-			sys = float(a[3])
-			idle = float(a[4])
-			wait = float(a[5])
-			interrupt = float(a[6])
-			sum = float(user + nice + sys + idle + wait + interrupt)
+			for line in f.readlines():
+				if not line.startswith("cpu"):
+					continue
 
-			ret += ":%s" % (user * 100 / sum)
-			ret += ":%s" % (nice * 100 / sum)
-			ret += ":%s" % (sys * 100 / sum)
-			ret += ":%s" % (idle * 100 / sum)
-			ret += ":%s" % (wait * 100 / sum)
-			ret += ":%s" % (interrupt * 100 / sum)
-			break
+				columns = line.split()
+				if len(columns) < 8:
+					continue
 
-		f.close()
-		return ret
+				entry = [
+					columns[1], # user
+					columns[2], # nice
+					columns[3], # sys
+					columns[4], # idle
+					columns[5], # wait
+					columns[6], # irq
+					columns[7], # sirq
+				]
+
+				full = sum([int(e) for e in entry])
+
+				for i in range(len(entry)):
+					entry[i] = float(entry[i]) * 100
+					entry[i] = "%s" % (entry[i] / full)
+
+				entry.insert(0, "%s" % self.now)
+
+				self.data.append(":".join(entry))
+				break
+
+		finally:
+			if f:
+				f.close()
