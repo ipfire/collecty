@@ -19,11 +19,21 @@
 #                                                                             #
 ###############################################################################
 
+
 import signal
 
 import ConfigParser as configparser
 
 import plugins
+
+# Initialize logging.
+import logging
+log = logging.getLogger("collecty")
+log.level = logging.DEBUG
+
+handler = logging.StreamHandler()
+handler.level = logging.DEBUG
+log.handlers.append(handler)
 
 class ConfigError(Exception):
 	pass
@@ -55,9 +65,6 @@ class Collecty(object):
 
 			i = plugin(self, **kwargs)
 			self.instances.append(i)
-
-	def debug(self, message):
-		print message
 
 	def run(self):
 		signal.signal(signal.SIGTERM, lambda *args: self.shutdown())
