@@ -34,8 +34,11 @@ log = logging.getLogger("collecty")
 log.level = logging.DEBUG
 
 handler = logging.StreamHandler()
-handler.level = logging.DEBUG
+handler.setLevel(logging.DEBUG)
 log.handlers.append(handler)
+
+formatter = logging.Formatter("%(asctime)s | %(name)-20s - %(levelname)-6s | %(message)s")
+handler.setFormatter(formatter)
 
 class ConfigError(Exception):
 	pass
@@ -44,6 +47,8 @@ class Collecty(object):
 	def __init__(self):
 		self.config = configparser.ConfigParser()
 		self.instances = []
+
+		log.info(_("Collecty successfully initialized."))
 
 	def read_config(self, config):
 		self.config.read(config)
