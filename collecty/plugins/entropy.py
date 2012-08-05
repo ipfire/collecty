@@ -19,16 +19,38 @@
 #                                                                             #
 ###############################################################################
 
-from base import Timer
+import os
 
-import cpu
-import entropy
-import loadavg
-import memory
+import base
 
-registered_plugins = [
-	cpu.PluginCPU,
-	entropy.PluginEntropy,
-	loadavg.PluginLoadAvg,
-	memory.PluginMemory,
-]
+ENTROPY_FILE = "/proc/sys/kernel/random/entropy_avail"
+
+class PluginEntropy(base.Plugin):
+	name = "entropy"
+	description = "Entropy Plugin"
+
+	rrd_schema = [
+		"DS:entropy:GAUGE:120:0:U",
+		"RRA:AVERAGE:0.5:1:2160",
+		"RRA:AVERAGE:0.5:5:2016",
+		"RRA:AVERAGE:0.5:15:2880",
+		"RRA:AVERAGE:0.5:60:8760",
+	]
+
+	@classmethod
+	def autocreate(cls, collecty, **kwargs):
+		if not os.path.exists(ENTROPY_FILE):
+			self.log.debug(_("Entropy kernel interface does not exist."))
+			return
+
+		return cls(collecty, **kwargs)
+
+	def read(self):
+		data = "%s" % self.now
+
+		f = open(ENTROPY_FILE)
+		entropy = f.readline()
+		f.close()
+
+		data += ":%s" % entropy.strip()
+		self.data.append(data)
