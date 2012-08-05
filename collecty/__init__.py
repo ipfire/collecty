@@ -110,8 +110,6 @@ class Collecty(object):
 
 		# Regularly submit all data to disk.
 		while self.running:
-			self.timer.reset()
-
 			if self.timer.wait():
 				self.submit_all()
 
@@ -131,8 +129,12 @@ class Collecty(object):
 		"""
 			Submit all data right now.
 		"""
+		log.debug(_("Submitting all data in memory"))
 		for i in self.instances:
 			i._submit()
+
+		# Schedule the next submit.
+		self.timer.reset()
 
 	def shutdown(self):
 		log.debug(_("Received shutdown signal"))
@@ -146,9 +148,18 @@ class Collecty(object):
 			i.shutdown()
 
 	def register_signal_handler(self):
-		for s in (signal.SIGTERM, signal.SIGINT):
+		for s in (signal.SIGTERM, signal.SIGINT, signal.SIGUSR1):
+			log.debug(_("Registering signal %d") % s)
+
 			signal.signal(s, self.signal_handler)
 
-	def signal_handler(self, *args, **kwargs):
-		# Shutdown this application.
-		self.shutdown()
+	def signal_handler(self, sig, *args, **kwargs):
+		log.info(_("Caught signal %d") % sig)
+
+		if sig in (signal.SIGTERM, signal.SIGINT):
+			# Shutdown this application.
+			self.shutdown()
+
+		elif sig == signal.SIGUSR1:
+			# Submit all data.
+			self.submit_all()
