@@ -1,3 +1,4 @@
+*.mo
 *.png
 *.py[co]
 *.tar.gz

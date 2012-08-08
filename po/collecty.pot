@@ -1,0 +1,182 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-08 08:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: collecty/__init__.py:61
+msgid "Collecty successfully initialized."
+msgstr ""
+
+#: collecty/__init__.py:75
+#, python-format
+msgid "Plugin '%(name)s' registered %(number)s instance(s)."
+msgstr ""
+
+#: collecty/__init__.py:120
+#, python-format
+msgid "%s is not alive anymore. Removing."
+msgstr ""
+
+#: collecty/__init__.py:126
+msgid "No thread running. Exiting main thread."
+msgstr ""
+
+#: collecty/__init__.py:132
+msgid "Submitting all data in memory"
+msgstr ""
+
+#: collecty/__init__.py:140
+msgid "Received shutdown signal"
+msgstr ""
+
+#: collecty/__init__.py:152
+#, python-format
+msgid "Registering signal %d"
+msgstr ""
+
+#: collecty/__init__.py:157
+#, python-format
+msgid "Caught signal %d"
+msgstr ""
+
+#: collecty/plugins/base.py:99
+msgid "Successfully initialized."
+msgstr ""
+
+#: collecty/plugins/base.py:139
+#, python-format
+msgid "Created RRD file %s."
+msgstr ""
+
+#: collecty/plugins/base.py:166
+#, python-format
+msgid "Submitting data to database. %d entries."
+msgstr ""
+
+#: collecty/plugins/base.py:179
+msgid "Unhandled exception in read()!"
+msgstr ""
+
+#: collecty/plugins/base.py:190
+msgid "Unhandled exception in submit()!"
+msgstr ""
+
+#: collecty/plugins/base.py:193
+msgid "Started."
+msgstr ""
+
+#: collecty/plugins/base.py:201
+msgid "Collecting..."
+msgstr ""
+
+#: collecty/plugins/base.py:205
+msgid "Stopped."
+msgstr ""
+
+#: collecty/plugins/base.py:208
+msgid "Received shutdown signal."
+msgstr ""
+
+#: collecty/plugins/cpu.py:52
+msgid "User"
+msgstr ""
+
+#: collecty/plugins/cpu.py:56 collecty/plugins/cpu.py:63
+#: collecty/plugins/cpu.py:70 collecty/plugins/cpu.py:77
+#: collecty/plugins/cpu.py:84 collecty/plugins/cpu.py:91
+#: collecty/plugins/loadavg.py:49 collecty/plugins/loadavg.py:56
+#: collecty/plugins/loadavg.py:63 collecty/plugins/memory.py:53
+#: collecty/plugins/memory.py:60 collecty/plugins/memory.py:67
+#: collecty/plugins/memory.py:74 collecty/plugins/memory.py:81
+msgid "Maximum"
+msgstr ""
+
+#: collecty/plugins/cpu.py:57 collecty/plugins/cpu.py:64
+#: collecty/plugins/cpu.py:71 collecty/plugins/cpu.py:78
+#: collecty/plugins/cpu.py:85 collecty/plugins/cpu.py:92
+#: collecty/plugins/loadavg.py:50 collecty/plugins/loadavg.py:57
+#: collecty/plugins/loadavg.py:64 collecty/plugins/memory.py:54
+#: collecty/plugins/memory.py:61 collecty/plugins/memory.py:68
+#: collecty/plugins/memory.py:75 collecty/plugins/memory.py:82
+msgid "Minimum"
+msgstr ""
+
+#: collecty/plugins/cpu.py:58 collecty/plugins/cpu.py:65
+#: collecty/plugins/cpu.py:72 collecty/plugins/cpu.py:79
+#: collecty/plugins/cpu.py:86 collecty/plugins/cpu.py:93
+#: collecty/plugins/loadavg.py:51 collecty/plugins/loadavg.py:58
+#: collecty/plugins/loadavg.py:65 collecty/plugins/memory.py:55
+#: collecty/plugins/memory.py:62 collecty/plugins/memory.py:69
+#: collecty/plugins/memory.py:76 collecty/plugins/memory.py:83
+msgid "Average"
+msgstr ""
+
+#: collecty/plugins/cpu.py:59
+msgid "Nice"
+msgstr ""
+
+#: collecty/plugins/cpu.py:66
+msgid "System"
+msgstr ""
+
+#: collecty/plugins/cpu.py:73
+msgid "Wait"
+msgstr ""
+
+#: collecty/plugins/cpu.py:80
+msgid "Interrupt"
+msgstr ""
+
+#: collecty/plugins/cpu.py:87
+msgid "Idle"
+msgstr ""
+
+#: collecty/plugins/entropy.py:43
+msgid "Entropy kernel interface does not exist."
+msgstr ""
+
+#: collecty/plugins/loadavg.py:45
+msgid "Load average  1m"
+msgstr ""
+
+#: collecty/plugins/loadavg.py:52
+msgid "Load average  5m"
+msgstr ""
+
+#: collecty/plugins/loadavg.py:59
+msgid "Load average 15m"
+msgstr ""
+
+#: collecty/plugins/memory.py:49
+msgid "Used memory"
+msgstr ""
+
+#: collecty/plugins/memory.py:56
+msgid "Cached data"
+msgstr ""
+
+#: collecty/plugins/memory.py:63
+msgid "Buffered data"
+msgstr ""
+
+#: collecty/plugins/memory.py:70
+msgid "Free memory"
+msgstr ""
+
+#: collecty/plugins/memory.py:77
+msgid "Used Swap space"
+msgstr ""

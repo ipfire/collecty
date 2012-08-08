@@ -18,26 +18,64 @@
 #                                                                             #
 ###############################################################################
 
-NAME = collecty
-VERSION = 0.0.1
+PACKAGE_NAME    = collecty
+PACKAGE_VERSION = 0.0.1
 
-DESTDIR =
+DESTDIR    =
+PREFIX     = /usr
+BINDIR     = $(PREFIX)/bin
+LOCALEDIR  = $(PREFIX)/share/locale
+
 PYTHON_VER := $(shell python -c "import platform; print '.'.join(platform.python_version_tuple()[:2])")
 PYTHON_DIR = $(DESTDIR)/usr/lib/python$(PYTHON_VER)/site-packages/
 
-all:
+###
+# Translation stuff
+###
+# A list of all files that need translation
+TRANSLATION_FILES = $(shell find collecty -type f -name "*.py") collectyd
 
+POT_FILE = po/$(PACKAGE_NAME).pot
+PO_FILES = $(wildcard po/*.po)
+MO_FILES = $(patsubst %.po,%.mo,$(PO_FILES))
+
+.PHONY: all
+all: $(POT_FILE) $(MO_FILES)
+
+.PHONY: dist
 dist:
 	git archive --format=tar --prefix=$(NAME)-$(VERSION)/ HEAD | gzip -9 \
 		> $(NAME)-$(VERSION).tar.gz
 
+.PHONY: install
 install:
 	-mkdir -pv $(PYTHON_DIR)
 	cp -rvf collecty $(PYTHON_DIR)
-	install -v -m 755 collectyd $(DESTDIR)/usr/sbin
-
-	-mkdir -pv $(DESTDIR)/var/rrd
+	install -v -m 755 collectyd $(DESTDIR)$(BINDIR)
 
 	# Install configuration
-	-mkdir -pv $(DESTDIR)/etc/$(NAME)/
-	cp -vf example.conf $(DESTDIR)/etc/$(NAME)/$(NAME).conf
+	-mkdir -pv $(DESTDIR)/etc/$(PACKAGE_NAME)
+	cp -vf example.conf $(DESTDIR)/etc/$(PACKAGE_NAME)/$(PACKAGE_NAME).conf
+
+	# Install translation files.
+	-mkdir -pv $(DESTDIR)$(LOCALEDIR)
+	for file in $(MO_FILES); do \
+		lang=$$(basename $${file/.mo/}); \
+		mkdir -pv $(DESTDIR)$(LOCALEDIR)/$${lang}/LC_MESSAGES; \
+		install -v -m 644 $${file} \
+			$(DESTDIR)$(LOCALEDIR)/$${lang}/LC_MESSAGES/$(PACKAGE_NAME).mo; \
+	done
+
+# Cleanup temporary files.
+.PHONY: clean
+clean:
+	rm -f $(MO_FILES)
+
+# Translation stuff.
+$(POT_FILE): $(TRANSLATION_FILES) Makefile
+	xgettext --language python -d $(PACKAGE_NAME) -k_ -kN_ \
+		-o $@ --add-comments --from-code=UTF-8 $(sort $^)
+
+# Compile gettext dictionaries from translation files.
+%.mo: %.po $(POT_FILE)
+	msgfmt -o $@ $<
