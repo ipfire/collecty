@@ -40,7 +40,10 @@ PO_FILES = $(wildcard po/*.po)
 MO_FILES = $(patsubst %.po,%.mo,$(PO_FILES))
 
 .PHONY: all
-all: $(POT_FILE) $(MO_FILES)
+all: $(MO_FILES)
+
+.PHONY: pot
+pot: $(POT_FILE)
 
 .PHONY: dist
 dist:
@@ -48,7 +51,7 @@ dist:
 		> $(NAME)-$(VERSION).tar.gz
 
 .PHONY: install
-install:
+install: $(MO_FILES)
 	-mkdir -pv $(PYTHON_DIR)
 	cp -rvf collecty $(PYTHON_DIR)
 	install -v -m 755 collectyd $(DESTDIR)$(BINDIR)
@@ -77,5 +80,5 @@ $(POT_FILE): $(TRANSLATION_FILES) Makefile
 		-o $@ --add-comments --from-code=UTF-8 $(sort $^)
 
 # Compile gettext dictionaries from translation files.
-%.mo: %.po $(POT_FILE)
+%.mo: %.po
 	msgfmt -o $@ $<
