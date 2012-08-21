@@ -25,6 +25,7 @@ DESTDIR    =
 PREFIX     = /usr
 BINDIR     = $(PREFIX)/bin
 LOCALEDIR  = $(PREFIX)/share/locale
+UNITDIR    = $(PREFIX)/lib/systemd/system
 
 PYTHON_VER := $(shell python -c "import platform; print '.'.join(platform.python_version_tuple()[:2])")
 PYTHON_DIR = $(DESTDIR)/usr/lib/python$(PYTHON_VER)/site-packages/
@@ -68,6 +69,10 @@ install: $(MO_FILES)
 		install -v -m 644 $${file} \
 			$(DESTDIR)$(LOCALEDIR)/$${lang}/LC_MESSAGES/$(PACKAGE_NAME).mo; \
 	done
+
+	# Install systemd unit files.
+	mkdir -pv $(DESTDIR)$(UNITDIR)
+	install -m 644 -v collecty.service $(DESTDIR)$(UNITDIR)
 
 # Cleanup temporary files.
 .PHONY: clean

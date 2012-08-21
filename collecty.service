@@ -1,0 +1,9 @@
+[Unit]
+Description=collecty - A system data collecting daemon
+
+[Service]
+ExecStart=/usr/bin/collectyd
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
