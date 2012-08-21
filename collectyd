@@ -26,12 +26,21 @@ import collecty
 
 # Parse command line options.
 op = optparse.OptionParser(usage="usage: %prog [options] <configfile1> ... <configfileN>")
-op.add_option("-d", "--daemon", action="store_true", default=False,
-		help="Run as a daemon in background.")
+op.add_option("-d", "--debug", action="store_true", default=False,
+		help="Enable debug logging.")
 (options, configfiles) = op.parse_args()
 
+# Initialize the settings for this Collecty instance.
+settings = {
+	debug : options.debug,
+}
+
 # Initialize the application.
-c = collecty.Collecty()
+c = collecty.Collecty(**settings)
+
+# Read all configuration files.
+for configfile in configfiles:
+	c.read_config(configfile)
 
 # Run.
 c.run()
