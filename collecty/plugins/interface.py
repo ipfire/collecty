@@ -19,18 +19,77 @@
 #                                                                             #
 ###############################################################################
 
-from base import Timer
+from __future__ import division
 
-import cpu
-import entropy
-import interface
-import loadavg
-import memory
+import os
 
-registered_plugins = [
-	cpu.PluginCPU,
-	entropy.PluginEntropy,
-	interface.PluginInterface,
-	loadavg.PluginLoadAvg,
-	memory.PluginMemory,
-]
+import base
+
+from ..i18n import _
+
+SYS_CLASS_NET = "/sys/class/net"
+
+class PluginInterface(base.Plugin):
+	name = "interface"
+	description = "Interface Statistics"
+
+	rrd_schema = [
+		"DS:bytes_rx:DERIVE:0:U",
+		"DS:bytes_tx:DERIVE:0:U",
+		"DS:collisions:DERIVE:0:U",
+		"DS:dropped_rx:DERIVE:0:U",
+		"DS:dropped_tx:DERIVE:0:U",
+		"DS:errors_rx:DERIVE:0:U",
+		"DS:errors_tx:DERIVE:0:U",
+		"DS:multicast:DERIVE:0:U",
+		"DS:packets_rx:DERIVE:0:U",
+		"DS:packets_tx:DERIVE:0:U",
+	]
+
+	@classmethod
+	def autocreate(cls, collecty, **kwargs):
+		if not os.path.exists(SYS_CLASS_NET):
+			return
+
+		instances = []
+		for interface in os.listdir(SYS_CLASS_NET):
+			path = os.path.join(SYS_CLASS_NET, interface)
+			if not os.path.isdir(path):
+				continue
+
+			instance = cls(collecty, interface=interface)
+			instances.append(instance)
+
+		return instances
+
+	def init(self, **kwargs):
+		self.interface = kwargs.get("interface")
+
+	@property
+	def id(self):
+		return "-".join((self.name, self.interface))
+
+	def read(self):
+		files = (
+			"rx_bytes", "tx_bytes",
+			"collisions",
+			"rx_dropped", "tx_dropped",
+			"rx_errors", "tx_errors",
+			"multicast",
+			"rx_packets", "tx_packets",
+		)
+		ret = ["%s" % self.now,]
+
+		for file in files:
+			path = os.path.join(SYS_CLASS_NET, self.interface, "statistics", file)
+
+			# Open file and read it's content.
+			f = open(path)
+
+			line = f.readline()
+			line = line.strip()
+			ret.append(line)
+
+			f.close()
+
+		self.data.append(":".join(ret))
