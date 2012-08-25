@@ -19,7 +19,10 @@
 #                                                                             #
 ###############################################################################
 
+from __future__ import division
+
 import logging
+import math
 import os
 import rrdtool
 import threading
@@ -65,6 +68,11 @@ class Plugin(threading.Thread):
 
 	# The schema of the RRD database.
 	rrd_schema = None
+
+	# RRA properties.
+	rra_types = ["AVERAGE", "MIN", "MAX"]
+	rra_timespans = [3600, 86400, 604800, 2678400, 31622400]
+	rra_rows = 2880
 
 	# Instructions how to create the graph.
 	rrd_graph = None
@@ -129,6 +137,10 @@ class Plugin(threading.Thread):
 		return self.default_interval
 
 	@property
+	def stepsize(self):
+		return self.interval
+
+	@property
 	def file(self):
 		"""
 			The absolute path to the RRD file of this plugin.
@@ -147,9 +159,56 @@ class Plugin(threading.Thread):
 		if not os.path.exists(dirname):
 			os.makedirs(dirname)
 
-		rrdtool.create(self.file, *self.rrd_schema)
+		# Create argument list.
+		args = [
+			"--step", "%s" % self.default_interval,
+		] + self.get_rrd_schema()
+
+		rrdtool.create(self.file, *args)
 
 		self.log.debug(_("Created RRD file %s.") % self.file)
+
+	def get_rrd_schema(self):
+		schema = [
+			"--step", "%s" % self.stepsize,
+		]
+		for line in self.rrd_schema:
+			if line.startswith("DS:"):
+				try:
+					(prefix, name, type, lower_limit, upper_limit) = line.split(":")
+
+					line = ":".join((
+						prefix,
+						name,
+						type,
+						"%s" % self.stepsize,
+						lower_limit,
+						upper_limit
+					))
+				except ValueError:
+					pass
+
+			schema.append(line)
+
+		xff = 0.1
+
+		cdp_length = 0
+		for rra_timespan in self.rra_timespans:
+			if (rra_timespan / self.stepsize) < self.rra_rows:
+				rra_timespan = self.stepsize * self.rra_rows
+
+			if cdp_length == 0:
+				cdp_length = 1
+			else:
+				cdp_length = rra_timespan // (self.rra_rows * self.stepsize)
+
+			cdp_number = math.ceil(rra_timespan / (cdp_length * self.stepsize))
+
+			for rra_type in self.rra_types:
+				schema.append("RRA:%s:%.10f:%d:%d" % \
+					(rra_type, xff, cdp_length, cdp_number))
+
+		return schema
 
 	def info(self):
 		return rrdtool.info(self.file)
