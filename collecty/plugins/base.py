@@ -92,11 +92,11 @@ class Plugin(threading.Thread):
 
 		self.data = []
 
+		# Run some custom initialization.
+		self.init(**kwargs)
+
 		# Create the database file.
 		self.create()
-
-		# Run some custom initialization.
-		self.init()
 
 		# Keepalive options
 		self.running = True
@@ -156,7 +156,7 @@ class Plugin(threading.Thread):
 
 	### Basic methods
 
-	def init(self):
+	def init(self, **kwargs):
 		"""
 			Do some custom initialization stuff here.
 		"""
