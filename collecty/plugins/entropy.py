@@ -23,6 +23,8 @@ import os
 
 import base
 
+from ..i18n import _
+
 ENTROPY_FILE = "/proc/sys/kernel/random/entropy_avail"
 
 class PluginEntropy(base.Plugin):
@@ -35,6 +37,27 @@ class PluginEntropy(base.Plugin):
 		"RRA:AVERAGE:0.5:5:2016",
 		"RRA:AVERAGE:0.5:15:2880",
 		"RRA:AVERAGE:0.5:60:8760",
+	]
+
+	rrd_graph = [
+		"DEF:entropy=%(file)s:entropy:AVERAGE",
+		"CDEF:entropytrend=entropy,43200,TREND",
+
+		"LINE3:entropy#ff0000:%-15s" % _("Available entropy"),
+		"VDEF:entrmin=entropy,MINIMUM",
+		"VDEF:entrmax=entropy,MAXIMUM",
+		"VDEF:entravg=entropy,AVERAGE",
+		"GPRINT:entrmax:%12s\:" % _("Maximum") + " %5.0lf",
+		"GPRINT:entrmin:%12s\:" % _("Minimum") + " %5.0lf",
+		"GPRINT:entravg:%12s\:" % _("Average") + " %5.0lf\\n",
+
+		"LINE3:entropytrend#000000",
+	]
+	rrd_graph_args = [
+		"--title", _("Available entropy"),
+		"--vertical-label", _("Bits"),
+
+		"--lower-limit", "0", "--rigid",
 	]
 
 	@classmethod

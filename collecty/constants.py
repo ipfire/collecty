@@ -19,4 +19,30 @@
 #                                                                             #
 ###############################################################################
 
+from i18n import _
+
 DATABASE_DIR = "/var/lib/collecty"
+
+GRAPH_DEFAULT_ARGUMENTS = [
+	# Always generate graphs in PNG format.
+	"--imgformat", "PNG",
+
+	# Disable the border around the image.
+	"--border", "0",
+
+	# Let's width and height define the size of
+	# the entire image.
+	"--full-size-mode",
+
+	# Gives the curves a more organic look.
+	"--slope-mode",
+
+	# Show nicer labels.
+	"--dynamic-labels",
+
+	# Brand all generated graphs.
+	"--watermark", _("Created by collecty"),
+]
+
+GRAPH_DEFAULT_WIDTH = 768
+GRAPH_DEFAULT_HEIGHT = 480

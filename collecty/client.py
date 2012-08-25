@@ -19,17 +19,28 @@
 #                                                                             #
 ###############################################################################
 
-# Initialize logging.
+import daemon
+
 import logging
-log = logging.getLogger("collecty")
-log.level = logging.DEBUG
+log = logging.getLogger("collectly.client")
 
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-log.handlers.append(handler)
+class CollectyClient(object):
+	def __init__(self, **settings):
+		self.collecty = daemon.Collecty(**settings)
 
-formatter = logging.Formatter("%(asctime)s | %(name)-20s - %(levelname)-6s | %(message)s")
-handler.setFormatter(formatter)
+	@property
+	def instances(self):
+		return self.collecty.instances
 
-from client import CollectyClient
-from daemon import Collecty
+	def get_instance_by_id(self, id):
+		for instance in self.instances:
+			if not instance.id == id:
+				continue
+
+			return instance
+
+	def graph(self, id, filename, interval=None, **kwargs):
+		instance = self.get_instance_by_id(id)
+		assert instance, "Could not find instance: %s" % id
+
+		instance.graph(filename, interval=interval, **kwargs)

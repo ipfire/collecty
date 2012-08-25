@@ -66,6 +66,12 @@ class Plugin(threading.Thread):
 	# The schema of the RRD database.
 	rrd_schema = None
 
+	# Instructions how to create the graph.
+	rrd_graph = None
+
+	# Extra arguments passed to rrdgraph.
+	rrd_graph_args = []
+
 	# The default interval of this plugin.
 	default_interval = 60
 
@@ -103,6 +109,13 @@ class Plugin(threading.Thread):
 	
 	def __str__(self):
 		return "Plugin %s %s" % (self.name, self.file)
+
+	@property
+	def id(self):
+		"""
+			A unique ID of the plugin instance.
+		"""
+		return self.name
 
 	@property
 	def interval(self):
@@ -219,16 +232,23 @@ class Plugin(threading.Thread):
 		"""
 		return int(time.time())
 
-	def graph(self, file, interval=None):
-		args = [ "--imgformat", "PNG",
-				"-w", "580", # Width of the graph
-				"-h", "240", # Height of the graph
-				"--interlaced", "--slope-mode", ]
+	def graph(self, file, interval=None,
+			width=GRAPH_DEFAULT_WIDTH, height=GRAPH_DEFAULT_HEIGHT):
 
-		intervals = { None   : "-3h",
-					"hour" : "-1h",
-					"day"  : "-25h",
-					"week" : "-360h" }
+		args = [
+			"--width", "%d" % width,
+			"--height", "%d" % height,
+		]
+		args += self.collecty.graph_default_arguments
+		args += self.rrd_graph_args
+
+		intervals = {
+			None   : "-3h",
+			"hour" : "-1h",
+			"day"  : "-25h",
+			"week" : "-360h",
+			"year" : "-365d",
+		}
 
 		args.append("--start")
 		if intervals.has_key(interval):
@@ -237,10 +257,10 @@ class Plugin(threading.Thread):
 			args.append(interval)
 
 		info = { "file" : self.file }
-		for item in self._graph:
+		for item in self.rrd_graph:
 			try:
 				args.append(item % info)
 			except TypeError:
 				args.append(item)
 
-			rrdtool.graph(file, *args)
+		rrdtool.graph(file, *args)

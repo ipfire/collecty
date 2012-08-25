@@ -39,32 +39,44 @@ class PluginLoadAvg(base.Plugin):
 		"RRA:AVERAGE:0.5:60:8760",
 	]
 
-	_graph = [ "DEF:load1=%(file)s:load1:AVERAGE",
-			   "DEF:load5=%(file)s:load5:AVERAGE",
-			   "DEF:load15=%(file)s:load15:AVERAGE",
-			   "AREA:load1#ff0000:%s" % _("Load average  1m"),
-			     "VDEF:load1min=load1,MINIMUM",
-			     "VDEF:load1max=load1,MAXIMUM",
-			     "VDEF:load1avg=load1,AVERAGE",
-			     "GPRINT:load1max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			     "GPRINT:load1min:%12s\:" % _("Minimum") + " %6.2lf",
-			     "GPRINT:load1avg:%12s\:" % _("Average") + " %6.2lf\\n",
-			   "AREA:load5#ff9900:%s" % _("Load average  5m"),
-			   	 "VDEF:load5min=load5,MINIMUM",
-			     "VDEF:load5max=load5,MAXIMUM",
-			     "VDEF:load5avg=load5,AVERAGE",
-			     "GPRINT:load5max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			     "GPRINT:load5min:%12s\:" % _("Minimum") + " %6.2lf",
-			     "GPRINT:load5avg:%12s\:" % _("Average") + " %6.2lf\\n",
-			   "AREA:load15#ffff00:%s" % _("Load average 15m"),
-			   	 "VDEF:load15min=load15,MINIMUM",
-			     "VDEF:load15max=load15,MAXIMUM",
-			     "VDEF:load15avg=load15,AVERAGE",
-			     "GPRINT:load15max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			     "GPRINT:load15min:%12s\:" % _("Minimum") + " %6.2lf",
-			     "GPRINT:load15avg:%12s\:" % _("Average") + " %6.2lf\\n",
-			   "LINE:load5#dd8800",
-			   "LINE:load1#dd0000", ]
+	rrd_graph = [
+		"DEF:load1=%(file)s:load1:AVERAGE",
+		"DEF:load5=%(file)s:load5:AVERAGE",
+		"DEF:load15=%(file)s:load15:AVERAGE",
+
+		"AREA:load1#ff0000:%s" % _("Load average  1m"),
+		"VDEF:load1min=load1,MINIMUM",
+		"VDEF:load1max=load1,MAXIMUM",
+		"VDEF:load1avg=load1,AVERAGE",
+		"GPRINT:load1max:%12s\:" % _("Maximum") + " %6.2lf",
+		"GPRINT:load1min:%12s\:" % _("Minimum") + " %6.2lf",
+		"GPRINT:load1avg:%12s\:" % _("Average") + " %6.2lf\\n",
+
+		"AREA:load5#ff9900:%s" % _("Load average  5m"),
+		"VDEF:load5min=load5,MINIMUM",
+		"VDEF:load5max=load5,MAXIMUM",
+		"VDEF:load5avg=load5,AVERAGE",
+		"GPRINT:load5max:%12s\:" % _("Maximum") + " %6.2lf",
+		"GPRINT:load5min:%12s\:" % _("Minimum") + " %6.2lf",
+		"GPRINT:load5avg:%12s\:" % _("Average") + " %6.2lf\\n",
+
+		"AREA:load15#ffff00:%s" % _("Load average 15m"),
+		"VDEF:load15min=load15,MINIMUM",
+		"VDEF:load15max=load15,MAXIMUM",
+		"VDEF:load15avg=load15,AVERAGE",
+		"GPRINT:load15max:%12s\:" % _("Maximum") + " %6.2lf",
+		"GPRINT:load15min:%12s\:" % _("Minimum") + " %6.2lf",
+		"GPRINT:load15avg:%12s\:" % _("Average") + " %6.2lf\\n",
+
+		"LINE:load5#dd8800",
+		"LINE:load1#dd0000",
+	]
+	rrd_graph_args = [
+		"--title", _("Load average"),
+		"--vertical-label", _("Load"),
+
+		"--lower-limit", "0", "--rigid",
+	]
 
 	@classmethod
 	def autocreate(cls, collecty, **kwargs):

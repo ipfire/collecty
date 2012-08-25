@@ -19,17 +19,8 @@
 #                                                                             #
 ###############################################################################
 
-# Initialize logging.
-import logging
-log = logging.getLogger("collecty")
-log.level = logging.DEBUG
+class CollectyError(Exception):
+	pass
 
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-log.handlers.append(handler)
-
-formatter = logging.Formatter("%(asctime)s | %(name)-20s - %(levelname)-6s | %(message)s")
-handler.setFormatter(formatter)
-
-from client import CollectyClient
-from daemon import Collecty
+class ConfigError(CollectyError):
+	pass

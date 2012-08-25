@@ -32,7 +32,7 @@ op.add_option("-d", "--debug", action="store_true", default=False,
 
 # Initialize the settings for this Collecty instance.
 settings = {
-	debug : options.debug,
+	"debug" : options.debug,
 }
 
 # Initialize the application.
