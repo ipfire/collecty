@@ -102,7 +102,7 @@ class Plugin(threading.Thread):
 		self.running = True
 		self.timer = Timer(self.interval)
 
-		self.log.info(_("Successfully initialized."))
+		self.log.info(_("Successfully initialized (%s).") % self.id)
 	
 	def __repr__(self):
 		return "<Plugin %s>" % self.name
@@ -133,7 +133,7 @@ class Plugin(threading.Thread):
 		"""
 			The absolute path to the RRD file of this plugin.
 		"""
-		return os.path.join(DATABASE_DIR, "%s.rrd" % self.name)
+		return os.path.join(DATABASE_DIR, "%s.rrd" % self.id)
 
 	def create(self):
 		"""
