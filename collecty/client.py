@@ -29,18 +29,18 @@ class CollectyClient(object):
 		self.collecty = daemon.Collecty(**settings)
 
 	@property
-	def instances(self):
-		return self.collecty.instances
+	def data_sources(self):
+		return self.collecty.data_sources
 
-	def get_instance_by_id(self, id):
-		for instance in self.instances:
-			if not instance.id == id:
+	def get_data_source_by_id(self, id):
+		for ds in self.data_sources:
+			if not ds.id == id:
 				continue
 
-			return instance
+			return ds
 
 	def graph(self, id, filename, interval=None, **kwargs):
-		instance = self.get_instance_by_id(id)
-		assert instance, "Could not find instance: %s" % id
+		ds = self.get_data_source_by_id(id)
+		assert ds, "Could not find data source: %s" % id
 
-		instance.graph(filename, interval=interval, **kwargs)
+		ds.graph(filename, interval=interval, **kwargs)

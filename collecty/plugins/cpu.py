@@ -25,23 +25,8 @@ import base
 
 from ..i18n import _
 
-class PluginCPU(base.Plugin):
+class GraphTemplateCPU(base.GraphTemplate):
 	name = "cpu"
-	description = "CPU Usage Plugin"
-
-	rrd_schema = [
-		"DS:user:GAUGE:120:0:U",
-		"DS:nice:GAUGE:120:0:U",
-		"DS:sys:GAUGE:120:0:U",
-		"DS:idle:GAUGE:120:0:U",
-		"DS:wait:GAUGE:120:0:U",
-		"DS:irq:GAUGE:120:0:U",
-		"DS:sirq:GAUGE:120:0:U",
-		"RRA:AVERAGE:0.5:1:2160",
-		"RRA:AVERAGE:0.5:5:2016",
-		"RRA:AVERAGE:0.5:15:2880",
-		"RRA:AVERAGE:0.5:60:8760",
-	]
 
 	rrd_graph = [
 		"DEF:user=%(file)s:user:AVERAGE",
@@ -115,6 +100,27 @@ class PluginCPU(base.Plugin):
 
 		# This can never be more than 100 percent.
 		#"--lower-limit", "0", "--upper-limit", "100",
+	]
+
+
+class DataSourceCPU(base.DataSource):
+	name = "cpu"
+	description = "CPU Usage Data Source"
+
+	templates = [GraphTemplateCPU,]
+
+	rrd_schema = [
+		"DS:user:GAUGE:120:0:U",
+		"DS:nice:GAUGE:120:0:U",
+		"DS:sys:GAUGE:120:0:U",
+		"DS:idle:GAUGE:120:0:U",
+		"DS:wait:GAUGE:120:0:U",
+		"DS:irq:GAUGE:120:0:U",
+		"DS:sirq:GAUGE:120:0:U",
+		"RRA:AVERAGE:0.5:1:2160",
+		"RRA:AVERAGE:0.5:5:2016",
+		"RRA:AVERAGE:0.5:15:2880",
+		"RRA:AVERAGE:0.5:60:8760",
 	]
 
 	@classmethod

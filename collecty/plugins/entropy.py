@@ -27,17 +27,8 @@ from ..i18n import _
 
 ENTROPY_FILE = "/proc/sys/kernel/random/entropy_avail"
 
-class PluginEntropy(base.Plugin):
+class GraphTemplateEntropy(base.GraphTemplate):
 	name = "entropy"
-	description = "Entropy Plugin"
-
-	rrd_schema = [
-		"DS:entropy:GAUGE:120:0:U",
-		"RRA:AVERAGE:0.5:1:2160",
-		"RRA:AVERAGE:0.5:5:2016",
-		"RRA:AVERAGE:0.5:15:2880",
-		"RRA:AVERAGE:0.5:60:8760",
-	]
 
 	rrd_graph = [
 		"DEF:entropy=%(file)s:entropy:AVERAGE",
@@ -53,11 +44,27 @@ class PluginEntropy(base.Plugin):
 
 		"LINE3:entropytrend#000000",
 	]
+
 	rrd_graph_args = [
 		"--title", _("Available entropy"),
 		"--vertical-label", _("Bits"),
 
 		"--lower-limit", "0", "--rigid",
+	]
+
+
+class DataSourceEntropy(base.DataSource):
+	name = "entropy"
+	description = "Entropy Data Source"
+
+	templates = [GraphTemplateEntropy,]
+
+	rrd_schema = [
+		"DS:entropy:GAUGE:120:0:U",
+		"RRA:AVERAGE:0.5:1:2160",
+		"RRA:AVERAGE:0.5:5:2016",
+		"RRA:AVERAGE:0.5:15:2880",
+		"RRA:AVERAGE:0.5:60:8760",
 	]
 
 	@classmethod

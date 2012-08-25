@@ -37,45 +37,45 @@ class Collecty(object):
 
 	def __init__(self, debug=False):
 		self.config = configparser.ConfigParser()
-		self.instances = []
+		self.data_sources = []
 
 		# Indicates whether this process should be running or not.
 		self.running = True
 		self.timer = plugins.Timer(self.SUBMIT_INTERVAL, heartbeat=2)
 
-		# Add all automatic plugins.
-		self.add_autocreate_plugins()
+		# Add all automatic data sources.
+		self.add_autocreate_data_sources()
 
 		log.info(_("Collecty successfully initialized."))
 
-	def add_autocreate_plugins(self):
-		for plugin in plugins.registered_plugins:
-			if not hasattr(plugin, "autocreate"):
+	def add_autocreate_data_sources(self):
+		for data_source in plugins.data_sources:
+			if not hasattr(data_source, "autocreate"):
 				continue
 
-			ret = plugin.autocreate(self)
+			ret = data_source.autocreate(self)
 			if not ret:
 				continue
 
 			if not type(ret) == type([]):
 				ret = [ret,]
 
-			log.debug(_("Plugin '%(name)s' registered %(number)s instance(s).") % \
-				{ "name" : plugin.name, "number" : len(ret) })
+			log.debug(_("Data source '%(name)s' registered %(number)s instance(s).") % \
+				{ "name" : data_source.name, "number" : len(ret) })
 
-			self.instances += ret
+			self.data_sources += ret
 
 	def read_config(self, config):
 		self.config.read(config)
 		
 		for section in self.config.sections():
 			try:
-				plugin = self.config.get(section, "plugin")
-				plugin = plugins.find(plugin)
+				data_source = self.config.get(section, "data_source")
+				data_source = plugins.find(data_source)
 			except configparser.NoOptionError:
 				raise ConfigError, "Syntax error in configuration: plugin option is missing."
 			except:
-				raise Exception, "Plugin configuration error: Maybe plugin wasn't found? %s" % plugin
+				raise Exception, "Plugin configuration error: Maybe plugin wasn't found? %s" % data_source
 
 			kwargs = {}
 			for (key, value) in self.config.items(section):
@@ -85,16 +85,16 @@ class Collecty(object):
 			kwargs[key] = value
 			kwargs["file"] = section
 
-			i = plugin(self, **kwargs)
-			self.instances.append(i)
+			ds = data_source(self, **kwargs)
+			self.data_sources.append(ds)
 
 	def run(self):
 		# Register signal handlers.
 		self.register_signal_handler()
 
-		# Start all plugin instances.
-		for i in self.instances:
-			i.start()
+		# Start all data source threads.
+		for ds in self.data_sources:
+			ds.start()
 
 		# Regularly submit all data to disk.
 		while self.running:
@@ -102,11 +102,11 @@ class Collecty(object):
 				self.submit_all()
 
 		# Wait until all instances are finished.
-		while self.instances:
-			for instance in self.instances[:]:
-				if not instance.isAlive():
-					log.debug(_("%s is not alive anymore. Removing.") % instance)
-					self.instances.remove(instance)
+		while self.data_sources:
+			for ds in self.data_sources[:]:
+				if not ds.isAlive():
+					log.debug(_("%s is not alive anymore. Removing.") % ds)
+					self.data_sources.remove(ds)
 
 			# Wait a bit.
 			time.sleep(0.1)
@@ -118,8 +118,8 @@ class Collecty(object):
 			Submit all data right now.
 		"""
 		log.debug(_("Submitting all data in memory"))
-		for i in self.instances:
-			i._submit()
+		for ds in self.data_sources:
+			ds._submit()
 
 		# Schedule the next submit.
 		self.timer.reset()
@@ -132,8 +132,8 @@ class Collecty(object):
 			self.timer.cancel()
 
 		# Propagating shutdown to all threads.
-		for i in self.instances:
-			i.shutdown()
+		for ds in self.data_sources:
+			ds.shutdown()
 
 	def register_signal_handler(self):
 		for s in (signal.SIGTERM, signal.SIGINT, signal.SIGUSR1):

@@ -23,6 +23,9 @@ import collecty
 
 client = collecty.CollectyClient()
 
-for type in ("cpu", "entropy", "memory", "loadavg"):
-	for interval in ("day", "week", "year"):
-		client.graph(type, "%s-%s.png" % (type, interval), interval)
+for ds in client.data_sources:
+	for template in ds.templates:
+		t = template(ds)
+
+		for interval in ("-3h", "day", "week", "year"):
+			t.graph("%s-%s.png" % (ds.id, interval), interval)

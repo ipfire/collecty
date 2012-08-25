@@ -25,19 +25,8 @@ import base
 
 from ..i18n import _
 
-class PluginLoadAvg(base.Plugin):
+class GraphTemplateLoadAvg(base.GraphTemplate):
 	name = "loadavg"
-	description = "Load Average Plugin"
-
-	rrd_schema = [
-		"DS:load1:GAUGE:120:0:U",
-		"DS:load5:GAUGE:120:0:U",
-		"DS:load15:GAUGE:120:0:U",
-		"RRA:AVERAGE:0.5:1:2160",
-		"RRA:AVERAGE:0.5:5:2016",
-		"RRA:AVERAGE:0.5:15:2880",
-		"RRA:AVERAGE:0.5:60:8760",
-	]
 
 	rrd_graph = [
 		"DEF:load1=%(file)s:load1:AVERAGE",
@@ -71,11 +60,29 @@ class PluginLoadAvg(base.Plugin):
 		"LINE:load5#dd8800",
 		"LINE:load1#dd0000",
 	]
+
 	rrd_graph_args = [
 		"--title", _("Load average"),
 		"--vertical-label", _("Load"),
 
 		"--lower-limit", "0", "--rigid",
+	]
+
+
+class DataSourceLoadAvg(base.DataSource):
+	name = "loadavg"
+	description = "Load Average Data Source"
+
+	templates = [GraphTemplateLoadAvg,]
+
+	rrd_schema = [
+		"DS:load1:GAUGE:120:0:U",
+		"DS:load5:GAUGE:120:0:U",
+		"DS:load15:GAUGE:120:0:U",
+		"RRA:AVERAGE:0.5:1:2160",
+		"RRA:AVERAGE:0.5:5:2016",
+		"RRA:AVERAGE:0.5:15:2880",
+		"RRA:AVERAGE:0.5:60:8760",
 	]
 
 	@classmethod

@@ -29,9 +29,11 @@ from ..i18n import _
 
 SYS_CLASS_NET = "/sys/class/net"
 
-class PluginInterface(base.Plugin):
+class DataSourceInterface(base.DataSource):
 	name = "interface"
-	description = "Interface Statistics"
+	description = "Interface Statistics Data Source"
+
+	templates = []
 
 	rrd_schema = [
 		"DS:bytes_rx:DERIVE:0:U",

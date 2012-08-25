@@ -25,21 +25,8 @@ import base
 
 from ..i18n import _
 
-class PluginMemory(base.Plugin):
+class GraphTemplateMemory(base.GraphTemplate):
 	name = "memory"
-	description = "Memory Usage Plugin"
-
-	rrd_schema = [
-		"DS:used:GAUGE:120:0:100",
-		"DS:cached:GAUGE:120:0:100",
-		"DS:buffered:GAUGE:120:0:100",
-		"DS:free:GAUGE:120:0:100",
-		"DS:swap:GAUGE:120:0:100",
-		"RRA:AVERAGE:0.5:1:2160",
-		"RRA:AVERAGE:0.5:5:2016",
-		"RRA:AVERAGE:0.5:15:2880",
-		"RRA:AVERAGE:0.5:60:8760",
-	]
 
 	rrd_graph = [
 		"DEF:used=%(file)s:used:AVERAGE",
@@ -88,6 +75,7 @@ class PluginMemory(base.Plugin):
 		"GPRINT:swapmin:%12s\:" % _("Minimum") + " %6.2lf",
 		"GPRINT:swapavg:%12s\:" % _("Average") + " %6.2lf\\n",
 	]
+
 	rrd_graph_args = [
 		"--title", _("Memory Usage"),
 		"--vertical-label", _("Percent"),
@@ -96,6 +84,25 @@ class PluginMemory(base.Plugin):
 		"--upper-limit", "100",
 		"--lower-limit", "0",
 		"--rigid",
+	]
+
+
+class DataSourceMemory(base.DataSource):
+	name = "memory"
+	description = "Memory Usage Data Source"
+
+	templates = [GraphTemplateMemory,]
+
+	rrd_schema = [
+		"DS:used:GAUGE:120:0:100",
+		"DS:cached:GAUGE:120:0:100",
+		"DS:buffered:GAUGE:120:0:100",
+		"DS:free:GAUGE:120:0:100",
+		"DS:swap:GAUGE:120:0:100",
+		"RRA:AVERAGE:0.5:1:2160",
+		"RRA:AVERAGE:0.5:5:2016",
+		"RRA:AVERAGE:0.5:15:2880",
+		"RRA:AVERAGE:0.5:60:8760",
 	]
 
 	@classmethod

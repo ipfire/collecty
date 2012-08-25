@@ -27,10 +27,15 @@ import interface
 import loadavg
 import memory
 
-registered_plugins = [
-	cpu.PluginCPU,
-	entropy.PluginEntropy,
-	interface.PluginInterface,
-	loadavg.PluginLoadAvg,
-	memory.PluginMemory,
+data_sources = [
+	cpu.DataSourceCPU,
+	entropy.DataSourceEntropy,
+	interface.DataSourceInterface,
+	loadavg.DataSourceLoadAvg,
+	memory.DataSourceMemory,
 ]
+
+# Generate graph templates list.
+graph_templates = []
+for ds in data_sources:
+	graph_templates += ds.templates

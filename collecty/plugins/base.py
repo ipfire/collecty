@@ -59,12 +59,16 @@ class Timer(object):
 		return self.elapsed > self.timeout
 
 
-class Plugin(threading.Thread):
+class DataSource(threading.Thread):
 	# The name of this plugin.
 	name = None
 
 	# A description for this plugin.
 	description = None
+
+	# Templates which can be used to generate a graph out of
+	# the data from this data source.
+	templates = []
 
 	# The schema of the RRD database.
 	rrd_schema = None
@@ -73,12 +77,6 @@ class Plugin(threading.Thread):
 	rra_types = ["AVERAGE", "MIN", "MAX"]
 	rra_timespans = [3600, 86400, 604800, 2678400, 31622400]
 	rra_rows = 2880
-
-	# Instructions how to create the graph.
-	rrd_graph = None
-
-	# Extra arguments passed to rrdgraph.
-	rrd_graph_args = []
 
 	# The default interval of this plugin.
 	default_interval = 60
@@ -113,10 +111,7 @@ class Plugin(threading.Thread):
 		self.log.info(_("Successfully initialized (%s).") % self.id)
 	
 	def __repr__(self):
-		return "<Plugin %s>" % self.name
-	
-	def __str__(self):
-		return "Plugin %s %s" % (self.name, self.file)
+		return "<%s %s>" % (self.__class__.__name__, self.id)
 
 	@property
 	def id(self):
@@ -291,9 +286,26 @@ class Plugin(threading.Thread):
 		"""
 		return int(time.time())
 
+
+class GraphTemplate(object):
+	# A unique name to identify this graph template.
+	name = None
+
+	# Instructions how to create the graph.
+	rrd_graph = None
+
+	# Extra arguments passed to rrdgraph.
+	rrd_graph_args = []
+
+	def __init__(self, ds):
+		self.ds = ds
+
+	@property
+	def collecty(self):
+		return self.ds.collecty
+
 	def graph(self, file, interval=None,
 			width=GRAPH_DEFAULT_WIDTH, height=GRAPH_DEFAULT_HEIGHT):
-
 		args = [
 			"--width", "%d" % width,
 			"--height", "%d" % height,
@@ -310,12 +322,12 @@ class Plugin(threading.Thread):
 		}
 
 		args.append("--start")
-		if intervals.has_key(interval):
+		try:
 			args.append(intervals[interval])
-		else:
+		except KeyError:
 			args.append(interval)
 
-		info = { "file" : self.file }
+		info = { "file" : self.ds.file }
 		for item in self.rrd_graph:
 			try:
 				args.append(item % info)
