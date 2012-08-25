@@ -28,4 +28,4 @@ for ds in client.data_sources:
 		t = template(ds)
 
 		for interval in ("-3h", "day", "week", "year"):
-			t.graph("%s-%s.png" % (ds.id, interval), interval)
+			t.graph("graphs/%s-%s-%s.png" % (t.name, ds.id, interval), interval)
