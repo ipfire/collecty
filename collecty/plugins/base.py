@@ -163,9 +163,7 @@ class DataSource(threading.Thread):
 			os.makedirs(dirname)
 
 		# Create argument list.
-		args = [
-			"--step", "%s" % self.default_interval,
-		] + self.get_rrd_schema()
+		args = self.get_rrd_schema()
 
 		rrdtool.create(self.file, *args)
 
