@@ -140,6 +140,10 @@ class DataSource(threading.Thread):
 		return self.interval
 
 	@property
+	def heartbeat(self):
+		return self.stepsize * 2
+
+	@property
 	def file(self):
 		"""
 			The absolute path to the RRD file of this plugin.
@@ -180,7 +184,7 @@ class DataSource(threading.Thread):
 						prefix,
 						name,
 						type,
-						"%s" % self.stepsize,
+						"%s" % self.heartbeat,
 						lower_limit,
 						upper_limit
 					))
