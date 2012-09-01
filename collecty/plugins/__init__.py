@@ -24,6 +24,7 @@ from base import Timer
 import cpu
 import entropy
 import interface
+import latency
 import loadavg
 import memory
 
@@ -31,6 +32,7 @@ data_sources = [
 	cpu.DataSourceCPU,
 	entropy.DataSourceEntropy,
 	interface.DataSourceInterface,
+	latency.DataSourceLatency,
 	loadavg.DataSourceLoadAvg,
 	memory.DataSourceMemory,
 ]
