@@ -253,12 +253,21 @@ class DataSource(threading.Thread):
 		"""
 			This method catches errors from the read() method and logs them.
 		"""
+		start_time = time.time()
+
 		try:
-			return self.read(*args, **kwargs)
+			data = self.read(*args, **kwargs)
+			if data is None:
+				self.log.warning(_("Received empty data."))
+			else:
+				self.data.append("%d:%s" % (start_time, data))
 
 		# Catch any exceptions, so collecty does not crash.
 		except Exception, e:
 			self.log.critical(_("Unhandled exception in read()!"), exc_info=True)
+
+		# Return the elapsed time since _read() has been called.
+		return (time.time() - start_time)
 
 	def _submit(self, *args, **kwargs):
 		"""
@@ -281,7 +290,9 @@ class DataSource(threading.Thread):
 			# Wait until the timer has successfully elapsed.
 			if self.timer.wait():
 				self.log.debug(_("Collecting..."))
-				self._read()
+				delay = self._read()
+
+				self.timer.reset(delay)
 
 		self._submit()
 		self.log.debug(_("Stopped."))
