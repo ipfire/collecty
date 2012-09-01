@@ -110,17 +110,13 @@ class DataSourceCPU(base.DataSource):
 	templates = [GraphTemplateCPU,]
 
 	rrd_schema = [
-		"DS:user:GAUGE:120:0:U",
-		"DS:nice:GAUGE:120:0:U",
-		"DS:sys:GAUGE:120:0:U",
-		"DS:idle:GAUGE:120:0:U",
-		"DS:wait:GAUGE:120:0:U",
-		"DS:irq:GAUGE:120:0:U",
-		"DS:sirq:GAUGE:120:0:U",
-		"RRA:AVERAGE:0.5:1:2160",
-		"RRA:AVERAGE:0.5:5:2016",
-		"RRA:AVERAGE:0.5:15:2880",
-		"RRA:AVERAGE:0.5:60:8760",
+		"DS:user:DERIVE:0:U",
+		"DS:nice:DERIVE:0:U",
+		"DS:sys:DERIVE:0:U",
+		"DS:idle:DERIVE:0:U",
+		"DS:wait:DERIVE:0:U",
+		"DS:irq:DERIVE:0:U",
+		"DS:sirq:DERIVE:0:U",
 	]
 
 	@classmethod

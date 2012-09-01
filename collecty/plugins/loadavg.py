@@ -76,13 +76,9 @@ class DataSourceLoadAvg(base.DataSource):
 	templates = [GraphTemplateLoadAvg,]
 
 	rrd_schema = [
-		"DS:load1:GAUGE:120:0:U",
-		"DS:load5:GAUGE:120:0:U",
-		"DS:load15:GAUGE:120:0:U",
-		"RRA:AVERAGE:0.5:1:2160",
-		"RRA:AVERAGE:0.5:5:2016",
-		"RRA:AVERAGE:0.5:15:2880",
-		"RRA:AVERAGE:0.5:60:8760",
+		"DS:load1:GAUGE:0:U",
+		"DS:load5:GAUGE:0:U",
+		"DS:load15:GAUGE:0:U",
 	]
 
 	@classmethod

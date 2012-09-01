@@ -94,15 +94,11 @@ class DataSourceMemory(base.DataSource):
 	templates = [GraphTemplateMemory,]
 
 	rrd_schema = [
-		"DS:used:GAUGE:120:0:100",
-		"DS:cached:GAUGE:120:0:100",
-		"DS:buffered:GAUGE:120:0:100",
-		"DS:free:GAUGE:120:0:100",
-		"DS:swap:GAUGE:120:0:100",
-		"RRA:AVERAGE:0.5:1:2160",
-		"RRA:AVERAGE:0.5:5:2016",
-		"RRA:AVERAGE:0.5:15:2880",
-		"RRA:AVERAGE:0.5:60:8760",
+		"DS:used:GAUGE:0:100",
+		"DS:cached:GAUGE:0:100",
+		"DS:buffered:GAUGE:0:100",
+		"DS:free:GAUGE:0:100",
+		"DS:swap:GAUGE:0:100",
 	]
 
 	@classmethod

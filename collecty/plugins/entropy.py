@@ -60,11 +60,7 @@ class DataSourceEntropy(base.DataSource):
 	templates = [GraphTemplateEntropy,]
 
 	rrd_schema = [
-		"DS:entropy:GAUGE:120:0:U",
-		"RRA:AVERAGE:0.5:1:2160",
-		"RRA:AVERAGE:0.5:5:2016",
-		"RRA:AVERAGE:0.5:15:2880",
-		"RRA:AVERAGE:0.5:60:8760",
+		"DS:entropy:GAUGE:0:U",
 	]
 
 	@classmethod
