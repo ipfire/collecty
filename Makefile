@@ -19,7 +19,7 @@
 ###############################################################################
 
 PACKAGE_NAME    = collecty
-PACKAGE_VERSION = 0.0.1
+PACKAGE_VERSION = 0.0.2
 
 DESTDIR    =
 PREFIX     = /usr
