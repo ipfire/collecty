@@ -86,8 +86,4 @@ class DataSourceLoadAvg(base.DataSource):
 		return cls(collecty, **kwargs)
 
 	def read(self):
-		data = "%s" % self.now
-		for load in os.getloadavg():
-			data += ":%s" % load
-
-		self.data.append(data)
+		return ":".join(["%.10f" % l for l in os.getloadavg()])

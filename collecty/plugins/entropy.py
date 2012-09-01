@@ -72,11 +72,13 @@ class DataSourceEntropy(base.DataSource):
 		return cls(collecty, **kwargs)
 
 	def read(self):
-		data = "%s" % self.now
+		f = None
 
-		f = open(ENTROPY_FILE)
-		entropy = f.readline()
-		f.close()
+		try:
+			f = open(ENTROPY_FILE)
+			entropy = f.readline()
 
-		data += ":%s" % entropy.strip()
-		self.data.append(data)
+			return entropy.strip()
+		finally:
+			if f:
+				f.close()

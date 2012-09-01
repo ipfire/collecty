@@ -85,21 +85,20 @@ class GraphTemplateCPU(base.GraphTemplate):
 		"GPRINT:sirqmin:%12s\:" % _("Minimum") + " %6.2lf",
 		"GPRINT:sirqavg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-#		"STACK:idle#ffff00:%-15s" % _("Idle"),
-#		"VDEF:idlemin=idle,MINIMUM",
-#		"VDEF:idlemax=idle,MAXIMUM",
-#		"VDEF:idleavg=idle,AVERAGE",
-#		"GPRINT:idlemax:%12s\:" % _("Maximum") + " %6.2lf" ,
-#		"GPRINT:idlemin:%12s\:" % _("Minimum") + " %6.2lf",
-#		"GPRINT:idleavg:%12s\:" % _("Average") + " %6.2lf\\n",
+		"STACK:idle#EFEFEF:%-15s" % _("Idle"),
+		"VDEF:idlemin=idle,MINIMUM",
+		"VDEF:idlemax=idle,MAXIMUM",
+		"VDEF:idleavg=idle,AVERAGE",
+		"GPRINT:idlemax:%12s\:" % _("Maximum") + " %6.2lf" ,
+		"GPRINT:idlemin:%12s\:" % _("Minimum") + " %6.2lf",
+		"GPRINT:idleavg:%12s\:" % _("Average") + " %6.2lf\\n",
 	]
 
 	rrd_graph_args = [
 		"--title", _("CPU usage"),
-		"--vertical-label", _("Percent"),
+		"--vertical-label", _("Jiffies"),
 
-		# This can never be more than 100 percent.
-		#"--lower-limit", "0", "--upper-limit", "100",
+		"--lower-limit", "0", "--rigid",
 	]
 
 
@@ -151,17 +150,7 @@ class DataSourceCPU(base.DataSource):
 					columns[7], # sirq
 				]
 
-				full = sum([int(e) for e in entry])
-
-				for i in range(len(entry)):
-					entry[i] = int(entry[i]) * 100
-					entry[i] = "%s" % (entry[i] / full)
-
-				entry.insert(0, "%s" % self.now)
-
-				self.data.append(":".join(entry))
-				break
-
+				return ":".join(entry)
 		finally:
 			if f:
 				f.close()

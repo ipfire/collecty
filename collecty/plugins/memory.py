@@ -110,8 +110,6 @@ class DataSourceMemory(base.DataSource):
 		f = None
 
 		try:
-			ret = "%s" % self.now
-
 			f = open("/proc/meminfo")
 			for line in f.readlines():
 				if line.startswith("MemTotal:"):
@@ -127,17 +125,19 @@ class DataSourceMemory(base.DataSource):
 				elif line.startswith("SwapFree:"):
 					swapf = float(line.split()[1])
 
-			ret += ":%s" % ((total - (free + buffered + cached)) * 100 / total)
-			ret += ":%s" % (cached * 100 / total)
-			ret += ":%s" % (buffered * 100 / total)
-			ret += ":%s" % (free * 100 / total)
+			ret = [
+				"%s" % ((total - (free + buffered + cached)) * 100 / total),
+				"%s" % (cached * 100 / total),
+				"%s" % (buffered * 100 / total),
+				"%s" % (free * 100 / total),
+			]
 
 			if swapt:
-				ret += ":%s" % ((swapt - swapf) * 100 / swapt)
+				ret.append("%s" % ((swapt - swapf) * 100 / swapt))
 			else:
-				ret += ":0"
+				ret.append("0")
 
-			self.data.append(ret)
+			return ":".join(ret)
 		finally:
 			if f:
 				f.close()

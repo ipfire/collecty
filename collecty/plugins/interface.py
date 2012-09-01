@@ -29,156 +29,172 @@ from ..i18n import _
 
 SYS_CLASS_NET = "/sys/class/net"
 
-class GraphTemplateInterfaceBytes(base.GraphTemplate):
-	name = "interface-bytes"
+COLOUR_RX = "B22222"
+COLOUR_RX_AREA = "%sAA" % COLOUR_RX
+COLOUR_TX = "228B22"
+COLOUR_TX_AREA = "%sAA" % COLOUR_TX
 
-	rrd_graph = [
-		"DEF:bytes_rx=%(file)s:bytes_rx:AVERAGE",
-		"DEF:bytes_tx=%(file)s:bytes_tx:AVERAGE",
+class GraphTemplateInterfaceBits(base.GraphTemplate):
+	name = "interface-bits"
 
-		# Convert everything into bits.
-		"CDEF:bits_rx=bytes_rx,8,*",
-		"CDEF:bits_tx=bytes_tx,8,*",
+	@property
+	def rrd_graph(self):
+		return [
+			"DEF:bytes_rx=%(file)s:bytes_rx:AVERAGE",
+			"DEF:bytes_tx=%(file)s:bytes_tx:AVERAGE",
 
-		# Invert the transmitted bytes to create upside down graph.
-		"CDEF:bits_tx_inv=bits_tx,-1,*",
+			# Convert everything into bits.
+			"CDEF:bits_rx=bytes_rx,8,*",
+			"CDEF:bits_tx=bytes_tx,8,*",
 
-		# Compute the total bandwidth.
-		"CDEF:bits=bits_rx,bits_tx,+",
+			# Compute 95% lines.
+			"VDEF:bits_rx_95p=bits_rx,95,PERCENT",
+			"VDEF:bits_tx_95p=bits_tx,95,PERCENT",
 
-		# Compute 95% line.
-		"VDEF:bits_95p=bits,95,PERCENT",
+			# Draw the received area.
+			"AREA:bits_rx#%s:%-15s" % (COLOUR_RX_AREA, _("Received")),
+			"VDEF:bits_rx_min=bits_rx,MINIMUM",
+			"VDEF:bits_rx_max=bits_rx,MAXIMUM",
+			"VDEF:bits_rx_avg=bits_rx,AVERAGE",
+			"GPRINT:bits_rx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
+			"GPRINT:bits_rx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
+			"GPRINT:bits_rx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
 
-		# Draw the received area.
-		"AREA:bits_rx#228B2277:%-15s" % _("Received"),
-		"VDEF:bits_rx_min=bits_rx,MINIMUM",
-		"VDEF:bits_rx_max=bits_rx,MAXIMUM",
-		"VDEF:bits_rx_avg=bits_rx,AVERAGE",
-		"GPRINT:bits_rx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
-		"GPRINT:bits_rx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
-		"GPRINT:bits_rx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
-		"LINE1:bits_rx#228B22",
+			# Draw the transmitted area.
+			"AREA:bits_tx#%s:%-15s" % (COLOUR_TX_AREA, _("Transmitted")),
+			"VDEF:bits_tx_min=bits_tx,MINIMUM",
+			"VDEF:bits_tx_max=bits_tx,MAXIMUM",
+			"VDEF:bits_tx_avg=bits_tx,AVERAGE",
+			"GPRINT:bits_tx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
+			"GPRINT:bits_tx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
+			"GPRINT:bits_tx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
 
-		# Draw the transmitted area.
-		"AREA:bits_tx_inv#B2222277:%-15s" % _("Transmitted"),
-		"VDEF:bits_tx_min=bits_tx,MINIMUM",
-		"VDEF:bits_tx_max=bits_tx,MAXIMUM",
-		"VDEF:bits_tx_avg=bits_tx,AVERAGE",
-		"GPRINT:bits_tx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
-		"GPRINT:bits_tx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
-		"GPRINT:bits_tx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
-		"LINE1:bits_tx_inv#B22222",
+			# Draw outlines.
+			"LINE1:bits_rx#%s" % COLOUR_RX,
+			"LINE1:bits_tx#%s" % COLOUR_TX,
 
-		# Draw the 95% line.
-		"LINE1:bits_95p#000000:%-15s" % _("95th percentile"),
-		"GPRINT:bits_95p:%s" % _("%8.2lf %sbps") + "\\n",
-	]
+			# Draw the 95% lines.
+			"COMMENT:--- %s ---\\n" % _("95th percentile"),
+			"LINE2:bits_rx_95p#%s:%-15s" % (COLOUR_RX, _("Received")),
+			"GPRINT:bits_rx_95p:%s" % _("%8.2lf %sbps") + "\\n",
+			"LINE2:bits_tx_95p#%s:%-15s" % (COLOUR_TX, _("Transmitted")),
+			"GPRINT:bits_tx_95p:%s" % _("%8.2lf %sbps") + "\\n",
+		]
 
-	rrd_graph_args = [
-		"--title", _("Bandwidth usage on %(interface)s"),
-		"--vertical-label", _("Bit/s"),
-	]
+	@property
+	def rrd_graph_args(self):
+		return [
+			"--title", _("Bandwidth usage on %(interface)s"),
+			"--vertical-label", _("Bit/s"),
+		]
 
 
 class GraphTemplateInterfacePackets(base.GraphTemplate):
 	name = "interface-packets"
 
-	rrd_graph = [
-		"DEF:packets_rx=%(file)s:packets_rx:AVERAGE",
-		"DEF:packets_tx=%(file)s:packets_tx:AVERAGE",
+	@property
+	def rrd_graph(self):
+		return [
+			"DEF:packets_rx=%(file)s:packets_rx:AVERAGE",
+			"DEF:packets_tx=%(file)s:packets_tx:AVERAGE",
 
-		# Invert the transmitted packets to create upside down graph.
-		"CDEF:packets_tx_inv=packets_tx,-1,*",
+			# Draw the received area.
+			"AREA:packets_rx#%s:%-15s" % (COLOUR_RX_AREA, _("Received")),
+			"VDEF:packets_rx_min=packets_rx,MINIMUM",
+			"VDEF:packets_rx_max=packets_rx,MAXIMUM",
+			"VDEF:packets_rx_avg=packets_rx,AVERAGE",
+			"GPRINT:packets_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
+			"GPRINT:packets_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
+			"GPRINT:packets_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
 
-		# Draw the received area.
-		"AREA:packets_rx#228B2277:%-15s" % _("Received"),
-		"VDEF:packets_rx_min=packets_rx,MINIMUM",
-		"VDEF:packets_rx_max=packets_rx,MAXIMUM",
-		"VDEF:packets_rx_avg=packets_rx,AVERAGE",
-		"GPRINT:packets_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-		"GPRINT:packets_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-		"GPRINT:packets_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-		"LINE1:packets_rx#228B22",
+			# Draw the transmitted area.
+			"AREA:packets_tx#%s:%-15s" % (COLOUR_TX_AREA, _("Transmitted")),
+			"VDEF:packets_tx_min=packets_tx,MINIMUM",
+			"VDEF:packets_tx_max=packets_tx,MAXIMUM",
+			"VDEF:packets_tx_avg=packets_tx,AVERAGE",
+			"GPRINT:packets_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
+			"GPRINT:packets_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
+			"GPRINT:packets_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
 
-		# Draw the transmitted area.
-		"AREA:packets_tx_inv#B2222277:%-15s" % _("Transmitted"),
-		"VDEF:packets_tx_min=packets_tx,MINIMUM",
-		"VDEF:packets_tx_max=packets_tx,MAXIMUM",
-		"VDEF:packets_tx_avg=packets_tx,AVERAGE",
-		"GPRINT:packets_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-		"GPRINT:packets_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-		"GPRINT:packets_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-		"LINE1:packets_tx_inv#B22222",
-	]
+			# Draw outlines of the areas on top.
+			"LINE1:packets_rx#%s" % COLOUR_RX,
+			"LINE1:packets_tx#%s" % COLOUR_TX,
+		]
 
-	rrd_graph_args = [
-		"--title", _("Transferred packets on %(interface)s"),
-		"--vertical-label", _("Packets/s"),
-	]
+	@property
+	def rrd_graph_args(self):
+		return [
+			"--title", _("Transferred packets on %(interface)s"),
+			"--vertical-label", _("Packets/s"),
+		]
 
 
 class GraphTemplateInterfaceErrors(base.GraphTemplate):
 	name = "interface-errors"
 
-	rrd_graph = [
-		"DEF:errors_rx=%(file)s:errors_rx:AVERAGE",
-		"DEF:errors_tx=%(file)s:errors_tx:AVERAGE",
-		"DEF:dropped_rx=%(file)s:dropped_rx:AVERAGE",
-		"DEF:dropped_tx=%(file)s:dropped_tx:AVERAGE",
-		"DEF:collisions=%(file)s:collisions:AVERAGE",
+	@property
+	def rrd_graph(self):
+		return [
+			"DEF:errors_rx=%(file)s:errors_rx:AVERAGE",
+			"DEF:errors_tx=%(file)s:errors_tx:AVERAGE",
+			"DEF:dropped_rx=%(file)s:dropped_rx:AVERAGE",
+			"DEF:dropped_tx=%(file)s:dropped_tx:AVERAGE",
+			"DEF:collisions=%(file)s:collisions:AVERAGE",
 
-		# Invert the transmitted packets to create upside down graph.
-		"CDEF:errors_tx_inv=errors_tx,-1,*",
-		"CDEF:dropped_tx_inv=dropped_tx,-1,*",
+			# Invert the transmitted packets to create upside down graph.
+			"CDEF:errors_tx_inv=errors_tx,-1,*",
+			"CDEF:dropped_tx_inv=dropped_tx,-1,*",
 
-		# Draw the receive errors.
-		"AREA:errors_rx#228B2277:%-15s" % _("Receive errors"),
-		"VDEF:errors_rx_min=errors_rx,MINIMUM",
-		"VDEF:errors_rx_max=errors_rx,MAXIMUM",
-		"VDEF:errors_rx_avg=errors_rx,AVERAGE",
-		"GPRINT:errors_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-		"GPRINT:errors_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-		"GPRINT:errors_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-		"LINE1:errors_rx#228B22",
+			# Draw the receive errors.
+			"AREA:errors_rx#228B2277:%-15s" % _("Receive errors"),
+			"VDEF:errors_rx_min=errors_rx,MINIMUM",
+			"VDEF:errors_rx_max=errors_rx,MAXIMUM",
+			"VDEF:errors_rx_avg=errors_rx,AVERAGE",
+			"GPRINT:errors_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
+			"GPRINT:errors_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
+			"GPRINT:errors_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"LINE1:errors_rx#228B22",
 
-		# Draw the transmit errors.
-		"AREA:errors_tx_inv#B2222277:%-15s" % _("Transmit errors"),
-		"VDEF:errors_tx_min=errors_tx,MINIMUM",
-		"VDEF:errors_tx_max=errors_tx,MAXIMUM",
-		"VDEF:errors_tx_avg=errors_tx,AVERAGE",
-		"GPRINT:errors_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-		"GPRINT:errors_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-		"GPRINT:errors_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-		"LINE1:errors_tx_inv#B22222",
+			# Draw the transmit errors.
+			"AREA:errors_tx_inv#B2222277:%-15s" % _("Transmit errors"),
+			"VDEF:errors_tx_min=errors_tx,MINIMUM",
+			"VDEF:errors_tx_max=errors_tx,MAXIMUM",
+			"VDEF:errors_tx_avg=errors_tx,AVERAGE",
+			"GPRINT:errors_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
+			"GPRINT:errors_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
+			"GPRINT:errors_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"LINE1:errors_tx_inv#B22222",
 
-		# Draw the receive drops.
-		"LINE2:dropped_rx#228B22:%-15s" % _("Receive drops"),
-		"VDEF:dropped_rx_min=dropped_rx,MINIMUM",
-		"VDEF:dropped_rx_max=dropped_rx,MAXIMUM",
-		"VDEF:dropped_rx_avg=dropped_rx,AVERAGE",
-		"GPRINT:dropped_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-		"GPRINT:dropped_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-		"GPRINT:dropped_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-		"LINE1:dropped_rx#228B22",
+			# Draw the receive drops.
+			"LINE2:dropped_rx#228B22:%-15s" % _("Receive drops"),
+			"VDEF:dropped_rx_min=dropped_rx,MINIMUM",
+			"VDEF:dropped_rx_max=dropped_rx,MAXIMUM",
+			"VDEF:dropped_rx_avg=dropped_rx,AVERAGE",
+			"GPRINT:dropped_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
+			"GPRINT:dropped_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
+			"GPRINT:dropped_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"LINE1:dropped_rx#228B22",
 
-		# Draw the transmit drops.
-		"LINE2:dropped_tx#B22222:%-15s" % _("Transmit drops"),
-		"VDEF:dropped_tx_min=dropped_tx,MINIMUM",
-		"VDEF:dropped_tx_max=dropped_tx,MAXIMUM",
-		"VDEF:dropped_tx_avg=dropped_tx,AVERAGE",
-		"GPRINT:dropped_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-		"GPRINT:dropped_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-		"GPRINT:dropped_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-		"LINE1:dropped_tx#B22222",
+			# Draw the transmit drops.
+			"LINE2:dropped_tx#B22222:%-15s" % _("Transmit drops"),
+			"VDEF:dropped_tx_min=dropped_tx,MINIMUM",
+			"VDEF:dropped_tx_max=dropped_tx,MAXIMUM",
+			"VDEF:dropped_tx_avg=dropped_tx,AVERAGE",
+			"GPRINT:dropped_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
+			"GPRINT:dropped_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
+			"GPRINT:dropped_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"LINE1:dropped_tx#B22222",
 
-		# Draw the collisions as a line.
-		"LINE3:collisions#8B0000:%-15s" % _("Collisions") + "\\n",
-	]
+			# Draw the collisions as a line.
+			"LINE3:collisions#8B0000:%-15s" % _("Collisions") + "\\n",
+		]
 
-	rrd_graph_args = [
-		"--title", _("Errors/dropped packets on %(interface)s"),
-		"--vertical-label", _("Packets/s"),
-	]
+	@property
+	def rrd_graph_args(self):
+		return [
+			"--title", _("Errors/dropped packets on %(interface)s"),
+			"--vertical-label", _("Packets/s"),
+		]
 
 
 class DataSourceInterface(base.DataSource):
@@ -186,7 +202,7 @@ class DataSourceInterface(base.DataSource):
 	description = "Interface Statistics Data Source"
 
 	templates = [
-		GraphTemplateInterfaceBytes,
+		GraphTemplateInterfaceBits,
 		GraphTemplateInterfacePackets,
 		GraphTemplateInterfaceErrors,
 	]
@@ -211,6 +227,10 @@ class DataSourceInterface(base.DataSource):
 
 		instances = []
 		for interface in os.listdir(SYS_CLASS_NET):
+			# Skip some unwanted interfaces.
+			if interface == "lo" or interface.startswith("mon."):
+				continue
+
 			path = os.path.join(SYS_CLASS_NET, interface)
 			if not os.path.isdir(path):
 				continue
@@ -228,6 +248,14 @@ class DataSourceInterface(base.DataSource):
 		return "-".join((self.name, self.interface))
 
 	def read(self):
+		interface_path = os.path.join(SYS_CLASS_NET, self.interface)
+
+		# Check if the interface exists.
+		if not os.path.exists(interface_path):
+			self.log.debug(_("Interface %s does not exists. Cannot collect.") \
+				% self.interface)
+			return
+
 		files = (
 			"rx_bytes", "tx_bytes",
 			"collisions",
@@ -236,18 +264,25 @@ class DataSourceInterface(base.DataSource):
 			"multicast",
 			"rx_packets", "tx_packets",
 		)
-		ret = ["%s" % self.now,]
+		ret = []
 
 		for file in files:
-			path = os.path.join(SYS_CLASS_NET, self.interface, "statistics", file)
+			path = os.path.join(interface_path, "statistics", file)
 
 			# Open file and read it's content.
-			f = open(path)
+			f = None
+			try:
+				f = open(path)
 
-			line = f.readline()
-			line = line.strip()
-			ret.append(line)
+				line = f.readline()
+				line = line.strip()
+				ret.append(line)
+			except:
+				ret.append("0")
+				raise
 
-			f.close()
+			finally:
+				if f:
+					f.close()
 
-		self.data.append(":".join(ret))
+		return ":".join(ret)

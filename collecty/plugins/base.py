@@ -305,13 +305,6 @@ class DataSource(threading.Thread):
 		if self.timer:
 			self.timer.cancel()
 
-	@property
-	def now(self):
-		"""
-			Returns the current timestamp in the UNIX timestamp format (UTC).
-		"""
-		return int(time.time())
-
 
 class GraphTemplate(object):
 	# A unique name to identify this graph template.
