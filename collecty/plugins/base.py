@@ -170,6 +170,8 @@ class DataSource(threading.Thread):
 		rrdtool.create(self.file, *args)
 
 		self.log.debug(_("Created RRD file %s.") % self.file)
+		for arg in args:
+			self.log.debug("  %s" % arg)
 
 	def get_rrd_schema(self):
 		schema = [
@@ -239,6 +241,13 @@ class DataSource(threading.Thread):
 			return
 
 		self.log.debug(_("Submitting data to database. %d entries.") % len(self.data))
+		for data in self.data:
+			self.log.debug("  %s" % data)
+
+		# Create the RRD files (if they don't exist yet or
+		# have vanished for some reason).
+		self.create()
+
 		rrdtool.update(self.file, *self.data)
 		self.data = []
 
