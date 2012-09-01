@@ -2,7 +2,7 @@
 Description=collecty - A system data collecting daemon
 
 [Service]
-ExecStart=/usr/bin/collectyd
+ExecStart=/usr/sbin/collectyd
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]

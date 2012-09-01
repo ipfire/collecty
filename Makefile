@@ -24,6 +24,7 @@ PACKAGE_VERSION = 0.0.2
 DESTDIR    =
 PREFIX     = /usr
 BINDIR     = $(PREFIX)/bin
+SBINDIR    = $(PREFIX)/sbin
 LOCALEDIR  = $(PREFIX)/share/locale
 UNITDIR    = $(PREFIX)/lib/systemd/system
 
@@ -55,7 +56,9 @@ dist:
 install: $(MO_FILES)
 	-mkdir -pv $(PYTHON_DIR)
 	cp -rvf collecty $(PYTHON_DIR)
-	install -v -m 755 collectyd $(DESTDIR)$(BINDIR)
+
+	-mkdir -pv $(DESTDIR)$(SBINDIR)
+	install -v -m 755 collectyd $(DESTDIR)$(SBINDIR)
 
 	# Install configuration
 	-mkdir -pv $(DESTDIR)/etc/$(PACKAGE_NAME)
