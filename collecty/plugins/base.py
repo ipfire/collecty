@@ -36,18 +36,22 @@ class Timer(object):
 		self.timeout = timeout
 		self.heartbeat = heartbeat
 
+		self.delay = 0
+
 		self.reset()
 
-	def reset(self):
+	def reset(self, delay=0):
 		# Save start time.
 		self.start = time.time()
+
+		self.delay = delay
 
 		# Has this timer been killed?
 		self.killed = False
 
 	@property
 	def elapsed(self):
-		return time.time() - self.start
+		return time.time() - self.start - self.delay
 
 	def cancel(self):
 		self.killed = True
