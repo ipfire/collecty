@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The IPFire Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-08 08:55+0000\n"
-"PO-Revision-Date: 2012-08-08 09:32+0000\n"
+"POT-Creation-Date: 2012-08-25 11:22+0000\n"
+"PO-Revision-Date: 2012-09-01 18:33+0000\n"
 "Last-Translator: Michael Tremer <michael.tremer@ipfire.org>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/ipfire/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -18,166 +18,202 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: collecty/__init__.py:61
+#. Brand all generated graphs.
+#: collecty/constants.py:44
+msgid "Created by collecty"
+msgstr "Erstellt mit collecty"
+
+#: collecty/daemon.py:49
 msgid "Collecty successfully initialized."
 msgstr "Collectly wurde erfolgreich gestartet."
 
-#: collecty/__init__.py:75
+#: collecty/daemon.py:63
 #, python-format
 msgid "Plugin '%(name)s' registered %(number)s instance(s)."
 msgstr "Das Plugin '%(name)s' hat %(number)s Instanz(en) registriert."
 
-#: collecty/__init__.py:120
+#: collecty/daemon.py:108
 #, python-format
 msgid "%s is not alive anymore. Removing."
 msgstr "%s ist nicht mehr aktiv. Entferne."
 
-#: collecty/__init__.py:126
+#: collecty/daemon.py:114
 msgid "No thread running. Exiting main thread."
 msgstr "Es läuft kein Thread mehr. Beende Hauptthread."
 
-#: collecty/__init__.py:132
+#: collecty/daemon.py:120
 msgid "Submitting all data in memory"
 msgstr "Speichere alle im Speicher befindliche Daten"
 
-#: collecty/__init__.py:140
+#: collecty/daemon.py:128
 msgid "Received shutdown signal"
 msgstr "Empfange Signal zum herunterfahren"
 
-#: collecty/__init__.py:152
+#: collecty/daemon.py:140
 #, python-format
 msgid "Registering signal %d"
 msgstr "Registriere Signal %d"
 
-#: collecty/__init__.py:157
+#: collecty/daemon.py:145
 #, python-format
 msgid "Caught signal %d"
 msgstr "Empfange Signal %d"
 
-#: collecty/plugins/base.py:99
+#: collecty/plugins/base.py:105
 msgid "Successfully initialized."
 msgstr "Erfolgreich initialisiert."
 
-#: collecty/plugins/base.py:139
+#: collecty/plugins/base.py:152
 #, python-format
 msgid "Created RRD file %s."
 msgstr "RRD-Datei %s erstellt."
 
-#: collecty/plugins/base.py:166
+#: collecty/plugins/base.py:179
 #, python-format
 msgid "Submitting data to database. %d entries."
 msgstr "Speichere Daten in Datenbank. %d Einträge."
 
-#: collecty/plugins/base.py:179
+#: collecty/plugins/base.py:192
 msgid "Unhandled exception in read()!"
 msgstr "Unbehandelte Ausnahme in read()!"
 
-#: collecty/plugins/base.py:190
+#: collecty/plugins/base.py:203
 msgid "Unhandled exception in submit()!"
 msgstr "Unbehandelte Ausnahme in submit()!"
 
-#: collecty/plugins/base.py:193
+#: collecty/plugins/base.py:206
 msgid "Started."
 msgstr "Gestartet."
 
-#: collecty/plugins/base.py:201
+#: collecty/plugins/base.py:214
 msgid "Collecting..."
 msgstr "Sammle..."
 
-#: collecty/plugins/base.py:205
+#: collecty/plugins/base.py:218
 msgid "Stopped."
 msgstr "Gestoppt."
 
-#: collecty/plugins/base.py:208
+#: collecty/plugins/base.py:221
 msgid "Received shutdown signal."
 msgstr "Empfange Signal zum herunterfahren."
 
-#: collecty/plugins/cpu.py:52
+#: collecty/plugins/cpu.py:55
 msgid "User"
 msgstr "Benutzer"
 
-#: collecty/plugins/cpu.py:56 collecty/plugins/cpu.py:63
-#: collecty/plugins/cpu.py:70 collecty/plugins/cpu.py:77
-#: collecty/plugins/cpu.py:84 collecty/plugins/cpu.py:91
-#: collecty/plugins/loadavg.py:49 collecty/plugins/loadavg.py:56
-#: collecty/plugins/loadavg.py:63 collecty/plugins/memory.py:53
-#: collecty/plugins/memory.py:60 collecty/plugins/memory.py:67
-#: collecty/plugins/memory.py:74 collecty/plugins/memory.py:81
+#: collecty/plugins/cpu.py:59 collecty/plugins/cpu.py:67
+#: collecty/plugins/cpu.py:75 collecty/plugins/cpu.py:83
+#: collecty/plugins/cpu.py:91 collecty/plugins/cpu.py:99
+#: collecty/plugins/entropy.py:50 collecty/plugins/loadavg.py:51
+#: collecty/plugins/loadavg.py:59 collecty/plugins/loadavg.py:67
+#: collecty/plugins/memory.py:55 collecty/plugins/memory.py:63
+#: collecty/plugins/memory.py:71 collecty/plugins/memory.py:87
 msgid "Maximum"
 msgstr "Maximum"
 
-#: collecty/plugins/cpu.py:57 collecty/plugins/cpu.py:64
-#: collecty/plugins/cpu.py:71 collecty/plugins/cpu.py:78
-#: collecty/plugins/cpu.py:85 collecty/plugins/cpu.py:92
-#: collecty/plugins/loadavg.py:50 collecty/plugins/loadavg.py:57
-#: collecty/plugins/loadavg.py:64 collecty/plugins/memory.py:54
-#: collecty/plugins/memory.py:61 collecty/plugins/memory.py:68
-#: collecty/plugins/memory.py:75 collecty/plugins/memory.py:82
+#: collecty/plugins/cpu.py:60 collecty/plugins/cpu.py:68
+#: collecty/plugins/cpu.py:76 collecty/plugins/cpu.py:84
+#: collecty/plugins/cpu.py:92 collecty/plugins/cpu.py:100
+#: collecty/plugins/entropy.py:51 collecty/plugins/loadavg.py:52
+#: collecty/plugins/loadavg.py:60 collecty/plugins/loadavg.py:68
+#: collecty/plugins/memory.py:56 collecty/plugins/memory.py:64
+#: collecty/plugins/memory.py:72 collecty/plugins/memory.py:88
 msgid "Minimum"
 msgstr "Minimum"
 
-#: collecty/plugins/cpu.py:58 collecty/plugins/cpu.py:65
-#: collecty/plugins/cpu.py:72 collecty/plugins/cpu.py:79
-#: collecty/plugins/cpu.py:86 collecty/plugins/cpu.py:93
-#: collecty/plugins/loadavg.py:51 collecty/plugins/loadavg.py:58
-#: collecty/plugins/loadavg.py:65 collecty/plugins/memory.py:55
-#: collecty/plugins/memory.py:62 collecty/plugins/memory.py:69
-#: collecty/plugins/memory.py:76 collecty/plugins/memory.py:83
+#: collecty/plugins/cpu.py:61 collecty/plugins/cpu.py:69
+#: collecty/plugins/cpu.py:77 collecty/plugins/cpu.py:85
+#: collecty/plugins/cpu.py:93 collecty/plugins/cpu.py:101
+#: collecty/plugins/entropy.py:52 collecty/plugins/loadavg.py:53
+#: collecty/plugins/loadavg.py:61 collecty/plugins/loadavg.py:69
+#: collecty/plugins/memory.py:57 collecty/plugins/memory.py:65
+#: collecty/plugins/memory.py:73 collecty/plugins/memory.py:89
 msgid "Average"
 msgstr "Durchschnitt"
 
-#: collecty/plugins/cpu.py:59
+#: collecty/plugins/cpu.py:63
 msgid "Nice"
 msgstr "Nice"
 
-#: collecty/plugins/cpu.py:66
+#: collecty/plugins/cpu.py:71
 msgid "System"
 msgstr "System"
 
-#: collecty/plugins/cpu.py:73
+#: collecty/plugins/cpu.py:79
 msgid "Wait"
 msgstr "Wait"
 
-#: collecty/plugins/cpu.py:80
+#: collecty/plugins/cpu.py:87
 msgid "Interrupt"
 msgstr "Interrupt"
 
-#: collecty/plugins/cpu.py:87
-msgid "Idle"
-msgstr "Idle"
+#: collecty/plugins/cpu.py:95
+msgid "Soft interrupt"
+msgstr "Soft-Interrupt"
 
-#: collecty/plugins/entropy.py:43
+#: collecty/plugins/cpu.py:113
+msgid "CPU usage"
+msgstr "CPU-Auslastung"
+
+#: collecty/plugins/cpu.py:114 collecty/plugins/memory.py:93
+msgid "Percent"
+msgstr "Prozent"
+
+#: collecty/plugins/entropy.py:46 collecty/plugins/entropy.py:57
+msgid "Available entropy"
+msgstr "Verfügbar Entropie"
+
+#: collecty/plugins/entropy.py:58
+msgid "Bits"
+msgstr "Bits"
+
+#: collecty/plugins/entropy.py:66
 msgid "Entropy kernel interface does not exist."
 msgstr "Das Entropie-Kernel-Interface existsiert nicht."
 
-#: collecty/plugins/loadavg.py:45
+#: collecty/plugins/loadavg.py:47
 msgid "Load average  1m"
 msgstr "Load average  1m"
 
-#: collecty/plugins/loadavg.py:52
+#: collecty/plugins/loadavg.py:55
 msgid "Load average  5m"
 msgstr "Load average  5m"
 
-#: collecty/plugins/loadavg.py:59
+#: collecty/plugins/loadavg.py:63
 msgid "Load average 15m"
 msgstr "Load average 15m"
 
-#: collecty/plugins/memory.py:49
+#: collecty/plugins/loadavg.py:75
+msgid "Load average"
+msgstr "Load-Average"
+
+#: collecty/plugins/loadavg.py:76
+msgid "Load"
+msgstr "Load"
+
+#: collecty/plugins/memory.py:51
 msgid "Used memory"
 msgstr "Belegter Speicher"
 
-#: collecty/plugins/memory.py:56
-msgid "Cached data"
-msgstr "Gecachte Daten"
-
-#: collecty/plugins/memory.py:63
+#: collecty/plugins/memory.py:59
 msgid "Buffered data"
 msgstr "Zwischengepufferte Daten"
 
-#: collecty/plugins/memory.py:70
-msgid "Free memory"
-msgstr "Freier Speicher"
+#: collecty/plugins/memory.py:67
+msgid "Cached data"
+msgstr "Gecachte Daten"
 
-#: collecty/plugins/memory.py:77
+#. "STACK:free#7799ff:%-15s" % _("Free memory"),
+#. "VDEF:freemin=free,MINIMUM",
+#. "VDEF:freemax=free,MAXIMUM",
+#. "VDEF:freeavg=free,AVERAGE",
+#. "GPRINT:freemax:%12s\:" % _("Maximum") + " %6.2lf" ,
+#. "GPRINT:freemin:%12s\:" % _("Minimum") + " %6.2lf",
+#. "GPRINT:freeavg:%12s\:" % _("Average") + " %6.2lf\\n",
+#: collecty/plugins/memory.py:83
 msgid "Used Swap space"
 msgstr "Benutze Auslagerung"
+
+#: collecty/plugins/memory.py:92
+msgid "Memory Usage"
+msgstr "Speicher-Auslastung"
