@@ -2,7 +2,7 @@
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
-# Copyright (C) 2012 IPFire development team                                  #
+# Copyright (C) 2015 IPFire development team                                  #
 #                                                                             #
 # This program is free software: you can redistribute it and/or modify        #
 # it under the terms of the GNU General Public License as published by        #
@@ -19,8 +19,23 @@
 #                                                                             #
 ###############################################################################
 
-# Initialize logging.
-import logger
+import logging
 
-from client import CollectyClient
-from daemon import Collecty
+# Initialize logging.
+log = logging.getLogger("collecty")
+log.propagate = False
+
+# The default log level is INFO
+log.setLevel(logging.INFO)
+
+# We try using the native journald log handler. If that is unavailable,
+# we dump everything on the console
+try:
+	import journal
+	handler = journal.JournalHandler()
+
+except ImportError:
+	handler = logging.StreamHandler()
+
+handler.setLevel(logging.DEBUG)
+log.addHandler(handler)

@@ -71,6 +71,7 @@ collecty_PYTHON = \
 	src/collecty/daemon.py \
 	src/collecty/errors.py \
 	src/collecty/i18n.py \
+	src/collecty/logger.py \
 	src/collecty/ping.py
 
 collectydir = $(pythondir)/collecty

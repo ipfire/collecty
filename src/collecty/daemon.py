@@ -34,6 +34,10 @@ class Collecty(object):
 	SUBMIT_INTERVAL = 300
 
 	def __init__(self, debug=False):
+		# Enable debug logging when running in debug mode
+		if debug:
+			log.setLevel(logging.DEBUG)
+
 		self.data_sources = []
 
 		# Indicates whether this process should be running or not.
