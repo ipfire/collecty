@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS/DTD DocBook XML V4.2//EN"
+	"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<refentry id="collectyd">
+	<refentryinfo>
+		<title>collectyd</title>
+		<productname>collectyd</productname>
+
+		<authorgroup>
+			<author>
+				<contrib>Developer</contrib>
+				<firstname>Michael</firstname>
+				<surname>Tremer</surname>
+				<email>michael.tremer@ipfire.org</email>
+			</author>
+		</authorgroup>
+	</refentryinfo>
+
+	<refmeta>
+		<refentrytitle>collectyd</refentrytitle>
+		<manvolnum>1</manvolnum>
+	</refmeta>
+
+	<refnamediv>
+		<refname>collectyd</refname>
+		<refpurpose>Statistics collection daemon</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<cmdsynopsis>
+			<command>collectyd</command>
+			<arg choice="opt" rep="repeat">OPTIONS</arg>
+			<arg choice="plain">COMMAND</arg>
+		</cmdsynopsis>
+	</refsynopsisdiv>
+
+	<refsect1>
+		<title>Description</title>
+
+		<para>
+			<command>collectyd</command> is a simple and extensible
+			framework for collecting system statistics of IPFire systems.
+		</para>
+	</refsect1>
+
+	<refsect1>
+		<title>Options</title>
+
+		<para>
+			The following options are understood:
+		</para>
+
+		<variablelist>
+			<varlistentry>
+				<term>
+					<option>-d</option>
+				</term>
+				<term>
+					<option>--debug</option>
+				</term>
+
+				<listitem>
+					<para>
+						Enables the debugging output.
+					</para>
+				</listitem>
+			</varlistentry>
+
+			<varlistentry>
+				<term>
+					<option>-h</option>
+				</term>
+				<term>
+					<option>--help</option>
+				</term>
+
+				<listitem>
+					<para>
+						Shows the help message provided by the program and exit.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</refsect1>
+
+	<refsect1>
+		<title>Exit Codes</title>
+
+		<para>
+			<command>collectyd</command> will normally exit with code 0.
+			If there has been a problem and the daemon cannot recover from that
+			it will exit with an exit code unequal to zero.
+		</para>
+	</refsect1>
+
+	<refsect1>
+		<title>Bugs</title>
+
+		<para>
+			Please report all bugs to the official bugtracker at
+			http://bugs.ipfire.org/.
+		</para>
+	</refsect1>
+</refentry>
