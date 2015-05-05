@@ -21,8 +21,6 @@
 
 import signal
 
-import ConfigParser as configparser
-
 import plugins
 
 from constants import *
@@ -36,7 +34,6 @@ class Collecty(object):
 	SUBMIT_INTERVAL = 300
 
 	def __init__(self, debug=False):
-		self.config = configparser.ConfigParser()
 		self.data_sources = []
 
 		# Indicates whether this process should be running or not.
@@ -64,29 +61,6 @@ class Collecty(object):
 				{ "name" : data_source.name, "number" : len(ret) })
 
 			self.data_sources += ret
-
-	def read_config(self, config):
-		self.config.read(config)
-		
-		for section in self.config.sections():
-			try:
-				data_source = self.config.get(section, "data_source")
-				data_source = plugins.find(data_source)
-			except configparser.NoOptionError:
-				raise ConfigError, "Syntax error in configuration: plugin option is missing."
-			except:
-				raise Exception, "Plugin configuration error: Maybe plugin wasn't found? %s" % data_source
-
-			kwargs = {}
-			for (key, value) in self.config.items(section):
-				if key == "plugin":
-					continue
-
-			kwargs[key] = value
-			kwargs["file"] = section
-
-			ds = data_source(self, **kwargs)
-			self.data_sources.append(ds)
 
 	def run(self):
 		# Register signal handlers.
