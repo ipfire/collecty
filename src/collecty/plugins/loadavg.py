@@ -69,7 +69,7 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 	]
 
 
-class DataSourceLoadAvg(base.DataSource):
+class LoadAvgPlugin(base.Plugin):
 	name = "loadavg"
 	description = "Load Average Data Source"
 

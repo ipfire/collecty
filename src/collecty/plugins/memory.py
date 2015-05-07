@@ -87,7 +87,7 @@ class GraphTemplateMemory(base.GraphTemplate):
 	]
 
 
-class DataSourceMemory(base.DataSource):
+class MemoryPlugin(base.Plugin):
 	name = "memory"
 	description = "Memory Usage Data Source"
 

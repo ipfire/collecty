@@ -19,25 +19,12 @@
 #                                                                             #
 ###############################################################################
 
-from base import Timer
+from base import Timer, get
 
+import base
 import cpu
 import entropy
 import interface
 import latency
 import loadavg
 import memory
-
-data_sources = [
-	cpu.DataSourceCPU,
-	entropy.DataSourceEntropy,
-	interface.DataSourceInterface,
-	latency.DataSourceLatency,
-	loadavg.DataSourceLoadAvg,
-	memory.DataSourceMemory,
-]
-
-# Generate graph templates list.
-graph_templates = []
-for ds in data_sources:
-	graph_templates += ds.templates

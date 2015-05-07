@@ -197,7 +197,7 @@ class GraphTemplateInterfaceErrors(base.GraphTemplate):
 		]
 
 
-class DataSourceInterface(base.DataSource):
+class InterfacePlugin(base.Plugin):
 	name = "interface"
 	description = "Interface Statistics Data Source"
 

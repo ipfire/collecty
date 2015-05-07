@@ -102,7 +102,7 @@ class GraphTemplateCPU(base.GraphTemplate):
 	]
 
 
-class DataSourceCPU(base.DataSource):
+class ProcessorPlugin(base.Plugin):
 	name = "cpu"
 	description = "CPU Usage Data Source"
 

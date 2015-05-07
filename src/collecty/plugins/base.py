@@ -31,6 +31,14 @@ import time
 from ..constants import *
 from ..i18n import _
 
+_plugins = {}
+
+def get():
+	"""
+		Returns a list with all automatically registered plugins.
+	"""
+	return _plugins.values()
+
 class Timer(object):
 	def __init__(self, timeout, heartbeat=1):
 		self.timeout = timeout
@@ -63,7 +71,7 @@ class Timer(object):
 		return self.elapsed > self.timeout
 
 
-class DataSource(threading.Thread):
+class Plugin(threading.Thread):
 	# The name of this plugin.
 	name = None
 
@@ -84,6 +92,22 @@ class DataSource(threading.Thread):
 
 	# The default interval of this plugin.
 	default_interval = 60
+
+	# Automatically register all providers.
+	class __metaclass__(type):
+		def __init__(plugin, name, bases, dict):
+			type.__init__(plugin, name, bases, dict)
+
+			# The main class from which is inherited is not registered
+			# as a plugin.
+			if name == "Plugin":
+				return
+
+			if not all((plugin.name, plugin.description)):
+				raise RuntimeError(_("Plugin is not properly configured: %s") \
+					% plugin)
+
+			_plugins[plugin.name] = plugin
 
 	def __init__(self, collecty, **kwargs):
 		threading.Thread.__init__(self, name=self.description)

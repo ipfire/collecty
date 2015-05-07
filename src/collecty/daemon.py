@@ -38,41 +38,37 @@ class Collecty(object):
 		if debug:
 			log.setLevel(logging.DEBUG)
 
-		self.data_sources = []
+		self.plugins = []
 
 		# Indicates whether this process should be running or not.
 		self.running = True
 		self.timer = plugins.Timer(self.SUBMIT_INTERVAL, heartbeat=2)
 
-		# Add all automatic data sources.
-		self.add_autocreate_data_sources()
+		# Add all plugins
+		for plugin in plugins.get():
+			self.add_plugin(plugin)
 
-		log.info(_("Collecty successfully initialized."))
+		log.info(_("Collecty successfully initialized with %s plugins") \
+			% len(self.plugins))
 
-	def add_autocreate_data_sources(self):
-		for data_source in plugins.data_sources:
-			if not hasattr(data_source, "autocreate"):
-				continue
+	def add_plugin(self, plugin_class):
+		# Try initialising a new plugin. If that fails, we will log the
+		# error and try to go on.
+		try:
+			plugin = plugin_class(self)
+		except:
+			log.critical(_("Plugin %s could not be initialised") % plugin_class, exc_info=True)
+			return
 
-			ret = data_source.autocreate(self)
-			if not ret:
-				continue
-
-			if not type(ret) == type([]):
-				ret = [ret,]
-
-			log.debug(_("Data source '%(name)s' registered %(number)s instance(s).") % \
-				{ "name" : data_source.name, "number" : len(ret) })
-
-			self.data_sources += ret
+		self.plugins.append(plugin)
 
 	def run(self):
 		# Register signal handlers.
 		self.register_signal_handler()
 
 		# Start all data source threads.
-		for ds in self.data_sources:
-			ds.start()
+		for p in self.plugins:
+			p.start()
 
 		# Regularly submit all data to disk.
 		while self.running:
@@ -80,11 +76,11 @@ class Collecty(object):
 				self.submit_all()
 
 		# Wait until all instances are finished.
-		while self.data_sources:
-			for ds in self.data_sources[:]:
-				if not ds.isAlive():
-					log.debug(_("%s is not alive anymore. Removing.") % ds)
-					self.data_sources.remove(ds)
+		while self.plugins:
+			for p in self.plugins[:]:
+				if not p.isAlive():
+					log.debug(_("%s is not alive anymore. Removing.") % p)
+					self.plugins.remove(p)
 
 			# Wait a bit.
 			time.sleep(0.1)
@@ -96,8 +92,8 @@ class Collecty(object):
 			Submit all data right now.
 		"""
 		log.debug(_("Submitting all data in memory"))
-		for ds in self.data_sources:
-			ds._submit()
+		for p in self.plugins:
+			p._submit()
 
 		# Schedule the next submit.
 		self.timer.reset()
@@ -110,8 +106,8 @@ class Collecty(object):
 			self.timer.cancel()
 
 		# Propagating shutdown to all threads.
-		for ds in self.data_sources:
-			ds.shutdown()
+		for p in self.plugins:
+			p.shutdown()
 
 	def register_signal_handler(self):
 		for s in (signal.SIGTERM, signal.SIGINT, signal.SIGUSR1):

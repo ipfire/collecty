@@ -53,7 +53,7 @@ class GraphTemplateEntropy(base.GraphTemplate):
 	]
 
 
-class DataSourceEntropy(base.DataSource):
+class EntropyPlugin(base.Plugin):
 	name = "entropy"
 	description = "Entropy Data Source"
 

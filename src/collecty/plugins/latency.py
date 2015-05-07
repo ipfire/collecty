@@ -82,7 +82,7 @@ class GraphTemplateLatency(base.GraphTemplate):
 		]
 
 
-class DataSourceLatency(base.DataSource):
+class LatencyPlugin(base.Plugin):
 	name = "latency"
 	description = "Latency (ICMP ping) Data Source"
 
