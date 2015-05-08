@@ -102,12 +102,7 @@ class GraphTemplateCPU(base.GraphTemplate):
 	]
 
 
-class ProcessorPlugin(base.Plugin):
-	name = "cpu"
-	description = "CPU Usage Data Source"
-
-	templates = [GraphTemplateCPU,]
-
+class ProcessorObject(base.Object):
 	rrd_schema = [
 		"DS:user:DERIVE:0:U",
 		"DS:nice:DERIVE:0:U",
@@ -118,12 +113,11 @@ class ProcessorPlugin(base.Plugin):
 		"DS:sirq:DERIVE:0:U",
 	]
 
-	@classmethod
-	def autocreate(cls, collecty, **kwargs):
-		# Every system has got at least one CPU.
-		return cls(collecty, **kwargs)
+	@property
+	def id(self):
+		return "default"
 
-	def read(self):
+	def collect(self):
 		"""
 			Reads the CPU usage.
 		"""
@@ -154,3 +148,16 @@ class ProcessorPlugin(base.Plugin):
 		finally:
 			if f:
 				f.close()
+
+
+class ProcessorPlugin(base.Plugin):
+	name = "processor"
+	description = "Processor Usage Plugin"
+
+	templates = [GraphTemplateCPU,]
+
+	interval = 30
+
+	@property
+	def objects(self):
+		yield ProcessorObject(self)

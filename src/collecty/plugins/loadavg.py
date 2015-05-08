@@ -69,21 +69,29 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 	]
 
 
-class LoadAvgPlugin(base.Plugin):
-	name = "loadavg"
-	description = "Load Average Data Source"
-
-	templates = [GraphTemplateLoadAvg,]
-
+class LoadAvgObject(base.Object):
 	rrd_schema = [
 		"DS:load1:GAUGE:0:U",
 		"DS:load5:GAUGE:0:U",
 		"DS:load15:GAUGE:0:U",
 	]
 
-	@classmethod
-	def autocreate(cls, collecty, **kwargs):
-		return cls(collecty, **kwargs)
+	@property
+	def id(self):
+		return "default"
 
-	def read(self):
+	def collect(self):
 		return ":".join(["%.10f" % l for l in os.getloadavg()])
+
+
+class LoadAvgPlugin(base.Plugin):
+	name = "loadavg"
+	description = "Load Average Plugin"
+
+	templates = [GraphTemplateLoadAvg,]
+
+	interval = 30
+
+	@property
+	def objects(self):
+		return [LoadAvgObject(self)]

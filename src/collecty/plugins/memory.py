@@ -87,12 +87,7 @@ class GraphTemplateMemory(base.GraphTemplate):
 	]
 
 
-class MemoryPlugin(base.Plugin):
-	name = "memory"
-	description = "Memory Usage Data Source"
-
-	templates = [GraphTemplateMemory,]
-
+class MemoryObject(base.Object):
 	rrd_schema = [
 		"DS:used:GAUGE:0:100",
 		"DS:cached:GAUGE:0:100",
@@ -101,12 +96,11 @@ class MemoryPlugin(base.Plugin):
 		"DS:swap:GAUGE:0:100",
 	]
 
-	@classmethod
-	def autocreate(cls, collecty, **kwargs):
-		# Every system has got memory.
-		return cls(collecty, **kwargs)
+	@property
+	def id(self):
+		return "default"
 
-	def read(self):
+	def collect(self):
 		f = None
 
 		try:
@@ -141,3 +135,14 @@ class MemoryPlugin(base.Plugin):
 		finally:
 			if f:
 				f.close()
+
+
+class MemoryPlugin(base.Plugin):
+	name = "memory"
+	description = "Memory Usage Plugin"
+
+	templates = [GraphTemplateMemory,]
+
+	@property
+	def objects(self):
+		yield MemoryObject(self)

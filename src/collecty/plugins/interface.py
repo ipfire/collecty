@@ -197,16 +197,7 @@ class GraphTemplateInterfaceErrors(base.GraphTemplate):
 		]
 
 
-class InterfacePlugin(base.Plugin):
-	name = "interface"
-	description = "Interface Statistics Data Source"
-
-	templates = [
-		GraphTemplateInterfaceBits,
-		GraphTemplateInterfacePackets,
-		GraphTemplateInterfaceErrors,
-	]
-
+class InterfaceObject(base.Object):
 	rrd_schema = [
 		"DS:bytes_rx:DERIVE:0:U",
 		"DS:bytes_tx:DERIVE:0:U",
@@ -220,34 +211,17 @@ class InterfacePlugin(base.Plugin):
 		"DS:packets_tx:DERIVE:0:U",
 	]
 
-	@classmethod
-	def autocreate(cls, collecty, **kwargs):
-		if not os.path.exists(SYS_CLASS_NET):
-			return
+	def __repr__(self):
+		return "<%s %s>" % (self.__class__.__name__, self.interface)
 
-		instances = []
-		for interface in os.listdir(SYS_CLASS_NET):
-			# Skip some unwanted interfaces.
-			if interface == "lo" or interface.startswith("mon."):
-				continue
-
-			path = os.path.join(SYS_CLASS_NET, interface)
-			if not os.path.isdir(path):
-				continue
-
-			instance = cls(collecty, interface=interface)
-			instances.append(instance)
-
-		return instances
-
-	def init(self, **kwargs):
-		self.interface = kwargs.get("interface")
+	def init(self, interface):
+		self.interface = interface
 
 	@property
 	def id(self):
-		return "-".join((self.name, self.interface))
+		return self.interface
 
-	def read(self):
+	def collect(self):
 		interface_path = os.path.join(SYS_CLASS_NET, self.interface)
 
 		# Check if the interface exists.
@@ -286,3 +260,33 @@ class InterfacePlugin(base.Plugin):
 					f.close()
 
 		return ":".join(ret)
+
+
+class InterfacePlugin(base.Plugin):
+	name = "interface"
+	description = "Interface Statistics Plugin"
+
+	templates = [
+		GraphTemplateInterfaceBits,
+		GraphTemplateInterfacePackets,
+		GraphTemplateInterfaceErrors,
+	]
+
+	interval = 20
+
+	def get_interfaces(self):
+		for interface in os.listdir(SYS_CLASS_NET):
+			# Skip some unwanted interfaces.
+			if interface == "lo" or interface.startswith("mon."):
+				continue
+
+			path = os.path.join(SYS_CLASS_NET, interface)
+			if not os.path.isdir(path):
+				continue
+
+			yield interface
+
+	@property
+	def objects(self):
+		for interface in self.get_interfaces():
+			yield InterfaceObject(self, interface=interface)

@@ -82,48 +82,33 @@ class GraphTemplateLatency(base.GraphTemplate):
 		]
 
 
-class LatencyPlugin(base.Plugin):
-	name = "latency"
-	description = "Latency (ICMP ping) Data Source"
-
-	templates = [GraphTemplateLatency,]
-
+class LatencyObject(base.Object):
 	rrd_schema = [
 		"DS:latency:GAUGE:0:U",
 		"DS:latency_loss:GAUGE:0:100",
 		"DS:latency_stddev:GAUGE:0:U",
 	]
 
+	def __repr__(self):
+		return "<%s %s>" % (self.__class__.__name__, self.hostname)
+
+	def init(self, hostname, deadline=None):
+		self.hostname = hostname
+		self.deadline = deadline
+
 	@property
 	def id(self):
-		return "-".join((self.name, self.host))
+		return self.hostname
 
-	@classmethod
-	def autocreate(cls, collecty, **kwargs):
-		ret = []
-		for host in PING_HOSTS:
-			ds = cls(collecty, host=host, **kwargs)
-			ret.append(ds)
-
-		return ret
-
-	def init(self, **kwargs):
-		self.host = kwargs.get("host")
-		assert self.host
-
-	@property
-	def deadline(self):
-		return self.interval - 10
-
-	def read(self):
+	def collect(self):
 		# Send up to five ICMP echo requests.
 		try:
-			ping = collecty.ping.Ping(destination=self.host, timeout=20000)
+			ping = collecty.ping.Ping(destination=self.hostname, timeout=20000)
 			ping.run(count=5, deadline=self.deadline)
 	
 		except collecty.ping.PingError, e:
 			self.log.warning(_("Could not run latency check for %(host)s: %(msg)s") \
-				% { "host" : self.host, "msg" : e.msg })
+				% { "host" : self.hostname, "msg" : e.msg })
 			return
 
 		return ":".join((
@@ -131,3 +116,19 @@ class LatencyPlugin(base.Plugin):
 			"%.10f" % ping.loss,
 			"%.10f" % ping.stddev,
 		))
+
+
+class LatencyPlugin(base.Plugin):
+	name = "latency"
+	description = "Latency (ICMP ping) Plugin"
+
+	templates = [GraphTemplateLatency,]
+
+	interval = 60
+
+	@property
+	def objects(self):
+		deadline = self.interval / len(PING_HOSTS)
+
+		for hostname in PING_HOSTS:
+			yield LatencyObject(self, hostname, deadline=deadline)

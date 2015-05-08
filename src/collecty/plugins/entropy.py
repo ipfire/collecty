@@ -53,32 +53,30 @@ class GraphTemplateEntropy(base.GraphTemplate):
 	]
 
 
-class EntropyPlugin(base.Plugin):
-	name = "entropy"
-	description = "Entropy Data Source"
-
-	templates = [GraphTemplateEntropy,]
-
+class EntropyObject(base.Object):
 	rrd_schema = [
 		"DS:entropy:GAUGE:0:U",
 	]
 
-	@classmethod
-	def autocreate(cls, collecty, **kwargs):
+	@property
+	def id(self):
+		return "default"
+
+	def collect(self):
+		with open(ENTROPY_FILE) as f:
+			return f.readline().strip()
+
+
+class EntropyPlugin(base.Plugin):
+	name = "entropy"
+	description = "Entropy Plugin"
+
+	templates = [GraphTemplateEntropy,]
+
+	@property
+	def objects(self):
 		if not os.path.exists(ENTROPY_FILE):
-			self.log.debug(_("Entropy kernel interface does not exist."))
-			return
+			self.log.debug(_("Entropy kernel interface does not exist"))
+			return []
 
-		return cls(collecty, **kwargs)
-
-	def read(self):
-		f = None
-
-		try:
-			f = open(ENTROPY_FILE)
-			entropy = f.readline()
-
-			return entropy.strip()
-		finally:
-			if f:
-				f.close()
+		return [EntropyObject(self)]
