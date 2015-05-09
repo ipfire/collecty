@@ -78,6 +78,7 @@ collectydir = $(pythondir)/collecty
 
 collectyplugins_PYTHON = \
 	src/collecty/plugins/base.py \
+	src/collecty/plugins/conntrack.py \
 	src/collecty/plugins/cpu.py \
 	src/collecty/plugins/entropy.py \
 	src/collecty/plugins/__init__.py \

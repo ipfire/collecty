@@ -22,6 +22,7 @@
 from base import Timer, get
 
 import base
+import conntrack
 import cpu
 import entropy
 import interface
