@@ -182,6 +182,9 @@ class ConntrackProtocolWithStatesObject(ConntrackObject):
 		ConntrackObject.init(self, conntrack_table)
 		self.protocol = protocol
 
+	def __repr__(self):
+		return "<%s %s>" % (self.__class__.__name__, self.protocol)
+
 	@property
 	def states(self):
 		return ConntrackTable._stateful_layer4_protocols.get(self.protocol)
