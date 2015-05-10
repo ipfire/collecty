@@ -2,20 +2,10 @@ TODO LIST
 
 	Things we have to do in order of importance.
 
-	* Asynchronously write data to RRDs. (Data is written when collected ATM.)
 	* Fix signal handling.
 		* Exit all threads on SIGTERM (Call shutdown method).
-	* Fork daemon on startup.
 	* Improve RRD format (choice of steps, etc.)
 
-	* Better error handling of mistakes in the config file.
-
 	* Write more plugins.
-		* CPU Usage (almost done).
-		* Load Average (almost done).
-		* Memory Usage (almost done).
 		* Disk space (with standby).
-		* Network usage:
-			Bridge (AREA) plus slave interfaces in the same graph (LINE).
-
-		* (QoS - very expensive work.)
+		* QoS
