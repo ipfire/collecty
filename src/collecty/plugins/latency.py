@@ -105,7 +105,7 @@ class LatencyObject(base.Object):
 		try:
 			ping = collecty.ping.Ping(destination=self.hostname, timeout=20000)
 			ping.run(count=5, deadline=self.deadline)
-	
+
 		except collecty.ping.PingError, e:
 			self.log.warning(_("Could not run latency check for %(host)s: %(msg)s") \
 				% { "host" : self.hostname, "msg" : e.msg })
@@ -122,7 +122,7 @@ class LatencyPlugin(base.Plugin):
 	name = "latency"
 	description = "Latency (ICMP ping) Plugin"
 
-	templates = [GraphTemplateLatency,]
+	templates = [GraphTemplateLatency]
 
 	interval = 60
 

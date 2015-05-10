@@ -19,28 +19,92 @@
 #                                                                             #
 ###############################################################################
 
-import daemon
+import argparse
+import dbus
+import sys
+
+from constants import *
+from i18n import _
 
 import logging
 log = logging.getLogger("collectly.client")
 
 class CollectyClient(object):
-	def __init__(self, **settings):
-		self.collecty = daemon.Collecty(**settings)
+	def __init__(self):
+		self.bus = dbus.SystemBus()
 
-	@property
-	def data_sources(self):
-		return self.collecty.data_sources
+		self.proxy = self.bus.get_object(BUS_DOMAIN, "/GraphGenerator")
 
-	def get_data_source_by_id(self, id):
-		for ds in self.data_sources:
-			if not ds.id == id:
-				continue
+	def list_templates(self):
+		templates = self.proxy.ListTemplates()
 
-			return ds
+		return ["%s" % t for t in templates]
 
-	def graph(self, id, filename, interval=None, **kwargs):
-		ds = self.get_data_source_by_id(id)
-		assert ds, "Could not find data source: %s" % id
+	def list_templates_cli(self, ns):
+		templates = self.list_templates()
 
-		ds.graph(filename, interval=interval, **kwargs)
+		for t in sorted(templates):
+			print t
+
+	def generate_graph(self, template_name, **kwargs):
+		byte_array = self.proxy.GenerateGraph(template_name, kwargs,
+			signature="sa{sv}")
+
+		# Convert the byte array into a byte string again
+		if byte_array:
+			return "".join((chr(b) for b in byte_array))
+
+	def generate_graph_cli(self, ns):
+		kwargs = {
+			"object_id" : ns.object,
+		}
+
+		if ns.height or ns.width:
+			kwargs.update({
+				"height" : ns.height or 0,
+				"width"  : ns.width or 0,
+			})
+
+		if ns.interval:
+			kwargs["interval"] = ns.interval
+
+		# Generate the graph image
+		graph = self.generate_graph(ns.template, **kwargs)
+
+		# Write file to disk
+		with open(ns.filename, "wb") as f:
+			f.write(graph)
+
+	def parse_cli(self, args):
+		parser = argparse.ArgumentParser(prog="collecty-client")
+		subparsers = parser.add_subparsers(help="sub-command help")
+
+		# generate-graph
+		parser_generate_graph = subparsers.add_parser("generate-graph",
+			help=_("Generate a graph image"))
+		parser_generate_graph.set_defaults(func=self.generate_graph_cli)
+		parser_generate_graph.add_argument("--filename",
+			help=_("filename"), required=True)
+		parser_generate_graph.add_argument("--interval", help=_("interval"))
+		parser_generate_graph.add_argument("--object",
+			help=_("Object identifier"), default="default")
+		parser_generate_graph.add_argument("--template",
+			help=_("The graph template identifier"), required=True)
+
+		# Dimensions
+		parser_generate_graph.add_argument("--height", type=int, default=0,
+			help=_("Height of the generated image"))
+		parser_generate_graph.add_argument("--width", type=int, default=0,
+			help=_("Width of the generated image"))
+
+		# list-templates
+		parser_list_templates = subparsers.add_parser("list-templates",
+			help=_("Lists all graph templates"))
+		parser_list_templates.set_defaults(func=self.list_templates_cli)
+
+		return parser.parse_args(args)
+
+	def run_cli(self, args=None):
+		args = self.parse_cli(args or sys.argv[1:])
+
+		return args.func(args)

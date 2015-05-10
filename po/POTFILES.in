@@ -1,3 +1,4 @@
+src/collecty/bus.py
 src/collecty/client.py
 src/collecty/constants.py
 src/collecty/daemon.py

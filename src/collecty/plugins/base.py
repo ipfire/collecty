@@ -26,6 +26,7 @@ import logging
 import math
 import os
 import rrdtool
+import tempfile
 import threading
 import time
 
@@ -196,6 +197,35 @@ class Plugin(threading.Thread):
 		if self.timer:
 			self.timer.cancel()
 
+	def get_object(self, id):
+		for object in self.objects:
+			if not object.id == id:
+				continue
+
+			return object
+
+	def get_template(self, template_name):
+		for template in self.templates:
+			if not template.name == template_name:
+				continue
+
+			return template(self)
+
+	def generate_graph(self, template_name, object_id="default", **kwargs):
+		template = self.get_template(template_name)
+		if not template:
+			raise RuntimeError("Could not find template %s" % template_name)
+
+		time_start = time.time()
+
+		graph = template.generate_graph(object_id=object_id, **kwargs)
+
+		duration = time.time() - time_start
+		self.log.info(_("Generated graph %s in %.1fms") \
+			% (template, duration * 1000))
+
+		return graph
+
 
 class Object(object):
 	# The schema of the RRD database.
@@ -354,41 +384,89 @@ class GraphTemplate(object):
 	# Extra arguments passed to rrdgraph.
 	rrd_graph_args = []
 
-	def __init__(self, ds):
-		self.ds = ds
+	intervals = {
+		None   : "-3h",
+		"hour" : "-1h",
+		"day"  : "-25h",
+		"week" : "-360h",
+		"year" : "-365d",
+	}
+
+	# Default dimensions for this graph
+	height = GRAPH_DEFAULT_HEIGHT
+	width  = GRAPH_DEFAULT_WIDTH
+
+	def __init__(self, plugin):
+		self.plugin = plugin
+
+	def __repr__(self):
+		return "<%s>" % self.__class__.__name__
 
 	@property
 	def collecty(self):
-		return self.ds.collecty
+		return self.plugin.collecty
 
-	def graph(self, file, interval=None,
-			width=GRAPH_DEFAULT_WIDTH, height=GRAPH_DEFAULT_HEIGHT):
-		args = [
-			"--width", "%d" % width,
-			"--height", "%d" % height,
+	@property
+	def log(self):
+		return self.plugin.log
+
+	def _make_command_line(self, interval, width=None, height=None):
+		args = []
+
+		args += GRAPH_DEFAULT_ARGUMENTS
+
+		args += [
+			"--height", "%s" % (height or self.height),
+			"--width", "%s" % (width or self.width),
 		]
-		args += self.collecty.graph_default_arguments
+
 		args += self.rrd_graph_args
 
-		intervals = {
-			None   : "-3h",
-			"hour" : "-1h",
-			"day"  : "-25h",
-			"week" : "-360h",
-			"year" : "-365d",
+		# Add interval
+		args.append("--start")
+
+		try:
+			args.append(self.intervals[interval])
+		except KeyError:
+			args.append(str(interval))
+
+		return args
+
+	def get_object_table(self, object_id):
+		return {
+			"file" : self.plugin.get_object(object_id),
 		}
 
-		args.append("--start")
-		try:
-			args.append(intervals[interval])
-		except KeyError:
-			args.append(interval)
+	def get_object_files(self, object_id):
+		files = {}
 
-		info = { "file" : self.ds.file }
+		for id, obj in self.get_object_table(object_id).items():
+			files[id] = obj.file
+
+		return files
+
+	def generate_graph(self, object_id, interval=None, **kwargs):
+		args = self._make_command_line(interval, **kwargs)
+
+		self.log.info(_("Generating graph %s") % self)
+		self.log.debug("  args: %s" % args)
+
+		object_files = self.get_object_files(object_id)
+
 		for item in self.rrd_graph:
 			try:
-				args.append(item % info)
+				args.append(item % object_files)
 			except TypeError:
 				args.append(item)
 
-		rrdtool.graph(file, *args)
+		return self.write_graph(*args)
+
+	def write_graph(self, *args):
+		with tempfile.NamedTemporaryFile() as f:
+			rrdtool.graph(f.name, *args)
+
+			# Get back to the beginning of the file
+			f.seek(0)
+
+			# Return all the content
+			return f.read()

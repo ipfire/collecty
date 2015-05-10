@@ -141,7 +141,7 @@ class MemoryPlugin(base.Plugin):
 	name = "memory"
 	description = "Memory Usage Plugin"
 
-	templates = [GraphTemplateMemory,]
+	templates = [GraphTemplateMemory]
 
 	@property
 	def objects(self):

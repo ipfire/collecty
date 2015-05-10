@@ -211,8 +211,11 @@ class Ping(object):
 
 		try:
 			return socket.gethostbyname(host)
-		except PingResolvError:
-			raise PingResolveError
+		except socket.gaierror as e:
+			if e.errno == -3:
+				raise PingResolveError
+
+			raise
 
 	def _is_valid_ipv4_address(self, addr):
 		"""

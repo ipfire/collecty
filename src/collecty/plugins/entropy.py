@@ -71,7 +71,7 @@ class EntropyPlugin(base.Plugin):
 	name = "entropy"
 	description = "Entropy Plugin"
 
-	templates = [GraphTemplateEntropy,]
+	templates = [GraphTemplateEntropy]
 
 	@property
 	def objects(self):

@@ -88,7 +88,7 @@ class LoadAvgPlugin(base.Plugin):
 	name = "loadavg"
 	description = "Load Average Plugin"
 
-	templates = [GraphTemplateLoadAvg,]
+	templates = [GraphTemplateLoadAvg]
 
 	interval = 30
 

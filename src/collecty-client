@@ -19,13 +19,7 @@
 #                                                                             #
 ###############################################################################
 
-import collecty
+import collecty.client
 
-client = collecty.CollectyClient()
-
-for ds in client.data_sources:
-	for template in ds.templates:
-		t = template(ds)
-
-		for interval in ("-3h", "day", "week", "year"):
-			t.graph("graphs/%s-%s-%s.png" % (t.name, ds.id, interval), interval)
+client = collecty.client.CollectyClient()
+client.run_cli()

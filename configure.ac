@@ -76,6 +76,18 @@ AC_ARG_WITH([systemd],
 	AS_HELP_STRING([--with-systemd], [Enable systemd support.])
 )
 
+AC_ARG_WITH([dbuspolicydir],
+	AS_HELP_STRING([--with-dbuspolicydir=DIR], [D-Bus policy directory]),
+	[],
+	[with_dbuspolicydir=${sysconfdir}/dbus-1/system.d]
+)
+
+AC_ARG_WITH([dbussystemservicedir],
+	AS_HELP_STRING([--with-dbussystemservicedir=DIR], [D-Bus system service directory]),
+	[],
+	[with_dbussystemservicedir=${datadir}/dbus-1/system-services]
+)
+
 AS_IF([test "x$with_systemd" != "xno"],
       [PKG_CHECK_MODULES(systemd, [libsystemd-daemon],
       [have_systemd=yes], [have_systemd=no])],
@@ -104,6 +116,9 @@ AS_IF([test "x$have_systemd" = "xyes"],
 
 AM_CONDITIONAL(HAVE_SYSTEMD, [test "x$have_systemd" = "xyes"])
 
+AC_SUBST([dbuspolicydir], [$with_dbuspolicydir])
+AC_SUBST([dbussystemservicedir], [$with_dbussystemservicedir])
+
 # ------------------------------------------------------------------------------
 
 AC_CONFIG_FILES([
@@ -116,6 +131,8 @@ AC_MSG_RESULT([
 	${PACKAGE_NAME} ${VERSION}
 
 	prefix:			${prefix}
+	D-Bus policy dir:	${with_dbuspolicydir}
+	D-Bus system dir:	${with_dbussystemservicedir}
 
 	Systemd support		${have_systemd}
 	Generate man-pages:	${have_manpages}

@@ -25,6 +25,7 @@ import signal
 import threading
 import time
 
+import bus
 import plugins
 
 from constants import *
@@ -55,6 +56,10 @@ class Collecty(object):
 		# will be written to disk later.
 		self.write_queue = WriteQueue(self, self.SUBMIT_INTERVAL)
 
+		# Create a thread that connects to dbus and processes requests we
+		# get from there.
+		self.bus = bus.Bus(self)
+
 		# Add all plugins
 		for plugin in plugins.get():
 			self.add_plugin(plugin)
@@ -73,9 +78,18 @@ class Collecty(object):
 
 		self.plugins.append(plugin)
 
+	@property
+	def templates(self):
+		for plugin in self.plugins:
+			for template in plugin.templates:
+				yield template
+
 	def run(self):
 		# Register signal handlers.
 		self.register_signal_handler()
+
+		# Start the bus
+		self.bus.start()
 
 		# Start all data source threads.
 		for p in self.plugins:
@@ -95,6 +109,9 @@ class Collecty(object):
 		# Wait until all plugins are finished.
 		for p in self.plugins:
 			p.join()
+
+		# Stop the bus thread
+		self.bus.shutdown()
 
 		# Write all collected data to disk before ending the main thread
 		self.write_queue.shutdown()
@@ -129,9 +146,19 @@ class Collecty(object):
 			# Commit all data.
 			self.write_queue.commit()
 
-	@property
-	def graph_default_arguments(self):
-		return GRAPH_DEFAULT_ARGUMENTS
+	def get_plugin_from_template(self, template_name):
+		for plugin in self.plugins:
+			if not template_name in [t.name for t in plugin.templates]:
+				continue
+
+			return plugin
+
+	def generate_graph(self, template_name, *args, **kwargs):
+		plugin = self.get_plugin_from_template(template_name)
+		if not plugin:
+			raise RuntimeError("Could not find template %s" % template_name)
+
+		return plugin.generate_graph(template_name, *args, **kwargs)
 
 
 class WriteQueue(threading.Thread):

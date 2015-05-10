@@ -23,7 +23,9 @@ from i18n import _
 
 DATABASE_DIR = "/var/lib/collecty"
 
-GRAPH_DEFAULT_ARGUMENTS = [
+BUS_DOMAIN = "org.ipfire.collecty1"
+
+GRAPH_DEFAULT_ARGUMENTS = (
 	# Always generate graphs in PNG format.
 	"--imgformat", "PNG",
 
@@ -42,7 +44,7 @@ GRAPH_DEFAULT_ARGUMENTS = [
 
 	# Brand all generated graphs.
 	"--watermark", _("Created by collecty"),
-]
+)
 
 GRAPH_DEFAULT_WIDTH = 768
 GRAPH_DEFAULT_HEIGHT = 480

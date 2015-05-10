@@ -1,0 +1,6 @@
+[Unit]
+Description=Collecty Service Bus Name
+
+[BusName]
+Service=collecty.service
+AllowWorld=talk

@@ -32,6 +32,10 @@ SUBDIRS = . po
 
 pythondir  = $(pyexecdir)
 
+# Dirs of external packages
+dbuspolicydir=@dbuspolicydir@
+dbussystemservicedir=@dbussystemservicedir@
+
 CLEANFILES =
 DISTCLEANFILES =
 EXTRA_DIST =
@@ -45,6 +49,8 @@ update-po:
 	$(MAKE) -C po update-po
 
 DISTCHECK_CONFIGURE_FLAGS = \
+	--with-dbuspolicydir=$$dc_install_base/$(dbuspolicydir) \
+	--with-dbussystemservicedir=$$dc_install_base/$(dbussystemservicedir) \
 	--with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
 # ------------------------------------------------------------------------------
@@ -66,6 +72,7 @@ dist_bin_SCRIPTS = \
 
 collecty_PYTHON = \
 	src/collecty/__init__.py \
+	src/collecty/bus.py \
 	src/collecty/client.py \
 	src/collecty/constants.py \
 	src/collecty/daemon.py \
@@ -88,6 +95,24 @@ collectyplugins_PYTHON = \
 	src/collecty/plugins/memory.py
 
 collectypluginsdir = $(collectydir)/plugins
+
+dist_dbuspolicy_DATA = \
+	src/dbus/org.ipfire.collecty1.conf
+
+dist_dbussystemservice_DATA = \
+	src/dbus/org.ipfire.collecty1.service
+
+systemdsystemunit_DATA = \
+	src/systemd/collecty.service
+
+dist_systemdsystemunit_DATA = \
+	src/systemd/org.ipfire.collecty1.busname
+
+EXTRA_DIST += \
+	src/systemd/collecty.service.in
+
+CLEANFILES += \
+	src/systemd/collecty.service
 
 # ------------------------------------------------------------------------------
 
@@ -139,22 +164,6 @@ man/%.html: man/%.xml man/custom-html.xsl
 	$(XSLTPROC_COMMAND_HTML)
 
 endif
-
-# ------------------------------------------------------------------------------
-
-if HAVE_SYSTEMD
-systemdsystemunit_DATA = \
-	src/systemd/collecty.service
-
-CLEANFILES += \
-	$(systemdsystemunit_DATA)
-
-INSTALL_DIRS += \
-	$(systemdsystemunitdir)
-endif
-
-EXTRA_DIST += \
-	src/systemd/collecty.service.in
 
 # ------------------------------------------------------------------------------
 

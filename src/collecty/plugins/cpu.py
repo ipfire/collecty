@@ -25,8 +25,8 @@ import base
 
 from ..i18n import _
 
-class GraphTemplateCPU(base.GraphTemplate):
-	name = "cpu"
+class GraphTemplateProcessor(base.GraphTemplate):
+	name = "processor"
 
 	rrd_graph = [
 		"DEF:user=%(file)s:user:AVERAGE",
@@ -154,7 +154,7 @@ class ProcessorPlugin(base.Plugin):
 	name = "processor"
 	description = "Processor Usage Plugin"
 
-	templates = [GraphTemplateCPU,]
+	templates = [GraphTemplateProcessor]
 
 	interval = 30
 

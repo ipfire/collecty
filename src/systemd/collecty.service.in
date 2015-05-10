@@ -2,8 +2,10 @@
 Description=collecty - A system data collecting daemon
 
 [Service]
+Type=dbus
 ExecStart=@bindir@/collectyd
 ExecReload=/bin/kill -HUP $MAINPID
+BusName=org.ipfire.collecty1
 
 [Install]
 WantedBy=multi-user.target
