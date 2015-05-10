@@ -21,6 +21,3 @@
 
 class CollectyError(Exception):
 	pass
-
-class ConfigError(CollectyError):
-	pass
