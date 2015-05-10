@@ -56,6 +56,7 @@ class CollectyClient(object):
 
 	def generate_graph_cli(self, ns):
 		kwargs = {
+			"format"    : ns.format,
 			"object_id" : ns.object,
 		}
 
@@ -85,6 +86,8 @@ class CollectyClient(object):
 		parser_generate_graph.set_defaults(func=self.generate_graph_cli)
 		parser_generate_graph.add_argument("--filename",
 			help=_("filename"), required=True)
+		parser_generate_graph.add_argument("--format",
+			help=_("image format"), default=DEFAULT_IMAGE_FORMAT)
 		parser_generate_graph.add_argument("--interval", help=_("interval"))
 		parser_generate_graph.add_argument("--object",
 			help=_("Object identifier"), default="default")

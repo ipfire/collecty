@@ -410,12 +410,14 @@ class GraphTemplate(object):
 	def log(self):
 		return self.plugin.log
 
-	def _make_command_line(self, interval, width=None, height=None):
+	def _make_command_line(self, interval, format=DEFAULT_IMAGE_FORMAT,
+			width=None, height=None):
 		args = []
 
 		args += GRAPH_DEFAULT_ARGUMENTS
 
 		args += [
+			"--imgformat", format,
 			"--height", "%s" % (height or self.height),
 			"--width", "%s" % (width or self.width),
 		]
@@ -462,6 +464,9 @@ class GraphTemplate(object):
 		return self.write_graph(*args)
 
 	def write_graph(self, *args):
+		# Convert all arguments to string
+		args = [str(e) for e in args]
+
 		with tempfile.NamedTemporaryFile() as f:
 			rrdtool.graph(f.name, *args)
 

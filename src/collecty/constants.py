@@ -25,10 +25,9 @@ DATABASE_DIR = "/var/lib/collecty"
 
 BUS_DOMAIN = "org.ipfire.collecty1"
 
-GRAPH_DEFAULT_ARGUMENTS = (
-	# Always generate graphs in PNG format.
-	"--imgformat", "PNG",
+DEFAULT_IMAGE_FORMAT = "SVG"
 
+GRAPH_DEFAULT_ARGUMENTS = (
 	# Disable the border around the image.
 	"--border", "0",
 
