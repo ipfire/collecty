@@ -126,7 +126,7 @@ class Plugin(threading.Thread):
 		self.running = True
 		self.timer = Timer(self.interval)
 
-		self.log.info(_("Successfully initialized %s") % self.__class__.__name__)
+		self.log.debug(_("Successfully initialized %s") % self.__class__.__name__)
 
 	@property
 	def path(self):
@@ -221,7 +221,7 @@ class Plugin(threading.Thread):
 		graph = template.generate_graph(object_id=object_id, **kwargs)
 
 		duration = time.time() - time_start
-		self.log.info(_("Generated graph %s in %.1fms") \
+		self.log.debug(_("Generated graph %s in %.1fms") \
 			% (template, duration * 1000))
 
 		return graph

@@ -64,7 +64,7 @@ class Collecty(object):
 		for plugin in plugins.get():
 			self.add_plugin(plugin)
 
-		log.info(_("Collecty successfully initialized with %s plugins") \
+		log.debug(_("Collecty successfully initialized with %s plugins") \
 			% len(self.plugins))
 
 	def add_plugin(self, plugin_class):
@@ -122,7 +122,7 @@ class Collecty(object):
 		if not self.running:
 			return
 
-		log.debug(_("Received shutdown signal"))
+		log.info(_("Received shutdown signal"))
 		self.running = False
 
 		# Propagating shutdown to all threads.
@@ -169,7 +169,6 @@ class WriteQueue(threading.Thread):
 		self.collecty = collecty
 
 		self.log = logging.getLogger("collecty.queue")
-		self.log.setLevel(logging.DEBUG)
 		self.log.propagate = 1
 
 		self.timer = plugins.Timer(submit_interval)
@@ -235,12 +234,11 @@ class WriteQueue(threading.Thread):
 		self.log.debug(_("Emptied write queue in %.2fs") % duration)
 
 	def _commit_file(self, filename, results):
-		self.log.debug(_("Committing %(counter)s entries to %(filename)s:") \
+		self.log.debug(_("Committing %(counter)s entries to %(filename)s") \
 			% { "counter" : len(results), "filename" : filename })
 
-		if self.collecty.debug:
-			for result in results:
-				self.log.debug("  %s: %s" % (result.time, result.data))
+		for result in results:
+			self.log.debug("  %s: %s" % (result.time, result.data))
 
 		rrdtool.update(filename, *["%s" % r for r in results])
 
