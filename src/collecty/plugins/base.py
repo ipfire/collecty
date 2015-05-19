@@ -204,21 +204,21 @@ class Plugin(threading.Thread):
 
 			return object
 
-	def get_template(self, template_name):
+	def get_template(self, template_name, object_id):
 		for template in self.templates:
 			if not template.name == template_name:
 				continue
 
-			return template(self)
+			return template(self, object_id)
 
 	def generate_graph(self, template_name, object_id="default", **kwargs):
-		template = self.get_template(template_name)
+		template = self.get_template(template_name, object_id=object_id)
 		if not template:
 			raise RuntimeError("Could not find template %s" % template_name)
 
 		time_start = time.time()
 
-		graph = template.generate_graph(object_id=object_id, **kwargs)
+		graph = template.generate_graph(**kwargs)
 
 		duration = time.time() - time_start
 		self.log.debug(_("Generated graph %s in %.1fms") \
@@ -406,8 +406,14 @@ class GraphTemplate(object):
 	height = GRAPH_DEFAULT_HEIGHT
 	width  = GRAPH_DEFAULT_WIDTH
 
-	def __init__(self, plugin):
+	def __init__(self, plugin, object_id):
 		self.plugin = plugin
+
+		# Get all required RRD objects
+		self.object_id = object_id
+
+		# Get the main object
+		self.object = self.get_object(self.object_id)
 
 	def __repr__(self):
 		return "<%s>" % self.__class__.__name__
@@ -462,32 +468,37 @@ class GraphTemplate(object):
 
 		return args
 
-	def get_object_table(self, object_id):
+	def get_object(self, *args, **kwargs):
+		return self.plugin.get_object(*args, **kwargs)
+
+	def get_object_table(self):
 		return {
-			"file" : self.plugin.get_object(object_id),
+			"file" : self.object,
 		}
 
-	def get_object_files(self, object_id):
+	def get_object_files(self):
 		files = {}
 
-		for id, obj in self.get_object_table(object_id).items():
+		for id, obj in self.get_object_table().items():
 			files[id] = obj.file
 
 		return files
 
-	def generate_graph(self, object_id, interval=None, **kwargs):
+	def generate_graph(self, interval=None, **kwargs):
 		args = self._make_command_line(interval, **kwargs)
 
 		self.log.info(_("Generating graph %s") % self)
 		self.log.debug("  args: %s" % args)
 
-		object_files = self.get_object_files(object_id)
+		object_files = self.get_object_files()
 
 		for item in self.rrd_graph:
 			try:
 				args.append(item % object_files)
 			except TypeError:
 				args.append(item)
+
+			self.log.debug("  %s" % args[-1])
 
 		return self.write_graph(*args)
 

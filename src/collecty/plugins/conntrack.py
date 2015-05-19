@@ -23,6 +23,8 @@ import os
 
 import base
 
+from ..i18n import _
+
 CONNTRACK_FILE = "/proc/net/nf_conntrack"
 
 class ConntrackTable(object):
@@ -124,6 +126,265 @@ class ConntrackTable(object):
 						pass
 
 
+class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
+	name = "conntrack-layer3-protocols"
+
+	protocols = ConntrackTable._layer3_protocols
+
+	protocol_colours = {
+		"ipv6"  : "#cc0033",
+		"ipv4"  : "#cccc33",
+	}
+
+	protocol_descriptions = {
+		"ipv6"  : _("IPv6"),
+		"ipv4"  : _("IPv4"),
+		"other" : _("Other"),
+	}
+
+	@property
+	def graph_title(self):
+		return _("Connections by Layer 3 Protocols")
+
+	@property
+	def graph_vertical_label(self):
+		return _("Number of open connections")
+
+	def get_object_table(self, object_id):
+		return {
+			"file" : self.plugin.get_object("layer3-protocols"),
+		}
+
+	@property
+	def rrd_graph(self):
+		args = []
+
+		for proto in reversed(self.protocols):
+			i = {
+				"colour"      : self.protocol_colours.get(proto, "#000000"),
+				"description" : self.protocol_descriptions.get(proto, proto),
+				"proto"       : proto,
+				"type"        : type,
+
+				"legend_min"  : "%10s\: %%8.0lf" % _("Minimum"),
+				"legend_max"  : "%10s\: %%8.0lf" % _("Maximum"),
+				"legend_avg"  : "%10s\: %%8.0lf" % _("Average"),
+				"legend_cur"  : "%10s\: %%8.0lf" % _("Current"),
+			}
+
+			args += [
+				"DEF:%(proto)s=%%(file)s:%(proto)s:AVERAGE" % i,
+				"AREA:%(proto)s%(colour)s:%(description)-15s:STACK" % i,
+				"VDEF:%(proto)s_cur=%(proto)s,LAST" % i,
+				"GPRINT:%(proto)s_cur:%(legend_cur)s" % i,
+				"VDEF:%(proto)s_avg=%(proto)s,AVERAGE" % i,
+				"GPRINT:%(proto)s_avg:%(legend_avg)s" % i,
+				"VDEF:%(proto)s_min=%(proto)s,MINIMUM" % i,
+				"GPRINT:%(proto)s_min:%(legend_min)s" % i,
+				"VDEF:%(proto)s_max=%(proto)s,MAXIMUM" % i,
+				"GPRINT:%(proto)s_max:%(legend_max)s\\n" % i,
+			]
+
+		return args
+
+	@property
+	def rrd_graph_args(self):
+		return [
+			"--legend-direction=bottomup",
+		]
+
+
+class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplate):
+	name = "conntrack-layer4-protocols"
+
+	protocol_colours = {
+		"tcp"     : "#336600",
+		"udp"     : "#666633",
+		"icmp"    : "#336666",
+		"igmp"    : "#666699",
+		"udplite" : "#3366cc",
+		"sctp"    : "#6666ff",
+		"dccp"    : "#33cc00",
+	}
+
+	protocol_descriptions = {
+		"tcp"     : _("TCP"),
+		"udp"     : _("UDP"),
+		"icmp"    : _("ICMP"),
+		"igmp"    : _("IGMP"),
+		"udplite" : _("UDP Lite"),
+		"sctp"    : _("SCTP"),
+		"dccp"    : _("DCCP"),
+		"other"   : _("Other"),
+	}
+
+	protocol_sortorder = {
+		"tcp"     : 1,
+		"udp"     : 2,
+		"icmp"    : 3,
+		"igmp"    : 4,
+		"udplite" : 5,
+		"sctp"    : 6,
+		"dccp"    : 7,
+	}
+
+	@property
+	def graph_title(self):
+		return _("Connections by IP Protocols")
+
+	@property
+	def protocols(self):
+		return sorted(ConntrackTable._layer4_protocols,
+			key=lambda x: self.protocol_sortorder.get(x, 99))
+
+	def get_object_table(self, object_id):
+		return {
+			"file" : self.plugin.get_object("layer4-protocols"),
+		}
+
+
+
+class ConntrackProtocolWithStatesGraphTemplate(base.GraphTemplate):
+	name = "conntrack-protocol-states"
+
+	lower_limit = 0
+
+	states_colours = {
+		"dccp" : {
+			"CLOSEREQ"          : "#000000",
+			"CLOSING"           : "#111111",
+			"IGNORE"            : "#222222",
+			"INVALID"           : "#333333",
+			"NONE"              : "#444444",
+			"OPEN"              : "#555555",
+			"PARTOPEN"          : "#666666",
+			"REQUEST"           : "#777777",
+			"RESPOND"           : "#888888",
+			"TIME_WAIT"         : "#999999",
+		},
+		"sctp" : {
+			"CLOSED"            : "#000000",
+			"COOKIE_ECHOED"     : "#111111",
+			"COOKIE_WAIT"       : "#222222",
+			"ESTABLISHED"       : "#333333",
+			"NONE"              : "#444444",
+			"SHUTDOWN_ACK_SENT" : "#555555",
+			"SHUTDOWN_RECD"     : "#666666",
+			"SHUTDOWN_SENT"     : "#777777",
+		},
+		"tcp" : {
+			"CLOSE"             : "#ffffff",
+			"CLOSE_WAIT"        : "#999999",
+			"ESTABLISHED"       : "#000000",
+			"FIN_WAIT"          : "#888888",
+			"LAST_ACK"          : "#777777",
+			"NONE"              : "#000000",
+			"SYN_RECV"          : "#111111",
+			"SYN_SENT"          : "#222222",
+			"SYN_SENT2"         : "#333333",
+			"TIME_WAIT"         : "#444444",
+		},
+	}
+
+	states_descriptions = {
+		"dccp" : {},
+		"sctp" : {},
+		"tcp"  : {},
+	}
+
+	states_sortorder = {
+		"dccp" : {
+			"CLOSEREQ"          : 0,
+			"CLOSING"           : 0,
+			"IGNORE"            : 0,
+			"INVALID"           : 0,
+			"NONE"              : 0,
+			"OPEN"              : 0,
+			"PARTOPEN"          : 0,
+			"REQUEST"           : 0,
+			"RESPOND"           : 0,
+			"TIME_WAIT"         : 0,
+		},
+		"sctp" : {
+			"CLOSED"            : 0,
+			"COOKIE_ECHOED"     : 0,
+			"COOKIE_WAIT"       : 0,
+			"ESTABLISHED"       : 0,
+			"NONE"              : 0,
+			"SHUTDOWN_ACK_SENT" : 0,
+			"SHUTDOWN_RECD"     : 0,
+			"SHUTDOWN_SENT"     : 0,
+		},
+		"tcp" : {
+			"CLOSE"             : 9,
+			"CLOSE_WAIT"        : 8,
+			"ESTABLISHED"       : 1,
+			"FIN_WAIT"          : 6,
+			"LAST_ACK"          : 7,
+			"NONE"              : 10,
+			"SYN_RECV"          : 2,
+			"SYN_SENT"          : 3,
+			"SYN_SENT2"         : 4,
+			"TIME_WAIT"         : 5,
+		},
+	}
+
+	@property
+	def graph_title(self):
+		return _("Protocol States of all %s connections") % self.protocol.upper()
+
+	@property
+	def graph_vertical_label(self):
+		return _("Number of open connections")
+
+	@property
+	def protocol(self):
+		return self.object.protocol
+
+	@property
+	def states(self):
+		return sorted(ConntrackTable._stateful_layer4_protocols[self.protocol],
+			key=lambda x: self.states_sortorder[self.protocol].get(x, 99))
+
+	@property
+	def rrd_graph(self):
+		args = []
+
+		for state in reversed(self.states):
+			i = {
+				"colour"      : self.states_colours[self.protocol].get(state, "#000000"),
+				"description" : self.states_descriptions[self.protocol].get(state, state),
+				"proto"       : self.protocol,
+				"state"       : state,
+
+				"legend_min"  : "%10s\: %%8.0lf" % _("Minimum"),
+				"legend_max"  : "%10s\: %%8.0lf" % _("Maximum"),
+				"legend_avg"  : "%10s\: %%8.0lf" % _("Average"),
+				"legend_cur"  : "%10s\: %%8.0lf" % _("Current"),
+			}
+
+			args += [
+				"DEF:%(state)s=%%(file)s:%(state)s:AVERAGE" % i,
+				"AREA:%(state)s%(colour)s:%(description)-15s:STACK" % i,
+				"VDEF:%(state)s_cur=%(state)s,LAST" % i,
+				"GPRINT:%(state)s_cur:%(legend_cur)s" % i,
+				"VDEF:%(state)s_avg=%(state)s,AVERAGE" % i,
+				"GPRINT:%(state)s_avg:%(legend_avg)s" % i,
+				"VDEF:%(state)s_min=%(state)s,MINIMUM" % i,
+				"GPRINT:%(state)s_min:%(legend_min)s" % i,
+				"VDEF:%(state)s_max=%(state)s,MAXIMUM" % i,
+				"GPRINT:%(state)s_max:%(legend_max)s\\n" % i,
+			]
+
+		return args
+
+	@property
+	def rrd_graph_args(self):
+		return [
+			"--legend-direction=bottomup",
+		]
+
+
 class ConntrackObject(base.Object):
 	protocol = None
 
@@ -210,7 +471,11 @@ class ConntrackPlugin(base.Plugin):
 	name = "conntrack"
 	description = "Conntrack Plugin"
 
-	templates = []
+	templates = [
+		ConntrackLayer3ProtocolsGraphTemplate,
+		ConntrackLayer4ProtocolsGraphTemplate,
+		ConntrackProtocolWithStatesGraphTemplate,
+	]
 
 	@property
 	def objects(self):
