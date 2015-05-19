@@ -94,12 +94,15 @@ class GraphTemplateProcessor(base.GraphTemplate):
 		"GPRINT:idleavg:%12s\:" % _("Average") + " %6.2lf\\n",
 	]
 
-	rrd_graph_args = [
-		"--title", _("CPU usage"),
-		"--vertical-label", _("Jiffies"),
+	lower_limit = 0
 
-		"--lower-limit", "0", "--rigid",
-	]
+	@property
+	def graph_title(self):
+		return _("CPU usage")
+
+	@property
+	def graph_vertical_label(self):
+		return _("Jiffies")
 
 
 class ProcessorObject(base.Object):

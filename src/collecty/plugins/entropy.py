@@ -45,12 +45,15 @@ class GraphTemplateEntropy(base.GraphTemplate):
 		"LINE3:entropytrend#000000",
 	]
 
-	rrd_graph_args = [
-		"--title", _("Available entropy"),
-		"--vertical-label", _("Bits"),
+	lower_limit = 0
 
-		"--lower-limit", "0", "--rigid",
-	]
+	@property
+	def graph_title(self):
+		return _("Available entropy")
+
+	@property
+	def graph_vertical_label(self):
+		return _("Bit")
 
 
 class EntropyObject(base.Object):

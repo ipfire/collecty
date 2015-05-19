@@ -61,12 +61,15 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 		"LINE:load1#dd0000",
 	]
 
-	rrd_graph_args = [
-		"--title", _("Load average"),
-		"--vertical-label", _("Load"),
+	lower_limit = 0
 
-		"--lower-limit", "0", "--rigid",
-	]
+	@property
+	def graph_title(self):
+		return _("Load average")
+
+	@property
+	def graph_vertical_label(self):
+		return _("Load")
 
 
 class LoadAvgObject(base.Object):

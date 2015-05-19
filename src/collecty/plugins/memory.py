@@ -28,6 +28,9 @@ from ..i18n import _
 class GraphTemplateMemory(base.GraphTemplate):
 	name = "memory"
 
+	upper_limit = 100
+	lower_limit = 0
+
 	rrd_graph = [
 		"DEF:used=%(file)s:used:AVERAGE",
 		"DEF:cached=%(file)s:cached:AVERAGE",
@@ -76,15 +79,13 @@ class GraphTemplateMemory(base.GraphTemplate):
 		"GPRINT:swapavg:%12s\:" % _("Average") + " %6.2lf\\n",
 	]
 
-	rrd_graph_args = [
-		"--title", _("Memory Usage"),
-		"--vertical-label", _("Percent"),
+	@property
+	def graph_title(self):
+		return _("Memory Usage")
 
-		# Limit y axis.
-		"--upper-limit", "100",
-		"--lower-limit", "0",
-		"--rigid",
-	]
+	@property
+	def graph_vertical_label(self):
+		return _("Percent")
 
 
 class MemoryObject(base.Object):

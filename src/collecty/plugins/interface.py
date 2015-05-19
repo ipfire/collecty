@@ -82,11 +82,12 @@ class GraphTemplateInterfaceBits(base.GraphTemplate):
 		]
 
 	@property
-	def rrd_graph_args(self):
-		return [
-			"--title", _("Bandwidth usage on %(interface)s"),
-			"--vertical-label", _("Bit/s"),
-		]
+	def graph_title(self):
+		return _("Bandwidth usage on %(interface)s")
+
+	@property
+	def graph_vertical_label(self):
+		return _("Bit/s")
 
 
 class GraphTemplateInterfacePackets(base.GraphTemplate):
@@ -122,11 +123,12 @@ class GraphTemplateInterfacePackets(base.GraphTemplate):
 		]
 
 	@property
-	def rrd_graph_args(self):
-		return [
-			"--title", _("Transferred packets on %(interface)s"),
-			"--vertical-label", _("Packets/s"),
-		]
+	def graph_title(self):
+		return _("Transferred packets on %(interface)s")
+
+	@property
+	def graph_vertical_label(self):
+		return _("Packets/s")
 
 
 class GraphTemplateInterfaceErrors(base.GraphTemplate):
@@ -190,11 +192,12 @@ class GraphTemplateInterfaceErrors(base.GraphTemplate):
 		]
 
 	@property
-	def rrd_graph_args(self):
-		return [
-			"--title", _("Errors/dropped packets on %(interface)s"),
-			"--vertical-label", _("Packets/s"),
-		]
+	def graph_title(self):
+		return _("Errors/dropped packets on %(interface)s")
+
+	@property
+	def graph_vertical_label(self):
+		return _("Packets/s")
 
 
 class InterfaceObject(base.Object):

@@ -378,6 +378,16 @@ class GraphTemplate(object):
 	# A unique name to identify this graph template.
 	name = None
 
+	# Headline of the graph image
+	graph_title = None
+
+	# Vertical label of the graph
+	graph_vertical_label = None
+
+	# Limits
+	lower_limit = None
+	upper_limit = None
+
 	# Instructions how to create the graph.
 	rrd_graph = None
 
@@ -423,6 +433,24 @@ class GraphTemplate(object):
 		]
 
 		args += self.rrd_graph_args
+
+		# Graph title
+		if self.graph_title:
+			args += ["--title", self.graph_title]
+
+		# Vertical label
+		if self.graph_vertical_label:
+			args += ["--vertical-label", self.graph_vertical_label]
+
+		if self.lower_limit is not None or self.upper_limit is not None:
+			# Force to honour the set limits
+			args.append("--rigid")
+
+			if self.lower_limit is not None:
+				args += ["--lower-limit", self.lower_limit]
+
+			if self.upper_limit is not None:
+				args += ["--upper-limit", self.upper_limit]
 
 		# Add interval
 		args.append("--start")

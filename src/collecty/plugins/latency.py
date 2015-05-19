@@ -32,6 +32,8 @@ PING_HOSTS = [
 class GraphTemplateLatency(base.GraphTemplate):
 	name = "latency"
 
+	lower_limit = 0
+
 	@property
 	def rrd_graph(self):
 		return [
@@ -73,13 +75,12 @@ class GraphTemplateLatency(base.GraphTemplate):
 		]
 
 	@property
-	def rrd_graph_args(self):
-		return [
-			"--title", _("Latency to %(host)s"),
-			"--vertical-label", _("Milliseconds"),
+	def graph_title(self):
+		return _("Latency to %(host)s")
 
-			"--lower-limit", "0", "--rigid",
-		]
+	@property
+	def graph_vertical_label(self):
+		return _("Milliseconds")
 
 
 class LatencyObject(base.Object):
