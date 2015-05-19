@@ -34,7 +34,13 @@ COLOUR_RX_AREA = "%sAA" % COLOUR_RX
 COLOUR_TX = "228B22"
 COLOUR_TX_AREA = "%sAA" % COLOUR_TX
 
-class GraphTemplateInterfaceBits(base.GraphTemplate):
+class GraphTemplateInterfaceBase(base.GraphTemplate):
+	@property
+	def interface(self):
+		return self.object.interface
+
+
+class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 	name = "interface-bits"
 
 	@property
@@ -83,14 +89,14 @@ class GraphTemplateInterfaceBits(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		return _("Bandwidth usage on %(interface)s")
+		return _("Bandwidth usage on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
 		return _("Bit/s")
 
 
-class GraphTemplateInterfacePackets(base.GraphTemplate):
+class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 	name = "interface-packets"
 
 	@property
@@ -124,14 +130,14 @@ class GraphTemplateInterfacePackets(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		return _("Transferred packets on %(interface)s")
+		return _("Transferred packets on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
 		return _("Packets/s")
 
 
-class GraphTemplateInterfaceErrors(base.GraphTemplate):
+class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 	name = "interface-errors"
 
 	@property
@@ -193,7 +199,7 @@ class GraphTemplateInterfaceErrors(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		return _("Errors/dropped packets on %(interface)s")
+		return _("Errors/dropped packets on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
