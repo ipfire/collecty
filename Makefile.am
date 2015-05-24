@@ -87,6 +87,7 @@ collectyplugins_PYTHON = \
 	src/collecty/plugins/base.py \
 	src/collecty/plugins/conntrack.py \
 	src/collecty/plugins/cpu.py \
+	src/collecty/plugins/disk.py \
 	src/collecty/plugins/entropy.py \
 	src/collecty/plugins/__init__.py \
 	src/collecty/plugins/interface.py \
@@ -95,6 +96,27 @@ collectyplugins_PYTHON = \
 	src/collecty/plugins/memory.py
 
 collectypluginsdir = $(collectydir)/plugins
+
+pkgpyexec_LTLIBRARIES = \
+	_collecty.la
+
+_collecty_la_SOURCES = \
+	src/_collectymodule.c
+
+_collecty_la_CFLAGS = \
+	$(AM_CFLAGS) \
+	$(LIBATASMART_CFLAGS) \
+	$(PYTHON_DEVEL_CFLAGS)
+
+_collecty_la_LDFLAGS = \
+	$(AM_LDFLAGS) \
+	-shared \
+	-module \
+	-avoid-version
+
+_collecty_la_LIBADD = \
+	$(LIBATASMART_LIBS) \
+	$(PYTHON_DEVEL_LIBS)
 
 dist_dbuspolicy_DATA = \
 	src/dbus/org.ipfire.collecty1.conf

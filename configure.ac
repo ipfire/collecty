@@ -41,6 +41,8 @@ AM_INIT_AUTOMAKE([
 	subdir-objects
 ])
 AM_SILENT_RULES([yes])
+LT_PREREQ(2.2)
+LT_INIT([disable-static])
 
 IT_PROG_INTLTOOL([0.40.0])
 
@@ -51,10 +53,20 @@ AC_PROG_LN_S
 AC_PROG_MKDIR_P
 AC_PROG_SED
 
+# C Compiler
+AC_PROG_CC
+AC_PROG_CC_C99
+AC_PROG_CC_C_O
+AC_PROG_GCC_TRADITIONAL
+
 AC_PATH_PROG([XSLTPROC], [xsltproc])
 
 # Python
 AM_PATH_PYTHON([2.7])
+PKG_CHECK_MODULES([PYTHON_DEVEL], [python-${PYTHON_VERSION}])
+
+# libatasmart
+PKG_CHECK_MODULES([LIBATASMART], [libatasmart >= 0.19])
 
 save_LIBS="$LIBS"
 

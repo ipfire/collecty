@@ -1,5 +1,6 @@
 /Makefile
 /build-aux
+/libtool
 /man/*.[0-9]
 /man/*.html
 /missing
@@ -9,11 +10,17 @@
 /*.tar.bz2
 /*.tar.gz
 /*.tar.xz
+*.a
+*.la
+*.lo
 *.log
 *.cache
 *.gmo
 *.mo
 *~
+.deps
+.dirstamp
+.libs
 Makefile.in
 aclocal.m4
 config.log
