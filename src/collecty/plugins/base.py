@@ -155,6 +155,9 @@ class Plugin(threading.Thread):
 			now = datetime.datetime.utcnow()
 			try:
 				result = o.collect()
+
+				if isinstance(result, tuple) or isinstance(result, list):
+					result = ":".join(("%s" % e for e in result))
 			except:
 				self.log.warning(_("Unhandled exception in %s.collect()") % o, exc_info=True)
 				continue

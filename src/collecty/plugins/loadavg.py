@@ -84,7 +84,7 @@ class LoadAvgObject(base.Object):
 		return "default"
 
 	def collect(self):
-		return ":".join(["%.10f" % l for l in os.getloadavg()])
+		return os.getloadavg()
 
 
 class LoadAvgPlugin(base.Plugin):

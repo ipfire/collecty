@@ -414,7 +414,7 @@ class ConntrackLayer3ProtocolsObject(ConntrackObject):
 			r = self.conntrack_table.layer3_protocols.get(proto, 0)
 			results.append("%s" % r)
 
-		return ":".join(results)
+		return results
 
 
 class ConntrackLayer4ProtocolsObject(ConntrackObject):
@@ -435,7 +435,7 @@ class ConntrackLayer4ProtocolsObject(ConntrackObject):
 			r = self.conntrack_table.layer4_protocols.get(proto, 0)
 			results.append("%s" % r)
 
-		return ":".join(results)
+		return results
 
 
 class ConntrackProtocolWithStatesObject(ConntrackObject):
@@ -464,7 +464,7 @@ class ConntrackProtocolWithStatesObject(ConntrackObject):
 		return results
 
 	def collect(self):
-		return ":".join(self.get_states())
+		return self.get_states()
 
 
 class ConntrackPlugin(base.Plugin):

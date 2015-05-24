@@ -137,7 +137,7 @@ class ProcessorObject(base.Object):
 				if len(columns) < 8:
 					continue
 
-				entry = [
+				return (
 					columns[1], # user
 					columns[2], # nice
 					columns[3], # sys
@@ -145,9 +145,7 @@ class ProcessorObject(base.Object):
 					columns[5], # wait
 					columns[6], # irq
 					columns[7], # sirq
-				]
-
-				return ":".join(entry)
+				)
 		finally:
 			if f:
 				f.close()

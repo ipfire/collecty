@@ -268,7 +268,7 @@ class InterfaceObject(base.Object):
 				if f:
 					f.close()
 
-		return ":".join(ret)
+		return ret
 
 
 class InterfacePlugin(base.Plugin):

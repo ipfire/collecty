@@ -112,11 +112,11 @@ class LatencyObject(base.Object):
 				% { "host" : self.hostname, "msg" : e.msg })
 			return
 
-		return ":".join((
+		return (
 			"%.10f" % ping.avg_time,
 			"%.10f" % ping.loss,
 			"%.10f" % ping.stddev,
-		))
+		)
 
 
 class LatencyPlugin(base.Plugin):

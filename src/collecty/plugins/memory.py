@@ -132,7 +132,7 @@ class MemoryObject(base.Object):
 			else:
 				ret.append("0")
 
-			return ":".join(ret)
+			return ret
 		finally:
 			if f:
 				f.close()

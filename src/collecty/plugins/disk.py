@@ -196,7 +196,7 @@ class DiskObject(base.Object):
 	def collect(self):
 		stats = self.parse_stats()
 
-		return ":".join((
+		return (
 			self.is_awake(),
 			stats.get("read_ios"),
 			stats.get("read_sectors"),
@@ -204,7 +204,7 @@ class DiskObject(base.Object):
 			stats.get("write_sectors"),
 			self.get_bad_sectors(),
 			self.get_temperature(),
-		))
+		)
 
 	def parse_stats(self):
 		"""
