@@ -101,7 +101,7 @@ AC_ARG_WITH([dbussystemservicedir],
 )
 
 AS_IF([test "x$with_systemd" != "xno"],
-      [PKG_CHECK_MODULES(systemd, [libsystemd-daemon],
+      [PKG_CHECK_MODULES(systemd, [libsystemd],
       [have_systemd=yes], [have_systemd=no])],
       [have_systemd=no]
 )
