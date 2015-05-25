@@ -240,7 +240,14 @@ class WriteQueue(threading.Thread):
 		for result in results:
 			self.log.debug("  %s: %s" % (result.time, result.data))
 
-		rrdtool.update(filename, *["%s" % r for r in results])
+		try:
+			rrdtool.update(filename, *["%s" % r for r in results])
+
+		# Catch operational errors like unreadable/unwritable RRD databases
+		# or those where the format has changed. The collected data will be lost.
+		except rrdtool.OperationalError as e:
+			self.log.critical(_("Could not update RRD database %s: %s") \
+				% (filename, e))
 
 
 class QueueObject(object):
