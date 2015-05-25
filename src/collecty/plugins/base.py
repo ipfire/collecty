@@ -275,7 +275,19 @@ class Object(object):
 		"""
 			The absolute path to the RRD file of this plugin.
 		"""
-		return os.path.join(DATABASE_DIR, self.plugin.path, "%s.rrd" % self.id)
+		filename = self._normalise_filename("%s.rrd" % self.id)
+
+		return os.path.join(DATABASE_DIR, self.plugin.path, filename)
+
+	@staticmethod
+	def _normalise_filename(filename):
+		# Convert the filename into ASCII characters only
+		filename = filename.encode("ascii", "ignore")
+
+		# Replace any spaces by dashes
+		filename = filename.replace(" ", "-")
+
+		return filename
 
 	### Basic methods
 
