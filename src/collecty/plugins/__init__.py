@@ -30,3 +30,4 @@ import interface
 import latency
 import loadavg
 import memory
+import sensors

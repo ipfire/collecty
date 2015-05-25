@@ -93,7 +93,8 @@ collectyplugins_PYTHON = \
 	src/collecty/plugins/interface.py \
 	src/collecty/plugins/latency.py \
 	src/collecty/plugins/loadavg.py \
-	src/collecty/plugins/memory.py
+	src/collecty/plugins/memory.py \
+	src/collecty/plugins/sensors.py
 
 collectypluginsdir = $(collectydir)/plugins
 
@@ -116,7 +117,8 @@ _collecty_la_LDFLAGS = \
 
 _collecty_la_LIBADD = \
 	$(LIBATASMART_LIBS) \
-	$(PYTHON_DEVEL_LIBS)
+	$(PYTHON_DEVEL_LIBS) \
+	$(SENSORS_LIBS)
 
 dist_dbuspolicy_DATA = \
 	src/dbus/org.ipfire.collecty1.conf

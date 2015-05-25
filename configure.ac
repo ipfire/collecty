@@ -70,6 +70,16 @@ PKG_CHECK_MODULES([LIBATASMART], [libatasmart >= 0.19])
 
 save_LIBS="$LIBS"
 
+# lm-sensors
+AC_CHECK_HEADERS([sensors/sensors.h sensors/errors.h])
+
+LIBS=
+AC_CHECK_LIB(sensors, sensors_init, [], [AC_MSG_ERROR([*** sensors library not found])])
+SENSORS_LIBS="$LIBS"
+AC_SUBST(SENSORS_LIBS)
+
+LIBS="$save_LIBS"
+
 # pkg-config
 PKG_PROG_PKG_CONFIG
 # This makes sure pkg.m4 is available.
