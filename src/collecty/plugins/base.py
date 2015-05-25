@@ -491,10 +491,17 @@ class GraphTemplate(object):
 			"file" : self.object,
 		}
 
+	@property
+	def object_table(self):
+		if not hasattr(self, "_object_table"):
+			self._object_table = self.get_object_table()
+
+		return self._object_table
+
 	def get_object_files(self):
 		files = {}
 
-		for id, obj in self.get_object_table().items():
+		for id, obj in self.object_table.items():
 			files[id] = obj.file
 
 		return files
