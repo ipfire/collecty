@@ -135,8 +135,8 @@ class GraphTemplateDiskTemperature(base.GraphTemplate):
 	name = "disk-temperature"
 
 	rrd_graph = [
-		"DEF:mkelvin=%(file)s:temperature:AVERAGE",
-		"CDEF:celsius=mkelvin,1000,/,273.15,-",
+		"DEF:kelvin=%(file)s:temperature:AVERAGE",
+		"CDEF:celsius=kelvin,273.15,-",
 
 		"LINE2:celsius#ff0000:%s" % _("Temperature"),
 		"VDEF:temp_cur=celsius,LAST",

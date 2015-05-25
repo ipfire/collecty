@@ -254,7 +254,8 @@ static PyObject* BlockDevice_get_temperature(PyObject* self) {
 	if (r)
 		return NULL;
 
-	return PyLong_FromUnsignedLongLong((unsigned long long)mkelvin);
+	// Convert the temperature to Kelvin
+	return PyFloat_FromDouble((double)mkelvin / 1000.0);
 }
 
 static PyGetSetDef BlockDevice_getsetters[] = {
