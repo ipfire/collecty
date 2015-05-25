@@ -107,7 +107,7 @@ _collecty_la_SOURCES = \
 _collecty_la_CFLAGS = \
 	$(AM_CFLAGS) \
 	$(LIBATASMART_CFLAGS) \
-	$(PYTHON_DEVEL_CFLAGS)
+	$(PYTHON_CFLAGS)
 
 _collecty_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
@@ -117,7 +117,7 @@ _collecty_la_LDFLAGS = \
 
 _collecty_la_LIBADD = \
 	$(LIBATASMART_LIBS) \
-	$(PYTHON_DEVEL_LIBS) \
+	$(PYTHON_LIBS) \
 	$(SENSORS_LIBS)
 
 dist_dbuspolicy_DATA = \

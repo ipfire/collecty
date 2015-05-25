@@ -63,7 +63,7 @@ AC_PATH_PROG([XSLTPROC], [xsltproc])
 
 # Python
 AM_PATH_PYTHON([2.7])
-PKG_CHECK_MODULES([PYTHON_DEVEL], [python-${PYTHON_VERSION}])
+PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
 
 # libatasmart
 PKG_CHECK_MODULES([LIBATASMART], [libatasmart >= 0.19])
