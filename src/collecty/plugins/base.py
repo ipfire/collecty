@@ -73,7 +73,7 @@ class Timer(object):
 		return self.elapsed > self.timeout
 
 
-class Plugin(threading.Thread):
+class Plugin(object):
 	# The name of this plugin.
 	name = None
 
@@ -104,9 +104,6 @@ class Plugin(threading.Thread):
 			_plugins[plugin.name] = plugin
 
 	def __init__(self, collecty, **kwargs):
-		threading.Thread.__init__(self, name=self.description)
-		self.daemon = True
-
 		self.collecty = collecty
 
 		# Check if this plugin was configured correctly.
@@ -121,10 +118,6 @@ class Plugin(threading.Thread):
 
 		# Run some custom initialization.
 		self.init(**kwargs)
-
-		# Keepalive options
-		self.running = True
-		self.timer = Timer(self.interval)
 
 		self.log.debug(_("Successfully initialized %s") % self.__class__.__name__)
 
@@ -173,32 +166,11 @@ class Plugin(threading.Thread):
 			self.collecty.write_queue.add(o, now, result)
 
 		# Returns the time this function took to complete.
-		return (time.time() - time_start)
+		delay = time.time() - time_start
 
-	def run(self):
-		self.log.debug(_("%s plugin has started") % self.name)
-
-		# Initially collect everything
-		self.collect()
-
-		while self.running:
-			# Reset the timer.
-			self.timer.reset()
-
-			# Wait until the timer has successfully elapsed.
-			if self.timer.wait():
-				delay = self.collect()
-				self.timer.reset(delay)
-
-		self.log.debug(_("%s plugin has stopped") % self.name)
-
-	def shutdown(self):
-		self.log.debug(_("Received shutdown signal."))
-		self.running = False
-
-		# Kill any running timers.
-		if self.timer:
-			self.timer.cancel()
+		# Log some warning when a collect method takes too long to return some data
+		if delay >= 60:
+			self.log.warning(_("A worker thread was stalled for %.4fs") % delay)
 
 	def get_object(self, id):
 		for object in self.objects:
