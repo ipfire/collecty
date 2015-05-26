@@ -24,6 +24,7 @@ from base import Timer, get
 import base
 import conntrack
 import cpu
+import cpufreq
 import disk
 import entropy
 import interface
