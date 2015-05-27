@@ -45,7 +45,7 @@ static void BlockDevice_dealloc(BlockDevice* self) {
 	if (self->path)
 		free(self->path);
 
-	self->ob_type->tp_free((PyObject*)self);
+	Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
 static int BlockDevice_get_identity(BlockDevice* device) {
@@ -143,7 +143,7 @@ static int BlockDevice_init(BlockDevice* self, PyObject* args, PyObject* kwds) {
 static PyObject* BlockDevice_get_path(PyObject* self) {
 	BlockDevice* device = (BlockDevice*)self;
 
-	return PyString_FromString(device->path);
+	return PyUnicode_FromString(device->path);
 }
 
 static void clean_string(char *s) {
@@ -195,7 +195,7 @@ static PyObject* BlockDevice_get_model(PyObject* self) {
 	char model[MODEL_SIZE + 1];
 	copy_string(model, device->identity.model, sizeof(model));
 
-	return PyString_FromString(model);
+	return PyUnicode_FromString(model);
 }
 
 static PyObject* BlockDevice_get_serial(PyObject* self) {
@@ -204,7 +204,7 @@ static PyObject* BlockDevice_get_serial(PyObject* self) {
 	char serial[SERIAL_SIZE + 1];
 	copy_string(serial, device->identity.serial_no, sizeof(serial));
 
-	return PyString_FromString(serial);
+	return PyUnicode_FromString(serial);
 }
 
 static PyObject* BlockDevice_is_smart_supported(PyObject* self) {
@@ -273,8 +273,7 @@ static PyMethodDef BlockDevice_methods[] = {
 };
 
 static PyTypeObject BlockDeviceType = {
-	PyObject_HEAD_INIT(NULL)
-	0,                                  /*ob_size*/
+	PyVarObject_HEAD_INIT(NULL, 0)
 	"_collecty.BlockDevice",            /*tp_name*/
 	sizeof(BlockDevice),                /*tp_basicsize*/
 	0,                                  /*tp_itemsize*/
@@ -321,7 +320,7 @@ typedef struct {
 } SensorObject;
 
 static void Sensor_dealloc(SensorObject* self) {
-	self->ob_type->tp_free((PyObject*)self);
+	Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
 static PyObject* Sensor_new(PyTypeObject* type, PyObject* args, PyObject* kwds) {
@@ -338,7 +337,7 @@ static PyObject* Sensor_get_label(SensorObject* self) {
 	char* label = sensors_get_label(self->chip, self->feature);
 
 	if (label) {
-		PyObject* string = PyString_FromString(label);
+		PyObject* string = PyUnicode_FromString(label);
 		free(label);
 
 		return string;
@@ -356,7 +355,7 @@ static PyObject* Sensor_get_name(SensorObject* self) {
 		return NULL;
 	}
 
-	return PyString_FromString(chip_name);
+	return PyUnicode_FromString(chip_name);
 }
 
 static PyObject* Sensor_get_type(SensorObject* self) {
@@ -384,7 +383,7 @@ static PyObject* Sensor_get_type(SensorObject* self) {
 	}
 
 	if (type)
-		return PyString_FromString(type);
+		return PyUnicode_FromString(type);
 
 	Py_RETURN_NONE;
 }
@@ -426,7 +425,7 @@ static PyObject* Sensor_get_bus(SensorObject* self) {
 	}
 
 	if (type)
-		return PyString_FromString(type);
+		return PyUnicode_FromString(type);
 
 	Py_RETURN_NONE;
 }
@@ -602,7 +601,6 @@ static PyGetSetDef Sensor_getsetters[] = {
 
 static PyTypeObject SensorType = {
 	PyObject_HEAD_INIT(NULL)
-	0,                                  /*ob_size*/
 	"_collecty.Sensor",                 /*tp_name*/
 	sizeof(SensorObject),               /*tp_basicsize*/
 	0,                                  /*tp_itemsize*/
@@ -729,15 +727,32 @@ static PyMethodDef collecty_module_methods[] = {
 	{NULL},
 };
 
-void init_collecty(void) {
+static struct PyModuleDef collecty_module = {
+	PyModuleDef_HEAD_INIT,
+	"_collecty",                        /* m_name */
+	"_collecty module",                 /* m_doc */
+	-1,                                 /* m_size */
+	collecty_module_methods,            /* m_methods */
+	NULL,                               /* m_reload */
+	NULL,                               /* m_traverse */
+	NULL,                               /* m_clear */
+	NULL,                               /* m_free */
+};
+
+PyMODINIT_FUNC PyInit__collecty(void) {
 	if (PyType_Ready(&BlockDeviceType) < 0)
-		return;
+		return NULL;
 
 	if (PyType_Ready(&SensorType) < 0)
-		return;
+		return NULL;
 
-	PyObject* m = Py_InitModule("_collecty", collecty_module_methods);
+	PyObject* m = PyModule_Create(&collecty_module);
 
+	Py_INCREF(&BlockDeviceType);
 	PyModule_AddObject(m, "BlockDevice", (PyObject*)&BlockDeviceType);
+
+	Py_INCREF(&SensorType);
 	PyModule_AddObject(m, "Sensor", (PyObject*)&SensorType);
+
+	return m;
 }

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -19,8 +19,6 @@
 #                                                                             #
 ###############################################################################
 
-from __future__ import division
-
 import datetime
 import logging
 import math
@@ -29,17 +27,10 @@ import rrdtool
 import tempfile
 import threading
 import time
+import unicodedata
 
 from ..constants import *
 from ..i18n import _
-
-_plugins = {}
-
-def get():
-	"""
-		Returns a list with all automatically registered plugins.
-	"""
-	return _plugins.values()
 
 class Timer(object):
 	def __init__(self, timeout, heartbeat=1):
@@ -73,7 +64,30 @@ class Timer(object):
 		return self.elapsed > self.timeout
 
 
-class Plugin(object):
+class PluginRegistration(type):
+	plugins = {}
+
+	def __init__(plugin, name, bases, dict):
+		type.__init__(plugin, name, bases, dict)
+
+		# The main class from which is inherited is not registered
+		# as a plugin.
+		if name == "Plugin":
+			return
+
+		if not all((plugin.name, plugin.description)):
+			raise RuntimeError(_("Plugin is not properly configured: %s") % plugin)
+
+		PluginRegistration.plugins[plugin.name] = plugin
+
+
+def get():
+	"""
+		Returns a list with all automatically registered plugins.
+	"""
+	return PluginRegistration.plugins.values()
+
+class Plugin(object, metaclass=PluginRegistration):
 	# The name of this plugin.
 	name = None
 
@@ -86,22 +100,6 @@ class Plugin(object):
 
 	# The default interval for all plugins
 	interval = 60
-
-	# Automatically register all providers.
-	class __metaclass__(type):
-		def __init__(plugin, name, bases, dict):
-			type.__init__(plugin, name, bases, dict)
-
-			# The main class from which is inherited is not registered
-			# as a plugin.
-			if name == "Plugin":
-				return
-
-			if not all((plugin.name, plugin.description)):
-				raise RuntimeError(_("Plugin is not properly configured: %s") \
-					% plugin)
-
-			_plugins[plugin.name] = plugin
 
 	def __init__(self, collecty, **kwargs):
 		self.collecty = collecty
@@ -254,7 +252,7 @@ class Object(object):
 	@staticmethod
 	def _normalise_filename(filename):
 		# Convert the filename into ASCII characters only
-		filename = filename.encode("ascii", "ignore")
+		filename = unicodedata.normalize("NFKC", filename)
 
 		# Replace any spaces by dashes
 		filename = filename.replace(" ", "-")

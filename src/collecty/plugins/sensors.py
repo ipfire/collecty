@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # encoding: utf-8
 ###############################################################################
 #                                                                             #
@@ -24,7 +24,7 @@ from collecty import _collecty
 import os
 import re
 
-import base
+from . import base
 
 from ..i18n import _
 

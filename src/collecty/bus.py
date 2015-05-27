@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -22,19 +22,16 @@
 import dbus
 import dbus.mainloop.glib
 import dbus.service
-import gobject
+import gi.repository.GLib
+import gi.repository.GObject
 import threading
 
-from constants import *
-from i18n import _
+from .constants import *
+from .i18n import _
 
 import logging
 log = logging.getLogger("collecty.bus")
 log.propagate = 1
-
-# Initialise the glib main loop
-dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-dbus.mainloop.glib.threads_init()
 
 class Bus(threading.Thread):
 	def __init__(self, collecty):
@@ -44,8 +41,11 @@ class Bus(threading.Thread):
 		self.collecty = collecty
 
 		# Initialise the main loop
-		gobject.threads_init()
-		self.loop = gobject.MainLoop()
+		gi.repository.GObject.threads_init()
+		dbus.mainloop.glib.threads_init()
+		dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+
+		self.loop = gi.repository.GLib.MainLoop()
 
 		# Register the GraphGenerator interface
 		self.generator = GraphGenerator(self.collecty)
@@ -54,7 +54,12 @@ class Bus(threading.Thread):
 		log.debug(_("Bus thread has started"))
 
 		# Run the main loop
-		self.loop.run()
+		try:
+			self.loop.run()
+		except KeyboardInterrupt:
+			self.collecty.shutdown()
+
+		log.debug(_("Bus thread has ended"))
 
 	def shutdown(self):
 		log.debug(_("Stopping bus thread"))

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -21,7 +21,7 @@
 
 import os
 
-import base
+from . import base
 
 from ..i18n import _
 
@@ -117,7 +117,7 @@ class ConntrackTable(object):
 					layer4_protocol = "other"
 
 				# Count connection states
-				if self.protocol_states.has_key(layer4_protocol):
+				if layer4_protocol in self.protocol_states:
 					state = line[5]
 
 					try:

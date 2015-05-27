@@ -1,6 +1,4 @@
-#!/usr/bin/python
-
-from __future__ import division
+#!/usr/bin/python3
 
 import array
 import math
@@ -118,8 +116,8 @@ class Ping(object):
 		# Send the packet.
 		try:
 			s.sendto(packet, (self.destination, 0))
-		except socket.error, (errno, msg):
-			if errno == 1: # Operation not permitted
+		except socket.error as e:
+			if e.errno == 1: # Operation not permitted
 				# The packet could not be sent, probably because of
 				# wrong firewall settings.
 				return
@@ -175,7 +173,7 @@ class Ping(object):
 			Unpack tghe raw received IP and ICMP header informations to a dict
 		"""
 		unpacked_data = struct.unpack(struct_format, data)
-		return dict(zip(names, unpacked_data))
+		return dict(list(zip(names, unpacked_data)))
 
 	def _calculate_checksum(self, source_string):
 		if len(source_string) % 2:
@@ -321,6 +319,6 @@ if __name__ == "__main__":
 	p = Ping("ping.ipfire.org")
 	p.run(count=5)
 
-	print "Min/Avg/Max/Stddev: %.2f/%.2f/%.2f/%.2f" % \
-		(p.min_time, p.avg_time, p.max_time, p.stddev)
-	print "Sent/Recv/Loss: %d/%d/%.2f" % (p.send_count, p.receive_count, p.loss)
+	print("Min/Avg/Max/Stddev: %.2f/%.2f/%.2f/%.2f" % \
+		(p.min_time, p.avg_time, p.max_time, p.stddev))
+	print("Sent/Recv/Loss: %d/%d/%.2f" % (p.send_count, p.receive_count, p.loss))

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -23,8 +23,8 @@ import argparse
 import dbus
 import sys
 
-from constants import *
-from i18n import _
+from .constants import *
+from .i18n import _
 
 import logging
 log = logging.getLogger("collectly.client")
@@ -44,7 +44,7 @@ class CollectyClient(object):
 		templates = self.list_templates()
 
 		for t in sorted(templates):
-			print t
+			print(t)
 
 	def generate_graph(self, template_name, **kwargs):
 		byte_array = self.proxy.GenerateGraph(template_name, kwargs,

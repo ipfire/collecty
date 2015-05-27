@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -19,19 +19,19 @@
 #                                                                             #
 ###############################################################################
 
-import Queue as queue
 import datetime
 import multiprocessing
+import queue
 import rrdtool
 import signal
 import threading
 import time
 
-import bus
-import plugins
+from . import bus
+from . import plugins
 
-from constants import *
-from i18n import _
+from .constants import *
+from .i18n import _
 
 import logging
 log = logging.getLogger("collecty")
@@ -95,6 +95,11 @@ class Collecty(object):
 	def run(self):
 		# Register signal handlers.
 		self.register_signal_handler()
+
+		# Cannot do anything if no plugins have been initialised
+		if not self.plugins:
+			log.critical(_("No plugins have been initialised"))
+			return
 
 		# Start the bus
 		self.bus.start()
@@ -335,7 +340,7 @@ class WriteQueue(threading.Thread):
 				results[result.file] = [result]
 
 		# Write the collected data to disk
-		for filename, results in results.items():
+		for filename, results in list(results.items()):
 			self._commit_file(filename, results)
 
 		duration = time.time() - time_start
@@ -367,8 +372,8 @@ class QueueObject(object):
 	def __str__(self):
 		return "%s:%s" % (self.time.strftime("%s"), self.data)
 
-	def __cmp__(self, other):
-		return cmp(self.time, other.time)
+	def __lt__(self, other):
+		return self.time < other.time
 
 
 class PluginTimer(object):
@@ -380,8 +385,8 @@ class PluginTimer(object):
 	def __repr__(self):
 		return "<%s %s>" % (self.__class__.__name__, self.deadline)
 
-	def __cmp__(self, other):
-		return cmp(self.deadline, other.deadline)
+	def __lt__(self, other):
+		return self.deadline < other.deadline
 
 	def reset_deadline(self):
 		self.deadline = datetime.datetime.utcnow() \

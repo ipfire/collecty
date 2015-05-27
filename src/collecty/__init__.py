@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -20,7 +20,7 @@
 ###############################################################################
 
 # Initialize logging.
-import logger
+from . import logger
 
-from client import CollectyClient
-from daemon import Collecty
+from .client import CollectyClient
+from .daemon import Collecty

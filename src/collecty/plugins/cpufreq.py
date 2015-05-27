@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -22,7 +22,7 @@
 import os
 import re
 
-import base
+from . import base
 
 from ..i18n import _
 

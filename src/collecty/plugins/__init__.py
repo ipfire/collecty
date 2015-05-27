@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -19,16 +19,16 @@
 #                                                                             #
 ###############################################################################
 
-from base import Timer, get
+from .base import Timer, get
 
-import base
-import conntrack
-import cpu
-import cpufreq
-import disk
-import entropy
-import interface
-import latency
-import loadavg
-import memory
-import sensors
+from . import base
+from . import conntrack
+from . import cpu
+from . import cpufreq
+from . import disk
+from . import entropy
+from . import interface
+from . import latency
+from . import loadavg
+from . import memory
+from . import sensors

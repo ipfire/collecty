@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
@@ -21,7 +21,7 @@
 
 import collecty.ping
 
-import base
+from . import base
 
 from ..i18n import _
 
@@ -107,7 +107,7 @@ class LatencyObject(base.Object):
 			ping = collecty.ping.Ping(destination=self.hostname, timeout=20000)
 			ping.run(count=5, deadline=self.deadline)
 
-		except collecty.ping.PingError, e:
+		except collecty.ping.PingError as e:
 			self.log.warning(_("Could not run latency check for %(host)s: %(msg)s") \
 				% { "host" : self.hostname, "msg" : e.msg })
 			return
