@@ -483,17 +483,9 @@ class GraphTemplate(object):
 
 			self.log.debug("  %s" % args[-1])
 
-		return self.write_graph(*args)
-
-	def write_graph(self, *args):
-		# Convert all arguments to string
+		# Convert arguments to string
 		args = [str(e) for e in args]
 
-		with tempfile.NamedTemporaryFile() as f:
-			rrdtool.graph(f.name, *args)
+		graph = rrdtool.graphv("-", *args)
 
-			# Get back to the beginning of the file
-			f.seek(0)
-
-			# Return all the content
-			return f.read()
+		return graph.get("image")
