@@ -205,9 +205,12 @@ class Object(object):
 	rrd_schema = None
 
 	# RRA properties.
-	rra_types     = ["AVERAGE", "MIN", "MAX"]
-	rra_timespans = [3600, 86400, 604800, 2678400, 31622400]
-	rra_rows      = 2880
+	rra_types     = ("AVERAGE", "MIN", "MAX")
+	rra_timespans = (
+		("1m", "10d"),
+		("1h", "18M"),
+		("1d",  "5y"),
+	)
 
 	def __init__(self, plugin, *args, **kwargs):
 		self.plugin = plugin
@@ -323,21 +326,9 @@ class Object(object):
 
 		xff = 0.1
 
-		cdp_length = 0
-		for rra_timespan in self.rra_timespans:
-			if (rra_timespan / self.stepsize) < self.rra_rows:
-				rra_timespan = self.stepsize * self.rra_rows
-
-			if cdp_length == 0:
-				cdp_length = 1
-			else:
-				cdp_length = rra_timespan // (self.rra_rows * self.stepsize)
-
-			cdp_number = math.ceil(rra_timespan / (cdp_length * self.stepsize))
-
-			for rra_type in self.rra_types:
-				schema.append("RRA:%s:%.10f:%d:%d" % \
-					(rra_type, xff, cdp_length, cdp_number))
+		for steps, rows in self.rra_timespans:
+			for type in self.rra_types:
+				schema.append("RRA:%s:%s:%s:%s" % (type, xff, steps, rows))
 
 		return schema
 
