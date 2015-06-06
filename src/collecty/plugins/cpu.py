@@ -157,8 +157,6 @@ class ProcessorPlugin(base.Plugin):
 
 	templates = [GraphTemplateProcessor]
 
-	interval = 30
-
 	@property
 	def objects(self):
 		yield ProcessorObject(self)
