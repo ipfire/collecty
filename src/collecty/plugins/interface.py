@@ -281,7 +281,7 @@ class InterfacePlugin(base.Plugin):
 		GraphTemplateInterfaceErrors,
 	]
 
-	interval = 20
+	interval = 30
 
 	def get_interfaces(self):
 		for interface in os.listdir(SYS_CLASS_NET):
