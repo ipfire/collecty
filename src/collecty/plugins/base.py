@@ -435,13 +435,13 @@ class GraphTemplate(object):
 			if self.upper_limit is not None:
 				args += ["--upper-limit", self.upper_limit]
 
-		# Add interval
-		args.append("--start")
-
 		try:
-			args.append(self.intervals[interval])
+			interval = self.intervals[interval]
 		except KeyError:
-			args.append(str(interval))
+			interval = "end-%s" % interval
+
+		# Add interval
+		args += ["--start", interval]
 
 		return args
 
