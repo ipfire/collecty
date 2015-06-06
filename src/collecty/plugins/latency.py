@@ -125,8 +125,6 @@ class LatencyPlugin(base.Plugin):
 
 	templates = [GraphTemplateLatency]
 
-	interval = 60
-
 	@property
 	def objects(self):
 		deadline = self.interval / len(PING_HOSTS)
