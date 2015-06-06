@@ -21,7 +21,7 @@
 AC_PREREQ([2.64])
 
 AC_INIT([collecty],
-	[002],
+	[003],
 	[info@ipfire.org],
 	[collecty],
 	[http://git.ipfire.org/?p=oddments/collecty.git;a=summary])
