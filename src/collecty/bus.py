@@ -93,3 +93,7 @@ class GraphGenerator(dbus.service.Object):
 			Returns a list of all available templates
 		"""
 		return [t.name for t in self.collecty.templates]
+
+	@dbus.service.method(BUS_DOMAIN, in_signature="", out_signature="s")
+	def Version(self):
+		return COLLECTY_VERSION

@@ -72,6 +72,7 @@ dist_bin_SCRIPTS = \
 
 collecty_PYTHON = \
 	src/collecty/__init__.py \
+	src/collecty/__version__.py \
 	src/collecty/bus.py \
 	src/collecty/client.py \
 	src/collecty/constants.py \

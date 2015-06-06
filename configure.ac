@@ -146,6 +146,7 @@ AC_SUBST([dbussystemservicedir], [$with_dbussystemservicedir])
 AC_CONFIG_FILES([
 	Makefile
 	po/Makefile.in
+	src/collecty/__version__.py
 ])
 
 AC_OUTPUT

@@ -21,6 +21,7 @@
 
 import argparse
 import dbus
+import platform
 import sys
 
 from .constants import *
@@ -76,6 +77,15 @@ class CollectyClient(object):
 		with open(ns.filename, "wb") as f:
 			f.write(graph)
 
+	def version_cli(self, args):
+		daemon_version = self.proxy.Version()
+
+		print(_("collecty %s running on Python %s") % \
+			(COLLECTY_VERSION, platform.python_version()))
+
+		if not COLLECTY_VERSION == daemon_version:
+			print(_("daemon %s") % daemon_version)
+
 	def parse_cli(self, args):
 		parser = argparse.ArgumentParser(prog="collecty-client")
 		subparsers = parser.add_subparsers(help="sub-command help")
@@ -104,6 +114,10 @@ class CollectyClient(object):
 		parser_list_templates = subparsers.add_parser("list-templates",
 			help=_("Lists all graph templates"))
 		parser_list_templates.set_defaults(func=self.list_templates_cli)
+
+		# version
+		parser_version = subparsers.add_parser("version", help=_("Show version"))
+		parser_version.set_defaults(func=self.version_cli)
 
 		return parser.parse_args(args)
 

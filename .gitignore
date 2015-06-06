@@ -4,6 +4,7 @@
 /man/*.[0-9]
 /man/*.html
 /missing
+/src/collecty/__version__.py
 /src/systemd/collecty.service
 /tmp
 *.py[co]

@@ -21,6 +21,8 @@
 
 from .i18n import _
 
+from .__version__ import *
+
 DATABASE_DIR = "/var/lib/collecty"
 
 BUS_DOMAIN = "org.ipfire.collecty1"
