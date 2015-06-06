@@ -193,9 +193,9 @@ class Collecty(object):
 			Creates a number of worker threads
 		"""
 		# If no number of threads is given, we will create as many as we have
-		# active processor cores but never less than four.
+		# active processor cores but never less than two.
 		if num is None:
-			num = max(multiprocessing.cpu_count(), 4)
+			num = max(multiprocessing.cpu_count(), 2)
 
 		worker_threads = []
 
