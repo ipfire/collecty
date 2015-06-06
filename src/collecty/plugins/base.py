@@ -374,6 +374,7 @@ class GraphTemplate(object):
 		None   : "-3h",
 		"hour" : "-1h",
 		"day"  : "-25h",
+		"month": "-30d",
 		"week" : "-360h",
 		"year" : "-365d",
 	}
