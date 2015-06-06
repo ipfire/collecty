@@ -270,9 +270,6 @@ class WorkerThread(threading.Thread):
 	def shutdown(self):
 		self.running = False
 
-		# Wait until all data has been written.
-		self.join()
-
 
 class WriteQueue(threading.Thread):
 	def __init__(self, collecty, submit_interval):
