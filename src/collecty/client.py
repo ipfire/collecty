@@ -52,7 +52,7 @@ class CollectyClient(object):
 
 		# Convert the byte array into a byte string again
 		if byte_array:
-			return "".join((chr(b) for b in byte_array))
+			return bytes(byte_array)
 
 	def generate_graph_cli(self, ns):
 		kwargs = {
