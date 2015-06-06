@@ -93,8 +93,6 @@ class LoadAvgPlugin(base.Plugin):
 
 	templates = [GraphTemplateLoadAvg]
 
-	interval = 30
-
 	@property
 	def objects(self):
 		return [LoadAvgObject(self)]
