@@ -5,7 +5,6 @@ src/collecty/daemon.py
 src/collecty/errors.py
 src/collecty/i18n.py
 src/collecty/__init__.py
-src/collecty/ping.py
 src/collecty/plugins/base.py
 src/collecty/plugins/conntrack.py
 src/collecty/plugins/cpu.py

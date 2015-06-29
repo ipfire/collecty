@@ -79,8 +79,7 @@ collecty_PYTHON = \
 	src/collecty/daemon.py \
 	src/collecty/errors.py \
 	src/collecty/i18n.py \
-	src/collecty/logger.py \
-	src/collecty/ping.py
+	src/collecty/logger.py
 
 collectydir = $(pythondir)/collecty
 
@@ -109,6 +108,7 @@ _collecty_la_SOURCES = \
 _collecty_la_CFLAGS = \
 	$(AM_CFLAGS) \
 	$(LIBATASMART_CFLAGS) \
+	$(OPING_CFLAGS) \
 	$(PYTHON_CFLAGS)
 
 _collecty_la_LDFLAGS = \
@@ -119,6 +119,7 @@ _collecty_la_LDFLAGS = \
 
 _collecty_la_LIBADD = \
 	$(LIBATASMART_LIBS) \
+	$(OPING_LIBS) \
 	$(PYTHON_LIBS) \
 	$(SENSORS_LIBS)
 
