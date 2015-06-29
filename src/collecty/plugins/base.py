@@ -147,8 +147,7 @@ class Plugin(object, metaclass=PluginRegistration):
 			try:
 				result = o.collect()
 
-				if isinstance(result, tuple) or isinstance(result, list):
-					result = ":".join(("%s" % e for e in result))
+				result = self._format_result(result)
 			except:
 				self.log.warning(_("Unhandled exception in %s.collect()") % o, exc_info=True)
 				continue
@@ -169,6 +168,25 @@ class Plugin(object, metaclass=PluginRegistration):
 		# Log some warning when a collect method takes too long to return some data
 		if delay >= 60:
 			self.log.warning(_("A worker thread was stalled for %.4fs") % delay)
+
+	@staticmethod
+	def _format_result(result):
+		if not isinstance(result, tuple) and not isinstance(result, list):
+			return result
+
+		# Replace all Nones by NaN
+		s = []
+
+		for e in result:
+			if e is None:
+				e = "NaN"
+
+			# Format as string
+			e = "%s" % e
+
+			s.append(e)
+
+		return ":".join(s)
 
 	def get_object(self, id):
 		for object in self.objects:
