@@ -112,6 +112,11 @@ class CPUFreqObject(base.Object):
 	def core_id(self):
 		return self.read_file("topology/core_id")
 
+	def is_cpufreq_supported(self):
+		path = os.path.join(self.sys_path, "cpufreq")
+
+		return os.path.exists(path)
+
 	def collect(self):
 		return (
 			self.read_frequency("cpufreq/cpuinfo_cur_freq"),
@@ -153,6 +158,10 @@ class CPUFreqPlugin(base.Plugin):
 			# If we have already seen a virtual core of the processor,
 			# we will skip any others.
 			if o.core_id in core_ids:
+				continue
+
+			# Check if this processor is supported by cpufreq
+			if not o.is_cpufreq_supported():
 				continue
 
 			# Save the ID of the added core
