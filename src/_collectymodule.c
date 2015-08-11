@@ -553,7 +553,7 @@ static PyObject* Ping_ping(PingObject* self, PyObject* args, PyObject* kwds) {
 	}
 
 	if (self->stats.packets_rcvd == 0) {
-		PyErr_Format(PyExc_PingError, "No replies received");
+		PyErr_Format(PyExc_PingError, "No replies received from %s", self->host);
 		return NULL;
 	}
 
