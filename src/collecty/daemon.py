@@ -21,6 +21,7 @@
 
 import datetime
 import multiprocessing
+import os
 import queue
 import rrdtool
 import signal
@@ -44,6 +45,10 @@ class Collecty(object):
 
 	def __init__(self, debug=False):
 		self.debug = debug
+
+		# Reset timezone to UTC
+		# rrdtool is reading that from the environment
+		os.environ["TZ"] = "UTC"
 
 		# Enable debug logging when running in debug mode
 		if self.debug:
