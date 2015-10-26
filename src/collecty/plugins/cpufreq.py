@@ -33,10 +33,12 @@ class GraphTemplateCPUFreq(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("CPU usage")
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return "%s [%s]" % (_("Frequency"), _("Hz"))
 
 	def get_object_table(self):
