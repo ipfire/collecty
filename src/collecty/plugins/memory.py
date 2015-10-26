@@ -31,60 +31,66 @@ class GraphTemplateMemory(base.GraphTemplate):
 	upper_limit = 100
 	lower_limit = 0
 
-	rrd_graph = [
-		"DEF:used=%(file)s:used:AVERAGE",
-		"DEF:cached=%(file)s:cached:AVERAGE",
-		"DEF:buffered=%(file)s:buffered:AVERAGE",
-		"DEF:free=%(file)s:free:AVERAGE",
-		"DEF:swap=%(file)s:swap:AVERAGE",
+	@property
+	def rrd_graph(self):
+		_ = self.locale.translate
 
-		"AREA:used#90EE90:%-15s" % _("Used memory"),
-		"VDEF:usedmin=used,MINIMUM",
-		"VDEF:usedmax=used,MAXIMUM",
-		"VDEF:usedavg=used,AVERAGE",
-		"GPRINT:usedmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:usedmin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:usedavg:%12s\:" % _("Average") + " %6.2lf\\n",
+		return [
+			"DEF:used=%(file)s:used:AVERAGE",
+			"DEF:cached=%(file)s:cached:AVERAGE",
+			"DEF:buffered=%(file)s:buffered:AVERAGE",
+			"DEF:free=%(file)s:free:AVERAGE",
+			"DEF:swap=%(file)s:swap:AVERAGE",
 
-		"STACK:buffered#4169E1:%-15s" % _("Buffered data"),
-		"VDEF:bufferedmin=buffered,MINIMUM",
-		"VDEF:bufferedmax=buffered,MAXIMUM",
-		"VDEF:bufferedavg=buffered,AVERAGE",
-		"GPRINT:bufferedmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:bufferedmin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:bufferedavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"AREA:used#90EE90:%-15s" % _("Used memory"),
+			"VDEF:usedmin=used,MINIMUM",
+			"VDEF:usedmax=used,MAXIMUM",
+			"VDEF:usedavg=used,AVERAGE",
+			"GPRINT:usedmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:usedmin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:usedavg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-		"STACK:cached#FFD700:%-15s" % _("Cached data"),
-		"VDEF:cachedmin=cached,MINIMUM",
-		"VDEF:cachedmax=cached,MAXIMUM",
-		"VDEF:cachedavg=cached,AVERAGE",
-		"GPRINT:cachedmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:cachedmin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:cachedavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"STACK:buffered#4169E1:%-15s" % _("Buffered data"),
+			"VDEF:bufferedmin=buffered,MINIMUM",
+			"VDEF:bufferedmax=buffered,MAXIMUM",
+			"VDEF:bufferedavg=buffered,AVERAGE",
+			"GPRINT:bufferedmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:bufferedmin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:bufferedavg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-#		"STACK:free#7799ff:%-15s" % _("Free memory"),
-#		"VDEF:freemin=free,MINIMUM",
-#		"VDEF:freemax=free,MAXIMUM",
-#		"VDEF:freeavg=free,AVERAGE",
-#		"GPRINT:freemax:%12s\:" % _("Maximum") + " %6.2lf" ,
-#		"GPRINT:freemin:%12s\:" % _("Minimum") + " %6.2lf",
-#		"GPRINT:freeavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"STACK:cached#FFD700:%-15s" % _("Cached data"),
+			"VDEF:cachedmin=cached,MINIMUM",
+			"VDEF:cachedmax=cached,MAXIMUM",
+			"VDEF:cachedavg=cached,AVERAGE",
+			"GPRINT:cachedmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:cachedmin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:cachedavg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-		"LINE3:swap#ff0000:%-15s" % _("Used Swap space"),
-		"VDEF:swapmin=swap,MINIMUM",
-		"VDEF:swapmax=swap,MAXIMUM",
-		"VDEF:swapavg=swap,AVERAGE",
-		"GPRINT:swapmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:swapmin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:swapavg:%12s\:" % _("Average") + " %6.2lf\\n",
-	]
+#			"STACK:free#7799ff:%-15s" % _("Free memory"),
+#			"VDEF:freemin=free,MINIMUM",
+#			"VDEF:freemax=free,MAXIMUM",
+#			"VDEF:freeavg=free,AVERAGE",
+#			"GPRINT:freemax:%12s\:" % _("Maximum") + " %6.2lf" ,
+#			"GPRINT:freemin:%12s\:" % _("Minimum") + " %6.2lf",
+#			"GPRINT:freeavg:%12s\:" % _("Average") + " %6.2lf\\n",
+
+			"LINE3:swap#ff0000:%-15s" % _("Used Swap space"),
+			"VDEF:swapmin=swap,MINIMUM",
+			"VDEF:swapmax=swap,MAXIMUM",
+			"VDEF:swapavg=swap,AVERAGE",
+			"GPRINT:swapmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:swapmin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:swapavg:%12s\:" % _("Average") + " %6.2lf\\n",
+		]
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Memory Usage")
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Percent")
 
 
