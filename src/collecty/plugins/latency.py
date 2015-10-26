@@ -37,6 +37,8 @@ class GraphTemplateLatency(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
+		_ = self.locale.translate
+
 		return [
 			"DEF:latency6=%(file)s:latency6:AVERAGE",
 			"DEF:loss6=%(file)s:loss6:AVERAGE",
@@ -97,10 +99,12 @@ class GraphTemplateLatency(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Latency to %s") % self.object.hostname
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Milliseconds")
 
 	@property
