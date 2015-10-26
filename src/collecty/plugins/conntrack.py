@@ -136,18 +136,24 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 		"ipv4"  : "#cccc33",
 	}
 
-	protocol_descriptions = {
-		"ipv6"  : _("IPv6"),
-		"ipv4"  : _("IPv4"),
-		"other" : _("Other"),
-	}
+	@property
+	def protocol_descriptions(self):
+		_ = self.locale.translate
+
+		return {
+			"ipv6"  : _("IPv6"),
+			"ipv4"  : _("IPv4"),
+			"other" : _("Other"),
+		}
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Connections by Layer 3 Protocols")
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Number of open connections")
 
 	def get_object_table(self, object_id):
@@ -157,6 +163,7 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
+		_ = self.locale.translate
 		args = []
 
 		for proto in reversed(self.protocols):
@@ -207,16 +214,20 @@ class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplat
 		"dccp"    : "#33cc00",
 	}
 
-	protocol_descriptions = {
-		"tcp"     : _("TCP"),
-		"udp"     : _("UDP"),
-		"icmp"    : _("ICMP"),
-		"igmp"    : _("IGMP"),
-		"udplite" : _("UDP Lite"),
-		"sctp"    : _("SCTP"),
-		"dccp"    : _("DCCP"),
-		"other"   : _("Other"),
-	}
+	@property
+	def protocol_descriptions(self):
+		_ = self.locale.translate
+
+		return {
+			"tcp"     : _("TCP"),
+			"udp"     : _("UDP"),
+			"icmp"    : _("ICMP"),
+			"igmp"    : _("IGMP"),
+			"udplite" : _("UDP Lite"),
+			"sctp"    : _("SCTP"),
+			"dccp"    : _("DCCP"),
+			"other"   : _("Other"),
+		}
 
 	protocol_sortorder = {
 		"tcp"     : 1,
@@ -230,6 +241,7 @@ class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplat
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Connections by IP Protocols")
 
 	@property
@@ -331,10 +343,12 @@ class ConntrackProtocolWithStatesGraphTemplate(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Protocol States of all %s connections") % self.protocol.upper()
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Number of open connections")
 
 	@property
@@ -348,6 +362,7 @@ class ConntrackProtocolWithStatesGraphTemplate(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
+		_ = self.locale.translate
 		args = []
 
 		for state in reversed(self.states):
