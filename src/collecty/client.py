@@ -48,13 +48,21 @@ class CollectyClient(object):
 		for t in sorted(templates):
 			print(t)
 
+	def graph_info(self, template_name, **kwargs):
+		graph_info = self.proxy.GraphInfo(template_name, kwargs,
+			signature="sa{sv}")
+
+		return dict(graph_info)
+
 	def generate_graph(self, template_name, **kwargs):
-		byte_array = self.proxy.GenerateGraph(template_name, kwargs,
+		graph = self.proxy.GenerateGraph(template_name, kwargs,
 			signature="sa{sv}")
 
 		# Convert the byte array into a byte string again
-		if byte_array:
-			return bytes(byte_array)
+		if graph:
+			graph["image"] = bytes(graph["image"])
+
+		return graph
 
 	def generate_graph_cli(self, ns):
 		kwargs = {
@@ -79,9 +87,17 @@ class CollectyClient(object):
 		# Generate the graph image
 		graph = self.generate_graph(ns.template, **kwargs)
 
+		# Add some useful information
+		info = self.graph_info(ns.template, **kwargs)
+		if info:
+			graph.update(info)
+
 		# Write file to disk
 		with open(ns.filename, "wb") as f:
-			f.write(graph)
+			f.write(graph["image"])
+
+		print(_("Title      : %(title)s (%(template)s - %(object_id)s)") % graph)
+		print(_("Image size : %(image_width)sx%(image_height)spx") % graph)
 
 	def version_cli(self, args):
 		daemon_version = self.proxy.Version()

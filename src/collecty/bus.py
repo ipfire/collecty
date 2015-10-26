@@ -78,14 +78,25 @@ class GraphGenerator(dbus.service.Object):
 
 		self.collecty = collecty
 
-	@dbus.service.method(BUS_DOMAIN, in_signature="sa{sv}", out_signature="ay")
+	@dbus.service.method(BUS_DOMAIN, in_signature="sa{sv}", out_signature="a{sv}")
 	def GenerateGraph(self, template_name, kwargs):
 		"""
 			Returns a graph generated from the given template and object.
 		"""
 		graph = self.collecty.generate_graph(template_name, **kwargs)
 
-		return dbus.ByteArray(graph or [])
+		# Convert the graph back to normal Python format
+		if graph:
+			graph["image"] = dbus.ByteArray(graph["image"] or [])
+
+		return graph
+
+	@dbus.service.method(BUS_DOMAIN, in_signature="", out_signature="a{sv}")
+	def GraphInfo(self, template_name, kwargs):
+		"""
+			Returns a dictionary with information about the graph.
+		"""
+		return self.collecty.graph_info(template_name, **kwargs)
 
 	@dbus.service.method(BUS_DOMAIN, in_signature="", out_signature="as")
 	def ListTemplates(self):

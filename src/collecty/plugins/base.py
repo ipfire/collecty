@@ -255,6 +255,15 @@ class Plugin(object, metaclass=PluginRegistration):
 
 		return graph
 
+	def graph_info(self, template_name, object_id="default",
+			timezone=None, locale=None, **kwargs):
+		template = self.get_template(template_name, object_id=object_id,
+			timezone=timezone, locale=locale)
+		if not template:
+			raise RuntimeError("Could not find template %s" % template_name)
+
+		return template.graph_info()
+
 
 class Object(object):
 	# The schema of the RRD database.
@@ -550,4 +559,19 @@ class GraphTemplate(object):
 		with Environment(self.timezone, self.locale.lang):
 			graph = rrdtool.graphv("-", *args)
 
-		return graph.get("image")
+		return {
+			"image"        : graph.get("image"),
+			"image_height" : graph.get("image_height"),
+			"image_width"  : graph.get("image_width"),
+		}
+
+	def graph_info(self):
+		"""
+			Returns a dictionary with useful information
+			about this graph.
+		"""
+		return {
+			"title"        : self.graph_title,
+			"object_id"    : self.object_id or "",
+			"template"     : self.name,
+		}

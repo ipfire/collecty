@@ -196,6 +196,13 @@ class Collecty(object):
 
 		return plugin.generate_graph(template_name, *args, **kwargs)
 
+	def graph_info(self, template_name, *args, **kwargs):
+		plugin = self.get_plugin_from_template(template_name)
+		if not plugin:
+			raise RuntimeError("Could not find template %s" % template_name)
+
+		return plugin.graph_info(template_name, *args, **kwargs)
+
 	def create_worker_threads(self, num=None):
 		"""
 			Creates a number of worker threads
