@@ -31,58 +31,64 @@ from ..i18n import _
 class GraphTemplateSensorsTemperature(base.GraphTemplate):
 	name = "sensors-temperature"
 
-	rrd_graph = [
-		"DEF:value_kelvin=%(file)s:value:AVERAGE",
-		"DEF:critical_kelvin=%(file)s:critical:AVERAGE",
-		"DEF:high_kelvin=%(file)s:high:AVERAGE",
-		"DEF:low_kelvin=%(file)s:low:AVERAGE",
+	@property
+	def rrd_graph(self):
+		_ = self.locale.translate
 
-		# Convert everything to celsius
-		"CDEF:value=value_kelvin,273.15,-",
-		"CDEF:critical=critical_kelvin,273.15,-",
-		"CDEF:high=high_kelvin,273.15,-",
-		"CDEF:low=low_kelvin,273.15,-",
+		return [
+			"DEF:value_kelvin=%(file)s:value:AVERAGE",
+			"DEF:critical_kelvin=%(file)s:critical:AVERAGE",
+			"DEF:high_kelvin=%(file)s:high:AVERAGE",
+			"DEF:low_kelvin=%(file)s:low:AVERAGE",
 
-		# Change colour when the value gets above high
-		"CDEF:value_high=value,high,GT,value,UNKN,IF",
-		"CDEF:value_normal=value,high,GT,UNKN,value,IF",
+			# Convert everything to celsius
+			"CDEF:value=value_kelvin,273.15,-",
+			"CDEF:critical=critical_kelvin,273.15,-",
+			"CDEF:high=high_kelvin,273.15,-",
+			"CDEF:low=low_kelvin,273.15,-",
 
-		"VDEF:value_cur=value,LAST",
-		"VDEF:value_avg=value,AVERAGE",
-		"VDEF:value_max=value,MAXIMUM",
-		"VDEF:value_min=value,MINIMUM",
+			# Change colour when the value gets above high
+			"CDEF:value_high=value,high,GT,value,UNKN,IF",
+			"CDEF:value_normal=value,high,GT,UNKN,value,IF",
 
-		# Get data points for the threshold lines
-		"VDEF:critical_line=critical,MINIMUM",
-		"VDEF:low_line=low,MAXIMUM",
+			"VDEF:value_cur=value,LAST",
+			"VDEF:value_avg=value,AVERAGE",
+			"VDEF:value_max=value,MAXIMUM",
+			"VDEF:value_min=value,MINIMUM",
 
-		# Draw the temperature value
-		"LINE3:value_high#ff0000",
-		"LINE2:value_normal#00ff00:%-15s" % _("Temperature"),
+			# Get data points for the threshold lines
+			"VDEF:critical_line=critical,MINIMUM",
+			"VDEF:low_line=low,MAXIMUM",
 
-		# Draw the legend
-		"GPRINT:value_cur:%%10.2lf °C\l",
-		"GPRINT:value_avg:  %-15s %%6.2lf °C\l" % _("Average"),
-		"GPRINT:value_max:  %-15s %%6.2lf °C\l" % _("Maximum"),
-		"GPRINT:value_min:  %-15s %%6.2lf °C\l" % _("Minimum"),
+			# Draw the temperature value
+			"LINE3:value_high#ff0000",
+			"LINE2:value_normal#00ff00:%-15s" % _("Temperature"),
 
-		# Empty line
-		"COMMENT: \\n",
+			# Draw the legend
+			"GPRINT:value_cur:%%10.2lf °C\l",
+			"GPRINT:value_avg:  %-15s %%6.2lf °C\l" % _("Average"),
+			"GPRINT:value_max:  %-15s %%6.2lf °C\l" % _("Maximum"),
+			"GPRINT:value_min:  %-15s %%6.2lf °C\l" % _("Minimum"),
 
-		# Draw boundary lines
-		"COMMENT:%s\:" % _("Temperature Thresholds"),
-		"HRULE:critical_line#000000:%-15s" % _("Critical"),
-		"GPRINT:critical_line:%%6.2lf °C\\r",
-		"HRULE:low_line#0000ff:%-15s" % _("Low"),
-		"GPRINT:low_line:%%6.2lf °C\\r",
-	]
+			# Empty line
+			"COMMENT: \\n",
+
+			# Draw boundary lines
+			"COMMENT:%s\:" % _("Temperature Thresholds"),
+			"HRULE:critical_line#000000:%-15s" % _("Critical"),
+			"GPRINT:critical_line:%%6.2lf °C\\r",
+			"HRULE:low_line#0000ff:%-15s" % _("Low"),
+			"GPRINT:low_line:%%6.2lf °C\\r",
+		]
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Temperature (%s)") % self.object.sensor.name
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("° Celsius")
 
 
@@ -111,6 +117,7 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
+		_ = self.locale.translate
 		rrd_graph = []
 
 		cores = sorted(self.object_table.keys())
@@ -186,10 +193,12 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Processor")
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Temperature")
 
 
