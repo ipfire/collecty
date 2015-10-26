@@ -121,4 +121,4 @@ def get_closest(*langs):
 				pass
 
 def get(*langs):
-	return get_closest(*langs) or _locale.get(DEFAULT_LOCALE, None)
+	return get_closest(*langs) or _locales.get(DEFAULT_LOCALE, None)
