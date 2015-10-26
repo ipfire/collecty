@@ -30,29 +30,35 @@ ENTROPY_FILE = "/proc/sys/kernel/random/entropy_avail"
 class GraphTemplateEntropy(base.GraphTemplate):
 	name = "entropy"
 
-	rrd_graph = [
-		"DEF:entropy=%(file)s:entropy:AVERAGE",
-		"CDEF:entropytrend=entropy,43200,TREND",
+	@property
+	def rrd_graph(self):
+		_ = self.locale.translate
 
-		"LINE3:entropy#ff0000:%-15s" % _("Available entropy"),
-		"VDEF:entrmin=entropy,MINIMUM",
-		"VDEF:entrmax=entropy,MAXIMUM",
-		"VDEF:entravg=entropy,AVERAGE",
-		"GPRINT:entrmax:%12s\:" % _("Maximum") + " %5.0lf",
-		"GPRINT:entrmin:%12s\:" % _("Minimum") + " %5.0lf",
-		"GPRINT:entravg:%12s\:" % _("Average") + " %5.0lf\\n",
+		return [
+			"DEF:entropy=%(file)s:entropy:AVERAGE",
+			"CDEF:entropytrend=entropy,43200,TREND",
 
-		"LINE3:entropytrend#000000",
-	]
+			"LINE3:entropy#ff0000:%-15s" % _("Available entropy"),
+			"VDEF:entrmin=entropy,MINIMUM",
+			"VDEF:entrmax=entropy,MAXIMUM",
+			"VDEF:entravg=entropy,AVERAGE",
+			"GPRINT:entrmax:%12s\:" % _("Maximum") + " %5.0lf",
+			"GPRINT:entrmin:%12s\:" % _("Minimum") + " %5.0lf",
+			"GPRINT:entravg:%12s\:" % _("Average") + " %5.0lf\\n",
+
+			"LINE3:entropytrend#000000",
+		]
 
 	lower_limit = 0
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Available entropy")
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Bit")
 
 
