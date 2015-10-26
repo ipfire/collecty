@@ -64,6 +64,41 @@ class Timer(object):
 		return self.elapsed > self.timeout
 
 
+class Environment(object):
+	"""
+		Sets the correct environment for rrdtool to create
+		localised graphs and graphs in the correct timezone.
+	"""
+	def __init__(self, timezone, locale):
+		# Build the new environment
+		self.new_environment = {
+			"TZ" : timezone or DEFAULT_TIMEZONE,
+		}
+
+		for k in ("LANG", "LC_ALL"):
+			self.new_environment[k] = locale or DEFAULT_LOCALE
+
+	def __enter__(self):
+		# Save the current environment
+		self.old_environment = {}
+		for k in self.new_environment:
+			self.old_environment[k] = os.environ.get(k, None)
+
+		# Apply the new one
+		os.environ.update(self.new_environment)
+
+	def __exit__(self, type, value, traceback):
+		# Roll back to the previous environment
+		for k, v in self.old_environment.items():
+			if v is None:
+				try:
+					del os.environ[k]
+				except KeyError:
+					pass
+			else:
+				os.environ[k] = v
+
+
 class PluginRegistration(type):
 	plugins = {}
 
@@ -486,7 +521,7 @@ class GraphTemplate(object):
 
 		return files
 
-	def generate_graph(self, interval=None, **kwargs):
+	def generate_graph(self, interval=None, timezone=None, locale=None, **kwargs):
 		args = self._make_command_line(interval, **kwargs)
 
 		self.log.info(_("Generating graph %s") % self)
@@ -505,6 +540,7 @@ class GraphTemplate(object):
 		# Convert arguments to string
 		args = [str(e) for e in args]
 
-		graph = rrdtool.graphv("-", *args)
+		with Environment(timezone, locale):
+			graph = rrdtool.graphv("-", *args)
 
 		return graph.get("image")

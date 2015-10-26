@@ -21,6 +21,7 @@
 
 import argparse
 import dbus
+import os
 import platform
 import sys
 
@@ -70,6 +71,11 @@ class CollectyClient(object):
 		if ns.interval:
 			kwargs["interval"] = ns.interval
 
+		kwargs.update({
+			"locale"   : ns.locale,
+			"timezone" : ns.timezone,
+		})
+
 		# Generate the graph image
 		graph = self.generate_graph(ns.template, **kwargs)
 
@@ -103,6 +109,10 @@ class CollectyClient(object):
 			help=_("Object identifier"), default="default")
 		parser_generate_graph.add_argument("--template",
 			help=_("The graph template identifier"), required=True)
+		parser_generate_graph.add_argument("--timezone", default=os.environ.get("TZ", "UTC"),
+			help=_("Generate the graph with timestamps plotted for the given timezone"))
+		parser_generate_graph.add_argument("--locale", default=os.environ.get("LANG", "en_GB.utf8"),
+			help=_("Generate the graph with this locale"))
 
 		# Dimensions
 		parser_generate_graph.add_argument("--height", type=int, default=0,
