@@ -87,7 +87,6 @@ collectydir = $(pythondir)/collecty
 collectyplugins_PYTHON = \
 	src/collecty/plugins/base.py \
 	src/collecty/plugins/conntrack.py \
-	src/collecty/plugins/cpu.py \
 	src/collecty/plugins/cpufreq.py \
 	src/collecty/plugins/disk.py \
 	src/collecty/plugins/entropy.py \
@@ -96,6 +95,7 @@ collectyplugins_PYTHON = \
 	src/collecty/plugins/latency.py \
 	src/collecty/plugins/loadavg.py \
 	src/collecty/plugins/memory.py \
+	src/collecty/plugins/processor.py \
 	src/collecty/plugins/sensors.py
 
 collectypluginsdir = $(collectydir)/plugins
