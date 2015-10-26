@@ -23,12 +23,12 @@ from .base import Timer, get
 
 from . import base
 from . import conntrack
-from . import cpu
 from . import cpufreq
 from . import disk
 from . import entropy
 from . import interface
 from . import latency
 from . import loadavg
+from . import processor
 from . import memory
 from . import sensors
