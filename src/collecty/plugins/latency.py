@@ -59,7 +59,7 @@ class GraphTemplateLatency(base.GraphTemplate):
 			"CDEF:l010=ploss,5,10,LIMIT,UN,UNKN,INF,IF",
 			"CDEF:l025=ploss,10,25,LIMIT,UN,UNKN,INF,IF",
 			"CDEF:l050=ploss,25,50,LIMIT,UN,UNKN,INF,IF",
-			"CDEF:l100=ploss,50,100,LIMIT,UN,UNKN,INF,IF",
+			"CDEF:l099=ploss,50,99,LIMIT,UN,UNKN,INF,IF",
 
 			"VDEF:latency6min=latency6,MINIMUM",
 			"VDEF:latency6max=latency6,MAXIMUM",
@@ -76,7 +76,7 @@ class GraphTemplateLatency(base.GraphTemplate):
 			"AREA:l010#cccccc:%s" % _("5-10%%"),
 			"AREA:l025#999999:%s" % _("10-25%%"),
 			"AREA:l050#666666:%s" % _("25-50%%"),
-			"AREA:l100#333333:%s" % _("50-100%%") + "\\r",
+			"AREA:l099#333333:%s" % _("50-99%%") + "\\r",
 
 			"COMMENT: \\n", # empty line
 
