@@ -3,203 +3,675 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Michael Tremer <michael.tremer@ipfire.org>, 2012.
+# Michael Tremer <michael.tremer@ipfire.org>, 2012,2015
+# Sun Tiger, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: The IPFire Project\n"
+"Project-Id-Version: IPFire Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-25 11:22+0000\n"
-"PO-Revision-Date: 2012-09-01 18:33+0000\n"
+"POT-Creation-Date: 2015-10-26 18:19+0100\n"
+"PO-Revision-Date: 2015-10-26 17:42+0000\n"
 "Last-Translator: Michael Tremer <michael.tremer@ipfire.org>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/ipfire/language/de/)\n"
+"Language-Team: German (http://www.transifex.com/mstremer/ipfire/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../src/collecty/bus.py:54
+msgid "Bus thread has started"
+msgstr ""
+
+#: ../src/collecty/bus.py:62
+msgid "Bus thread has ended"
+msgstr ""
+
+#: ../src/collecty/bus.py:65
+msgid "Stopping bus thread"
+msgstr ""
+
+#: ../src/collecty/client.py:89
+#, python-format
+msgid "collecty %s running on Python %s"
+msgstr ""
+
+#: ../src/collecty/client.py:93
+#, python-format
+msgid "daemon %s"
+msgstr ""
+
+#: ../src/collecty/client.py:101
+msgid "Generate a graph image"
+msgstr ""
+
+#: ../src/collecty/client.py:104
+msgid "filename"
+msgstr ""
+
+#: ../src/collecty/client.py:106
+msgid "image format"
+msgstr ""
+
+#: ../src/collecty/client.py:107
+msgid "interval"
+msgstr ""
+
+#: ../src/collecty/client.py:109
+msgid "Object identifier"
+msgstr ""
+
+#: ../src/collecty/client.py:111
+msgid "The graph template identifier"
+msgstr ""
+
+#: ../src/collecty/client.py:113
+msgid "Generate the graph with timestamps plotted for the given timezone"
+msgstr ""
+
+#: ../src/collecty/client.py:115
+msgid "Generate the graph with this locale"
+msgstr ""
+
+#: ../src/collecty/client.py:119
+msgid "Height of the generated image"
+msgstr ""
+
+#: ../src/collecty/client.py:121
+msgid "Width of the generated image"
+msgstr ""
+
+#: ../src/collecty/client.py:125
+msgid "Lists all graph templates"
+msgstr ""
+
+#. version
+#: ../src/collecty/client.py:129
+msgid "Show version"
+msgstr ""
+
 #. Brand all generated graphs.
-#: collecty/constants.py:44
+#: ../src/collecty/constants.py:49
 msgid "Created by collecty"
 msgstr "Erstellt mit collecty"
 
-#: collecty/daemon.py:49
-msgid "Collecty successfully initialized."
-msgstr "Collectly wurde erfolgreich gestartet."
-
-#: collecty/daemon.py:63
+#: ../src/collecty/daemon.py:81
 #, python-format
-msgid "Plugin '%(name)s' registered %(number)s instance(s)."
-msgstr "Das Plugin '%(name)s' hat %(number)s Instanz(en) registriert."
+msgid "Collecty successfully initialized with %s plugins"
+msgstr ""
 
-#: collecty/daemon.py:108
+#: ../src/collecty/daemon.py:84
 #, python-format
-msgid "%s is not alive anymore. Removing."
-msgstr "%s ist nicht mehr aktiv. Entferne."
+msgid "Supported locales: %s"
+msgstr ""
 
-#: collecty/daemon.py:114
-msgid "No thread running. Exiting main thread."
-msgstr "Es läuft kein Thread mehr. Beende Hauptthread."
+#: ../src/collecty/daemon.py:92
+#, python-format
+msgid "Plugin %s could not be initialised"
+msgstr ""
 
-#: collecty/daemon.py:120
-msgid "Submitting all data in memory"
-msgstr "Speichere alle im Speicher befindliche Daten"
+#: ../src/collecty/daemon.py:109
+msgid "No plugins have been initialised"
+msgstr ""
 
-#: collecty/daemon.py:128
+#: ../src/collecty/daemon.py:139
+#, python-format
+msgid "Worker queue is filling up with %s events"
+msgstr ""
+
+#: ../src/collecty/daemon.py:155
+msgid "Main thread exited"
+msgstr ""
+
+#: ../src/collecty/daemon.py:161
 msgid "Received shutdown signal"
-msgstr "Empfange Signal zum herunterfahren"
+msgstr "Empfange Signal zum Herunterfahren"
 
-#: collecty/daemon.py:140
+#: ../src/collecty/daemon.py:170
 #, python-format
 msgid "Registering signal %d"
 msgstr "Registriere Signal %d"
 
-#: collecty/daemon.py:145
+#: ../src/collecty/daemon.py:175
 #, python-format
 msgid "Caught signal %d"
 msgstr "Empfange Signal %d"
 
-#: collecty/plugins/base.py:105
-msgid "Successfully initialized."
-msgstr "Erfolgreich initialisiert."
+#: ../src/collecty/daemon.py:252
+#, python-format
+msgid "Worker thread %s has been initialised"
+msgstr ""
 
-#: collecty/plugins/base.py:152
+#: ../src/collecty/daemon.py:262
+#, python-format
+msgid "Worker thread %s has been started"
+msgstr ""
+
+#: ../src/collecty/daemon.py:276
+#, python-format
+msgid "Worker thread %s has been terminated"
+msgstr ""
+
+#: ../src/collecty/daemon.py:295
+msgid "Initialised write queue"
+msgstr ""
+
+#: ../src/collecty/daemon.py:298
+msgid "Write queue process started"
+msgstr ""
+
+#: ../src/collecty/daemon.py:310
+msgid "Write queue process stopped"
+msgstr ""
+
+#: ../src/collecty/daemon.py:329
+msgid "No data to commit"
+msgstr ""
+
+#: ../src/collecty/daemon.py:334
+msgid "Submitting data to the databases..."
+msgstr ""
+
+#: ../src/collecty/daemon.py:352
+#, python-format
+msgid "Emptied write queue in %.2fs"
+msgstr ""
+
+#: ../src/collecty/daemon.py:355
+#, python-format
+msgid "Committing %(counter)s entries to %(filename)s"
+msgstr ""
+
+#: ../src/collecty/daemon.py:367
+#, python-format
+msgid "Could not update RRD database %s: %s"
+msgstr ""
+
+#: ../src/collecty/plugins/base.py:115
+#, python-format
+msgid "Plugin is not properly configured: %s"
+msgstr ""
+
+#: ../src/collecty/plugins/base.py:156
+#, python-format
+msgid "Successfully initialized %s"
+msgstr ""
+
+#: ../src/collecty/plugins/base.py:188
+#, python-format
+msgid "Unhandled exception in %s.collect()"
+msgstr ""
+
+#: ../src/collecty/plugins/base.py:192
+#, python-format
+msgid "Received empty result: %s"
+msgstr ""
+
+#: ../src/collecty/plugins/base.py:195
+#, python-format
+msgid "Collected %s: %s"
+msgstr ""
+
+#: ../src/collecty/plugins/base.py:206
+#, python-format
+msgid "A worker thread was stalled for %.4fs"
+msgstr ""
+
+#: ../src/collecty/plugins/base.py:253
+#, python-format
+msgid "Generated graph %s in %.1fms"
+msgstr ""
+
+#: ../src/collecty/plugins/base.py:346
 #, python-format
 msgid "Created RRD file %s."
 msgstr "RRD-Datei %s erstellt."
 
-#: collecty/plugins/base.py:179
+#: ../src/collecty/plugins/base.py:534
 #, python-format
-msgid "Submitting data to database. %d entries."
-msgstr "Speichere Daten in Datenbank. %d Einträge."
+msgid "Generating graph %s"
+msgstr ""
 
-#: collecty/plugins/base.py:192
-msgid "Unhandled exception in read()!"
-msgstr "Unbehandelte Ausnahme in read()!"
+#: ../src/collecty/plugins/conntrack.py:144
+msgid "IPv6"
+msgstr "IPv6"
 
-#: collecty/plugins/base.py:203
-msgid "Unhandled exception in submit()!"
-msgstr "Unbehandelte Ausnahme in submit()!"
+#: ../src/collecty/plugins/conntrack.py:145
+msgid "IPv4"
+msgstr "IPv4"
 
-#: collecty/plugins/base.py:206
-msgid "Started."
-msgstr "Gestartet."
+#: ../src/collecty/plugins/conntrack.py:146
+#: ../src/collecty/plugins/conntrack.py:229
+msgid "Other"
+msgstr ""
 
-#: collecty/plugins/base.py:214
-msgid "Collecting..."
-msgstr "Sammle..."
+#: ../src/collecty/plugins/conntrack.py:152
+msgid "Connections by Layer 3 Protocols"
+msgstr ""
 
-#: collecty/plugins/base.py:218
-msgid "Stopped."
-msgstr "Gestoppt."
+#: ../src/collecty/plugins/conntrack.py:157
+#: ../src/collecty/plugins/conntrack.py:352
+msgid "Number of open connections"
+msgstr "Anzahl offener Verbindungen"
 
-#: collecty/plugins/base.py:221
-msgid "Received shutdown signal."
-msgstr "Empfange Signal zum herunterfahren."
-
-#: collecty/plugins/cpu.py:55
-msgid "User"
-msgstr "Benutzer"
-
-#: collecty/plugins/cpu.py:59 collecty/plugins/cpu.py:67
-#: collecty/plugins/cpu.py:75 collecty/plugins/cpu.py:83
-#: collecty/plugins/cpu.py:91 collecty/plugins/cpu.py:99
-#: collecty/plugins/entropy.py:50 collecty/plugins/loadavg.py:51
-#: collecty/plugins/loadavg.py:59 collecty/plugins/loadavg.py:67
-#: collecty/plugins/memory.py:55 collecty/plugins/memory.py:63
-#: collecty/plugins/memory.py:71 collecty/plugins/memory.py:87
-msgid "Maximum"
-msgstr "Maximum"
-
-#: collecty/plugins/cpu.py:60 collecty/plugins/cpu.py:68
-#: collecty/plugins/cpu.py:76 collecty/plugins/cpu.py:84
-#: collecty/plugins/cpu.py:92 collecty/plugins/cpu.py:100
-#: collecty/plugins/entropy.py:51 collecty/plugins/loadavg.py:52
-#: collecty/plugins/loadavg.py:60 collecty/plugins/loadavg.py:68
-#: collecty/plugins/memory.py:56 collecty/plugins/memory.py:64
-#: collecty/plugins/memory.py:72 collecty/plugins/memory.py:88
+#: ../src/collecty/plugins/conntrack.py:176
+#: ../src/collecty/plugins/conntrack.py:375 ../src/collecty/plugins/disk.py:80
+#: ../src/collecty/plugins/disk.py:90 ../src/collecty/plugins/disk.py:127
+#: ../src/collecty/plugins/disk.py:137 ../src/collecty/plugins/disk.py:174
+#: ../src/collecty/plugins/entropy.py:46
+#: ../src/collecty/plugins/interface.py:68
+#: ../src/collecty/plugins/interface.py:77
+#: ../src/collecty/plugins/interface.py:120
+#: ../src/collecty/plugins/interface.py:129
+#: ../src/collecty/plugins/interface.py:172
+#: ../src/collecty/plugins/interface.py:182
+#: ../src/collecty/plugins/interface.py:192
+#: ../src/collecty/plugins/interface.py:202
+#: ../src/collecty/plugins/latency.py:89 ../src/collecty/plugins/latency.py:96
+#: ../src/collecty/plugins/loadavg.py:45 ../src/collecty/plugins/loadavg.py:53
+#: ../src/collecty/plugins/loadavg.py:61 ../src/collecty/plugins/memory.py:50
+#: ../src/collecty/plugins/memory.py:58 ../src/collecty/plugins/memory.py:66
+#: ../src/collecty/plugins/memory.py:82
+#: ../src/collecty/plugins/processor.py:49
+#: ../src/collecty/plugins/processor.py:57
+#: ../src/collecty/plugins/processor.py:65
+#: ../src/collecty/plugins/processor.py:73
+#: ../src/collecty/plugins/processor.py:81
+#: ../src/collecty/plugins/processor.py:89
+#: ../src/collecty/plugins/processor.py:97
+#: ../src/collecty/plugins/sensors.py:71
+#: ../src/collecty/plugins/sensors.py:165
 msgid "Minimum"
 msgstr "Minimum"
 
-#: collecty/plugins/cpu.py:61 collecty/plugins/cpu.py:69
-#: collecty/plugins/cpu.py:77 collecty/plugins/cpu.py:85
-#: collecty/plugins/cpu.py:93 collecty/plugins/cpu.py:101
-#: collecty/plugins/entropy.py:52 collecty/plugins/loadavg.py:53
-#: collecty/plugins/loadavg.py:61 collecty/plugins/loadavg.py:69
-#: collecty/plugins/memory.py:57 collecty/plugins/memory.py:65
-#: collecty/plugins/memory.py:73 collecty/plugins/memory.py:89
+#: ../src/collecty/plugins/conntrack.py:177
+#: ../src/collecty/plugins/conntrack.py:376 ../src/collecty/plugins/disk.py:45
+#: ../src/collecty/plugins/disk.py:79 ../src/collecty/plugins/disk.py:89
+#: ../src/collecty/plugins/disk.py:126 ../src/collecty/plugins/disk.py:136
+#: ../src/collecty/plugins/disk.py:173 ../src/collecty/plugins/entropy.py:45
+#: ../src/collecty/plugins/interface.py:67
+#: ../src/collecty/plugins/interface.py:76
+#: ../src/collecty/plugins/interface.py:119
+#: ../src/collecty/plugins/interface.py:128
+#: ../src/collecty/plugins/interface.py:171
+#: ../src/collecty/plugins/interface.py:181
+#: ../src/collecty/plugins/interface.py:191
+#: ../src/collecty/plugins/interface.py:201
+#: ../src/collecty/plugins/latency.py:88 ../src/collecty/plugins/latency.py:95
+#: ../src/collecty/plugins/loadavg.py:44 ../src/collecty/plugins/loadavg.py:52
+#: ../src/collecty/plugins/loadavg.py:60 ../src/collecty/plugins/memory.py:49
+#: ../src/collecty/plugins/memory.py:57 ../src/collecty/plugins/memory.py:65
+#: ../src/collecty/plugins/memory.py:81
+#: ../src/collecty/plugins/processor.py:48
+#: ../src/collecty/plugins/processor.py:56
+#: ../src/collecty/plugins/processor.py:64
+#: ../src/collecty/plugins/processor.py:72
+#: ../src/collecty/plugins/processor.py:80
+#: ../src/collecty/plugins/processor.py:88
+#: ../src/collecty/plugins/processor.py:96
+#: ../src/collecty/plugins/sensors.py:70
+#: ../src/collecty/plugins/sensors.py:164
+msgid "Maximum"
+msgstr "Maximum"
+
+#: ../src/collecty/plugins/conntrack.py:178
+#: ../src/collecty/plugins/conntrack.py:377 ../src/collecty/plugins/disk.py:81
+#: ../src/collecty/plugins/disk.py:91 ../src/collecty/plugins/disk.py:128
+#: ../src/collecty/plugins/disk.py:138 ../src/collecty/plugins/disk.py:175
+#: ../src/collecty/plugins/entropy.py:47
+#: ../src/collecty/plugins/interface.py:69
+#: ../src/collecty/plugins/interface.py:78
+#: ../src/collecty/plugins/interface.py:121
+#: ../src/collecty/plugins/interface.py:130
+#: ../src/collecty/plugins/interface.py:173
+#: ../src/collecty/plugins/interface.py:183
+#: ../src/collecty/plugins/interface.py:193
+#: ../src/collecty/plugins/interface.py:203
+#: ../src/collecty/plugins/latency.py:90 ../src/collecty/plugins/latency.py:97
+#: ../src/collecty/plugins/loadavg.py:46 ../src/collecty/plugins/loadavg.py:54
+#: ../src/collecty/plugins/loadavg.py:62 ../src/collecty/plugins/memory.py:51
+#: ../src/collecty/plugins/memory.py:59 ../src/collecty/plugins/memory.py:67
+#: ../src/collecty/plugins/memory.py:83
+#: ../src/collecty/plugins/processor.py:50
+#: ../src/collecty/plugins/processor.py:58
+#: ../src/collecty/plugins/processor.py:66
+#: ../src/collecty/plugins/processor.py:74
+#: ../src/collecty/plugins/processor.py:82
+#: ../src/collecty/plugins/processor.py:90
+#: ../src/collecty/plugins/processor.py:98
+#: ../src/collecty/plugins/sensors.py:69
+#: ../src/collecty/plugins/sensors.py:163
 msgid "Average"
 msgstr "Durchschnitt"
 
-#: collecty/plugins/cpu.py:63
-msgid "Nice"
-msgstr "Nice"
+#: ../src/collecty/plugins/conntrack.py:179
+#: ../src/collecty/plugins/conntrack.py:378 ../src/collecty/plugins/disk.py:44
+#: ../src/collecty/plugins/disk.py:78 ../src/collecty/plugins/disk.py:88
+#: ../src/collecty/plugins/disk.py:125 ../src/collecty/plugins/disk.py:135
+#: ../src/collecty/plugins/disk.py:172
+msgid "Current"
+msgstr ""
 
-#: collecty/plugins/cpu.py:71
-msgid "System"
-msgstr "System"
+#: ../src/collecty/plugins/conntrack.py:222
+msgid "TCP"
+msgstr "TCP"
 
-#: collecty/plugins/cpu.py:79
-msgid "Wait"
-msgstr "Wait"
+#: ../src/collecty/plugins/conntrack.py:223
+msgid "UDP"
+msgstr "UDP"
 
-#: collecty/plugins/cpu.py:87
-msgid "Interrupt"
-msgstr "Interrupt"
+#: ../src/collecty/plugins/conntrack.py:224
+msgid "ICMP"
+msgstr "ICMP"
 
-#: collecty/plugins/cpu.py:95
-msgid "Soft interrupt"
-msgstr "Soft-Interrupt"
+#: ../src/collecty/plugins/conntrack.py:225
+msgid "IGMP"
+msgstr "IGMP"
 
-#: collecty/plugins/cpu.py:113
+#: ../src/collecty/plugins/conntrack.py:226
+msgid "UDP Lite"
+msgstr "UDP Lite"
+
+#: ../src/collecty/plugins/conntrack.py:227
+msgid "SCTP"
+msgstr "SCTP"
+
+#: ../src/collecty/plugins/conntrack.py:228
+msgid "DCCP"
+msgstr "DCCP"
+
+#: ../src/collecty/plugins/conntrack.py:245
+msgid "Connections by IP Protocols"
+msgstr ""
+
+#: ../src/collecty/plugins/conntrack.py:347
+#, python-format
+msgid "Protocol States of all %s connections"
+msgstr ""
+
+#: ../src/collecty/plugins/cpufreq.py:37
+#: ../src/collecty/plugins/processor.py:106
 msgid "CPU usage"
 msgstr "CPU-Auslastung"
 
-#: collecty/plugins/cpu.py:114 collecty/plugins/memory.py:93
-msgid "Percent"
-msgstr "Prozent"
+#: ../src/collecty/plugins/cpufreq.py:42
+msgid "Frequency"
+msgstr "Frequenz"
 
-#: collecty/plugins/entropy.py:46 collecty/plugins/entropy.py:57
+#: ../src/collecty/plugins/cpufreq.py:42
+msgid "Hz"
+msgstr "Hz"
+
+#: ../src/collecty/plugins/disk.py:40
+msgid "Bad Sectors"
+msgstr ""
+
+#: ../src/collecty/plugins/disk.py:51
+#, python-format
+msgid "Bad Sectors of %s"
+msgstr ""
+
+#: ../src/collecty/plugins/disk.py:56
+msgid "Pending/Relocated Sectors"
+msgstr ""
+
+#: ../src/collecty/plugins/disk.py:73 ../src/collecty/plugins/disk.py:120
+msgid "Read"
+msgstr "Gelesen"
+
+#: ../src/collecty/plugins/disk.py:83 ../src/collecty/plugins/disk.py:130
+msgid "Written"
+msgstr "Geschrieben"
+
+#: ../src/collecty/plugins/disk.py:101
+#, python-format
+msgid "Disk Utilisation of %s"
+msgstr ""
+
+#: ../src/collecty/plugins/disk.py:106
+msgid "Byte per Second"
+msgstr "Byte pro Sekunde"
+
+#: ../src/collecty/plugins/disk.py:148
+#, python-format
+msgid "Disk IO Operations of %s"
+msgstr ""
+
+#: ../src/collecty/plugins/disk.py:153
+msgid "Operations per Second"
+msgstr "Operationen pro Sekunde"
+
+#: ../src/collecty/plugins/disk.py:167 ../src/collecty/plugins/sensors.py:65
+#: ../src/collecty/plugins/sensors.py:161
+#: ../src/collecty/plugins/sensors.py:202
+msgid "Temperature"
+msgstr "Temperatur"
+
+#: ../src/collecty/plugins/disk.py:183
+#, python-format
+msgid "Disk Temperature of %s"
+msgstr ""
+
+#: ../src/collecty/plugins/disk.py:188 ../src/collecty/plugins/sensors.py:92
+msgid "° Celsius"
+msgstr "° Celsius"
+
+#: ../src/collecty/plugins/entropy.py:41 ../src/collecty/plugins/entropy.py:57
 msgid "Available entropy"
-msgstr "Verfügbar Entropie"
+msgstr "Verfügbare Entropie"
 
-#: collecty/plugins/entropy.py:58
-msgid "Bits"
-msgstr "Bits"
+#: ../src/collecty/plugins/entropy.py:62
+msgid "Bit"
+msgstr "Bit"
 
-#: collecty/plugins/entropy.py:66
-msgid "Entropy kernel interface does not exist."
-msgstr "Das Entropie-Kernel-Interface existsiert nicht."
+#: ../src/collecty/plugins/entropy.py:88
+msgid "Entropy kernel interface does not exist"
+msgstr ""
 
-#: collecty/plugins/loadavg.py:47
+#. Draw the received area.
+#: ../src/collecty/plugins/interface.py:63
+#: ../src/collecty/plugins/interface.py:86
+#: ../src/collecty/plugins/interface.py:115
+msgid "Received"
+msgstr "Empfangen"
+
+#: ../src/collecty/plugins/interface.py:67
+#: ../src/collecty/plugins/interface.py:68
+#: ../src/collecty/plugins/interface.py:69
+#: ../src/collecty/plugins/interface.py:76
+#: ../src/collecty/plugins/interface.py:77
+#: ../src/collecty/plugins/interface.py:78
+#: ../src/collecty/plugins/interface.py:87
+#: ../src/collecty/plugins/interface.py:89
+#, python-format
+msgid "%8.2lf %sbps"
+msgstr "%8.2lf %sbps"
+
+#. Draw the transmitted area.
+#: ../src/collecty/plugins/interface.py:72
+#: ../src/collecty/plugins/interface.py:88
+#: ../src/collecty/plugins/interface.py:124
+msgid "Transmitted"
+msgstr "Gesendet"
+
+#. Draw the 95% lines.
+#: ../src/collecty/plugins/interface.py:85
+msgid "95th percentile"
+msgstr "95. Perzentil"
+
+#: ../src/collecty/plugins/interface.py:95
+#, python-format
+msgid "Bandwidth usage on %s"
+msgstr "Bandbreitenauslastung auf %s"
+
+#: ../src/collecty/plugins/interface.py:100
+msgid "Bit/s"
+msgstr "Bit/s"
+
+#: ../src/collecty/plugins/interface.py:119
+#: ../src/collecty/plugins/interface.py:120
+#: ../src/collecty/plugins/interface.py:128
+#: ../src/collecty/plugins/interface.py:129
+#: ../src/collecty/plugins/interface.py:171
+#: ../src/collecty/plugins/interface.py:172
+#: ../src/collecty/plugins/interface.py:181
+#: ../src/collecty/plugins/interface.py:182
+#: ../src/collecty/plugins/interface.py:191
+#: ../src/collecty/plugins/interface.py:192
+#: ../src/collecty/plugins/interface.py:201
+#: ../src/collecty/plugins/interface.py:202
+#, python-format
+msgid "%8.0lf %spps"
+msgstr "%8.0lf %spps"
+
+#: ../src/collecty/plugins/interface.py:121
+#: ../src/collecty/plugins/interface.py:130
+#: ../src/collecty/plugins/interface.py:173
+#: ../src/collecty/plugins/interface.py:183
+#: ../src/collecty/plugins/interface.py:193
+#: ../src/collecty/plugins/interface.py:203
+#, python-format
+msgid "%8.2lf %spps"
+msgstr "%8.2lf %spps"
+
+#: ../src/collecty/plugins/interface.py:140
+#, python-format
+msgid "Transferred packets on %s"
+msgstr "Übertragene Pakete auf %s"
+
+#: ../src/collecty/plugins/interface.py:145
+#: ../src/collecty/plugins/interface.py:218
+msgid "Packets/s"
+msgstr "Pakete/s"
+
+#. Draw the receive errors.
+#: ../src/collecty/plugins/interface.py:167
+msgid "Receive errors"
+msgstr "Empfangsfehler"
+
+#. Draw the transmit errors.
+#: ../src/collecty/plugins/interface.py:177
+msgid "Transmit errors"
+msgstr "Sendefehler"
+
+#. Draw the receive drops.
+#: ../src/collecty/plugins/interface.py:187
+msgid "Receive drops"
+msgstr ""
+
+#. Draw the transmit drops.
+#: ../src/collecty/plugins/interface.py:197
+msgid "Transmit drops"
+msgstr ""
+
+#. Draw the collisions as a line.
+#: ../src/collecty/plugins/interface.py:207
+msgid "Collisions"
+msgstr "Kollisionen"
+
+#: ../src/collecty/plugins/interface.py:213
+#, python-format
+msgid "Errors/dropped packets on %s"
+msgstr "Fehler/verworfene Pakete auf %s"
+
+#: ../src/collecty/plugins/interface.py:250
+#, python-format
+msgid "Interface %s does not exists. Cannot collect."
+msgstr ""
+
+#: ../src/collecty/plugins/latency.py:73
+msgid "Average latency (IPv6)"
+msgstr "Durchschnittliche Latenz (IPv6)"
+
+#: ../src/collecty/plugins/latency.py:74
+msgid "Average latency (IPv4)"
+msgstr "Durchschnittliche Latenz (IPv4)"
+
+#: ../src/collecty/plugins/latency.py:76
+msgid "Packet Loss"
+msgstr "Paketverlust"
+
+#: ../src/collecty/plugins/latency.py:77
+#, python-format
+msgid "0-5%%"
+msgstr "0-5%%"
+
+#: ../src/collecty/plugins/latency.py:78
+#, python-format
+msgid "5-10%%"
+msgstr "5-10%%"
+
+#: ../src/collecty/plugins/latency.py:79
+#, python-format
+msgid "10-25%%"
+msgstr "10-25%%"
+
+#: ../src/collecty/plugins/latency.py:80
+#, python-format
+msgid "25-50%%"
+msgstr "25-50%%"
+
+#: ../src/collecty/plugins/latency.py:81
+#, python-format
+msgid "50-99%%"
+msgstr "50-99%%"
+
+#: ../src/collecty/plugins/latency.py:87
+msgid "Latency (IPv4)"
+msgstr "Latenz (IPv4)"
+
+#: ../src/collecty/plugins/latency.py:94
+msgid "Latency (IPv6)"
+msgstr "Latenz (IPv6)"
+
+#: ../src/collecty/plugins/latency.py:103
+#, python-format
+msgid "Latency to %s"
+msgstr "Latenz zu %s"
+
+#: ../src/collecty/plugins/latency.py:108
+msgid "Milliseconds"
+msgstr "Millisekunden"
+
+#: ../src/collecty/plugins/latency.py:148
+#, python-format
+msgid "Could not add host %(host)s for family %(family)s"
+msgstr ""
+
+#: ../src/collecty/plugins/latency.py:156
+#, python-format
+msgid "Could not run latency check for %(host)s: %(msg)s"
+msgstr ""
+
+#: ../src/collecty/plugins/loadavg.py:40
 msgid "Load average  1m"
-msgstr "Load average  1m"
+msgstr "Durchschnittslast 1m"
 
-#: collecty/plugins/loadavg.py:55
+#: ../src/collecty/plugins/loadavg.py:48
 msgid "Load average  5m"
-msgstr "Load average  5m"
+msgstr "Durchschnittslast 5m"
 
-#: collecty/plugins/loadavg.py:63
+#: ../src/collecty/plugins/loadavg.py:56
 msgid "Load average 15m"
-msgstr "Load average 15m"
+msgstr "Durchschnittslast 15m"
 
-#: collecty/plugins/loadavg.py:75
+#: ../src/collecty/plugins/loadavg.py:73
 msgid "Load average"
-msgstr "Load-Average"
+msgstr "Durchschnittslast"
 
-#: collecty/plugins/loadavg.py:76
+#: ../src/collecty/plugins/loadavg.py:78
 msgid "Load"
-msgstr "Load"
+msgstr "Auslastung"
 
-#: collecty/plugins/memory.py:51
+#: ../src/collecty/plugins/memory.py:45
 msgid "Used memory"
 msgstr "Belegter Speicher"
 
-#: collecty/plugins/memory.py:59
+#: ../src/collecty/plugins/memory.py:53
 msgid "Buffered data"
 msgstr "Zwischengepufferte Daten"
 
-#: collecty/plugins/memory.py:67
+#: ../src/collecty/plugins/memory.py:61
 msgid "Cached data"
 msgstr "Gecachte Daten"
 
@@ -210,10 +682,69 @@ msgstr "Gecachte Daten"
 #. "GPRINT:freemax:%12s\:" % _("Maximum") + " %6.2lf" ,
 #. "GPRINT:freemin:%12s\:" % _("Minimum") + " %6.2lf",
 #. "GPRINT:freeavg:%12s\:" % _("Average") + " %6.2lf\\n",
-#: collecty/plugins/memory.py:83
+#: ../src/collecty/plugins/memory.py:77
 msgid "Used Swap space"
-msgstr "Benutze Auslagerung"
+msgstr "Benutzte Auslagerung"
 
-#: collecty/plugins/memory.py:92
+#: ../src/collecty/plugins/memory.py:89
 msgid "Memory Usage"
 msgstr "Speicher-Auslastung"
+
+#: ../src/collecty/plugins/memory.py:94
+msgid "Percent"
+msgstr "Prozent"
+
+#: ../src/collecty/plugins/processor.py:44
+msgid "User"
+msgstr "Benutzer"
+
+#: ../src/collecty/plugins/processor.py:52
+msgid "Nice"
+msgstr "Nice"
+
+#: ../src/collecty/plugins/processor.py:60
+msgid "System"
+msgstr "System"
+
+#: ../src/collecty/plugins/processor.py:68
+msgid "Wait"
+msgstr "Wait"
+
+#: ../src/collecty/plugins/processor.py:76
+msgid "Interrupt"
+msgstr "Interrupt"
+
+#: ../src/collecty/plugins/processor.py:84
+msgid "Soft interrupt"
+msgstr "Soft-Interrupt"
+
+#: ../src/collecty/plugins/processor.py:92
+msgid "Idle"
+msgstr "Idle"
+
+#: ../src/collecty/plugins/processor.py:111
+msgid "Jiffies"
+msgstr ""
+
+#. Draw boundary lines
+#: ../src/collecty/plugins/sensors.py:77
+msgid "Temperature Thresholds"
+msgstr "Temperaturgrenzwerte"
+
+#: ../src/collecty/plugins/sensors.py:78
+#: ../src/collecty/plugins/sensors.py:188
+msgid "Critical"
+msgstr "Kritisch"
+
+#: ../src/collecty/plugins/sensors.py:80
+msgid "Low"
+msgstr "Niedrig"
+
+#: ../src/collecty/plugins/sensors.py:87
+#, python-format
+msgid "Temperature (%s)"
+msgstr "Temperatur (%s)"
+
+#: ../src/collecty/plugins/sensors.py:197
+msgid "Processor"
+msgstr "Prozessor"

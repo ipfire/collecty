@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# André Felipe Morro <andre@andremorro.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: IPFire Project\n"
@@ -11,12 +10,12 @@ msgstr ""
 "POT-Creation-Date: 2015-10-26 18:19+0100\n"
 "PO-Revision-Date: 2015-10-26 17:22+0000\n"
 "Last-Translator: Michael Tremer <michael.tremer@ipfire.org>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/mstremer/ipfire/language/pt_BR/)\n"
+"Language-Team: Japanese (http://www.transifex.com/mstremer/ipfire/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/collecty/bus.py:54
 msgid "Bus thread has started"
@@ -92,7 +91,7 @@ msgstr ""
 #. Brand all generated graphs.
 #: ../src/collecty/constants.py:49
 msgid "Created by collecty"
-msgstr "Criado por collecty"
+msgstr ""
 
 #: ../src/collecty/daemon.py:81
 #, python-format
@@ -124,17 +123,17 @@ msgstr ""
 
 #: ../src/collecty/daemon.py:161
 msgid "Received shutdown signal"
-msgstr "Recebendo sinal de desligar."
+msgstr ""
 
 #: ../src/collecty/daemon.py:170
 #, python-format
 msgid "Registering signal %d"
-msgstr "Registrando sinal %d"
+msgstr ""
 
 #: ../src/collecty/daemon.py:175
 #, python-format
 msgid "Caught signal %d"
-msgstr "Capturado sinal %d"
+msgstr ""
 
 #: ../src/collecty/daemon.py:252
 #, python-format
@@ -224,7 +223,7 @@ msgstr ""
 #: ../src/collecty/plugins/base.py:346
 #, python-format
 msgid "Created RRD file %s."
-msgstr "Criado arquivo RRD %s."
+msgstr ""
 
 #: ../src/collecty/plugins/base.py:534
 #, python-format
@@ -281,7 +280,7 @@ msgstr ""
 #: ../src/collecty/plugins/sensors.py:71
 #: ../src/collecty/plugins/sensors.py:165
 msgid "Minimum"
-msgstr "Mínimo"
+msgstr ""
 
 #: ../src/collecty/plugins/conntrack.py:177
 #: ../src/collecty/plugins/conntrack.py:376 ../src/collecty/plugins/disk.py:45
@@ -311,7 +310,7 @@ msgstr "Mínimo"
 #: ../src/collecty/plugins/sensors.py:70
 #: ../src/collecty/plugins/sensors.py:164
 msgid "Maximum"
-msgstr "Máximo"
+msgstr ""
 
 #: ../src/collecty/plugins/conntrack.py:178
 #: ../src/collecty/plugins/conntrack.py:377 ../src/collecty/plugins/disk.py:81
@@ -341,7 +340,7 @@ msgstr "Máximo"
 #: ../src/collecty/plugins/sensors.py:69
 #: ../src/collecty/plugins/sensors.py:163
 msgid "Average"
-msgstr "Média"
+msgstr ""
 
 #: ../src/collecty/plugins/conntrack.py:179
 #: ../src/collecty/plugins/conntrack.py:378 ../src/collecty/plugins/disk.py:44
@@ -391,7 +390,7 @@ msgstr ""
 #: ../src/collecty/plugins/cpufreq.py:37
 #: ../src/collecty/plugins/processor.py:106
 msgid "CPU usage"
-msgstr "Uso da CPU"
+msgstr ""
 
 #: ../src/collecty/plugins/cpufreq.py:42
 msgid "Frequency"
@@ -457,7 +456,7 @@ msgstr ""
 
 #: ../src/collecty/plugins/entropy.py:41 ../src/collecty/plugins/entropy.py:57
 msgid "Available entropy"
-msgstr "Entropia disponível"
+msgstr ""
 
 #: ../src/collecty/plugins/entropy.py:62
 msgid "Bit"
@@ -644,35 +643,35 @@ msgstr ""
 
 #: ../src/collecty/plugins/loadavg.py:40
 msgid "Load average  1m"
-msgstr "Média de carga 1m"
+msgstr ""
 
 #: ../src/collecty/plugins/loadavg.py:48
 msgid "Load average  5m"
-msgstr "Média de carga 5m"
+msgstr ""
 
 #: ../src/collecty/plugins/loadavg.py:56
 msgid "Load average 15m"
-msgstr "Média de carga 15m"
+msgstr ""
 
 #: ../src/collecty/plugins/loadavg.py:73
 msgid "Load average"
-msgstr "Carga média"
+msgstr ""
 
 #: ../src/collecty/plugins/loadavg.py:78
 msgid "Load"
-msgstr "Carga"
+msgstr ""
 
 #: ../src/collecty/plugins/memory.py:45
 msgid "Used memory"
-msgstr "Memória utilizada"
+msgstr ""
 
 #: ../src/collecty/plugins/memory.py:53
 msgid "Buffered data"
-msgstr "Dados em buffer"
+msgstr ""
 
 #: ../src/collecty/plugins/memory.py:61
 msgid "Cached data"
-msgstr "Dados em cache."
+msgstr ""
 
 #. "STACK:free#7799ff:%-15s" % _("Free memory"),
 #. "VDEF:freemin=free,MINIMUM",
@@ -683,39 +682,39 @@ msgstr "Dados em cache."
 #. "GPRINT:freeavg:%12s\:" % _("Average") + " %6.2lf\\n",
 #: ../src/collecty/plugins/memory.py:77
 msgid "Used Swap space"
-msgstr "Swap utilizado"
+msgstr ""
 
 #: ../src/collecty/plugins/memory.py:89
 msgid "Memory Usage"
-msgstr "Uso de memória."
+msgstr ""
 
 #: ../src/collecty/plugins/memory.py:94
 msgid "Percent"
-msgstr "Porcento"
+msgstr ""
 
 #: ../src/collecty/plugins/processor.py:44
 msgid "User"
-msgstr "Usuário"
+msgstr ""
 
 #: ../src/collecty/plugins/processor.py:52
 msgid "Nice"
-msgstr "Bom"
+msgstr ""
 
 #: ../src/collecty/plugins/processor.py:60
 msgid "System"
-msgstr "Sistema"
+msgstr ""
 
 #: ../src/collecty/plugins/processor.py:68
 msgid "Wait"
-msgstr "Espere"
+msgstr ""
 
 #: ../src/collecty/plugins/processor.py:76
 msgid "Interrupt"
-msgstr "Interromper"
+msgstr ""
 
 #: ../src/collecty/plugins/processor.py:84
 msgid "Soft interrupt"
-msgstr "Interrupção soft"
+msgstr ""
 
 #: ../src/collecty/plugins/processor.py:92
 msgid "Idle"
