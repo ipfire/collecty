@@ -28,80 +28,86 @@ from ..i18n import _
 class GraphTemplateProcessor(base.GraphTemplate):
 	name = "processor"
 
-	rrd_graph = [
-		"DEF:user=%(file)s:user:AVERAGE",
-		"DEF:nice=%(file)s:nice:AVERAGE",
-		"DEF:sys=%(file)s:sys:AVERAGE",
-		"DEF:idle=%(file)s:idle:AVERAGE",
-		"DEF:wait=%(file)s:wait:AVERAGE",
-		"DEF:irq=%(file)s:irq:AVERAGE",
-		"DEF:sirq=%(file)s:sirq:AVERAGE",
+	@property
+	def rrd_graph(self):
+		_ = self.locale.translate
 
-		"AREA:user#90EE90:%-15s" % _("User"),
-		"VDEF:usermin=user,MINIMUM",
-		"VDEF:usermax=user,MAXIMUM",
-		"VDEF:useravg=user,AVERAGE",
-		"GPRINT:usermax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:usermin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:useravg:%12s\:" % _("Average") + " %6.2lf\\n",
+		return [
+			"DEF:user=%(file)s:user:AVERAGE",
+			"DEF:nice=%(file)s:nice:AVERAGE",
+			"DEF:sys=%(file)s:sys:AVERAGE",
+			"DEF:idle=%(file)s:idle:AVERAGE",
+			"DEF:wait=%(file)s:wait:AVERAGE",
+			"DEF:irq=%(file)s:irq:AVERAGE",
+			"DEF:sirq=%(file)s:sirq:AVERAGE",
 
-		"STACK:nice#4169E1:%-15s" % _("Nice"),
-		"VDEF:nicemin=nice,MINIMUM",
-		"VDEF:nicemax=nice,MAXIMUM",
-		"VDEF:niceavg=nice,AVERAGE",
-		"GPRINT:nicemax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:nicemin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:niceavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"AREA:user#90EE90:%-15s" % _("User"),
+			"VDEF:usermin=user,MINIMUM",
+			"VDEF:usermax=user,MAXIMUM",
+			"VDEF:useravg=user,AVERAGE",
+			"GPRINT:usermax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:usermin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:useravg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-		"STACK:sys#DC143C:%-15s" % _("System"),
-		"VDEF:sysmin=sys,MINIMUM",
-		"VDEF:sysmax=sys,MAXIMUM",
-		"VDEF:sysavg=sys,AVERAGE",
-		"GPRINT:sysmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:sysmin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:sysavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"STACK:nice#4169E1:%-15s" % _("Nice"),
+			"VDEF:nicemin=nice,MINIMUM",
+			"VDEF:nicemax=nice,MAXIMUM",
+			"VDEF:niceavg=nice,AVERAGE",
+			"GPRINT:nicemax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:nicemin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:niceavg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-		"STACK:wait#483D8B:%-15s" % _("Wait"),
-		"VDEF:waitmin=wait,MINIMUM",
-		"VDEF:waitmax=wait,MAXIMUM",
-		"VDEF:waitavg=wait,AVERAGE",
-		"GPRINT:waitmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:waitmin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:waitavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"STACK:sys#DC143C:%-15s" % _("System"),
+			"VDEF:sysmin=sys,MINIMUM",
+			"VDEF:sysmax=sys,MAXIMUM",
+			"VDEF:sysavg=sys,AVERAGE",
+			"GPRINT:sysmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:sysmin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:sysavg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-		"STACK:irq#DAA520:%-15s" % _("Interrupt"),
-		"VDEF:irqmin=irq,MINIMUM",
-		"VDEF:irqmax=irq,MAXIMUM",
-		"VDEF:irqavg=irq,AVERAGE",
-		"GPRINT:irqmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:irqmin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:irqavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"STACK:wait#483D8B:%-15s" % _("Wait"),
+			"VDEF:waitmin=wait,MINIMUM",
+			"VDEF:waitmax=wait,MAXIMUM",
+			"VDEF:waitavg=wait,AVERAGE",
+			"GPRINT:waitmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:waitmin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:waitavg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-		"STACK:sirq#FFD700:%-15s" % _("Soft interrupt"),
-		"VDEF:sirqmin=sirq,MINIMUM",
-		"VDEF:sirqmax=sirq,MAXIMUM",
-		"VDEF:sirqavg=sirq,AVERAGE",
-		"GPRINT:sirqmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:sirqmin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:sirqavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"STACK:irq#DAA520:%-15s" % _("Interrupt"),
+			"VDEF:irqmin=irq,MINIMUM",
+			"VDEF:irqmax=irq,MAXIMUM",
+			"VDEF:irqavg=irq,AVERAGE",
+			"GPRINT:irqmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:irqmin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:irqavg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-		"STACK:idle#EFEFEF:%-15s" % _("Idle"),
-		"VDEF:idlemin=idle,MINIMUM",
-		"VDEF:idlemax=idle,MAXIMUM",
-		"VDEF:idleavg=idle,AVERAGE",
-		"GPRINT:idlemax:%12s\:" % _("Maximum") + " %6.2lf" ,
-		"GPRINT:idlemin:%12s\:" % _("Minimum") + " %6.2lf",
-		"GPRINT:idleavg:%12s\:" % _("Average") + " %6.2lf\\n",
-	]
+			"STACK:sirq#FFD700:%-15s" % _("Soft interrupt"),
+			"VDEF:sirqmin=sirq,MINIMUM",
+			"VDEF:sirqmax=sirq,MAXIMUM",
+			"VDEF:sirqavg=sirq,AVERAGE",
+			"GPRINT:sirqmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:sirqmin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:sirqavg:%12s\:" % _("Average") + " %6.2lf\\n",
+
+			"STACK:idle#EFEFEF:%-15s" % _("Idle"),
+			"VDEF:idlemin=idle,MINIMUM",
+			"VDEF:idlemax=idle,MAXIMUM",
+			"VDEF:idleavg=idle,AVERAGE",
+			"GPRINT:idlemax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:idlemin:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:idleavg:%12s\:" % _("Average") + " %6.2lf\\n",
+		]
 
 	lower_limit = 0
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("CPU usage")
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Jiffies")
 
 
