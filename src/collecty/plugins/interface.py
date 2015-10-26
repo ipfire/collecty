@@ -45,6 +45,8 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 
 	@property
 	def rrd_graph(self):
+		_ = self.locale.translate
+
 		return [
 			"DEF:bytes_rx=%(file)s:bytes_rx:AVERAGE",
 			"DEF:bytes_tx=%(file)s:bytes_tx:AVERAGE",
@@ -89,10 +91,12 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Bandwidth usage on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Bit/s")
 
 
@@ -101,6 +105,8 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 
 	@property
 	def rrd_graph(self):
+		_ = self.locale.translate
+
 		return [
 			"DEF:packets_rx=%(file)s:packets_rx:AVERAGE",
 			"DEF:packets_tx=%(file)s:packets_tx:AVERAGE",
@@ -130,10 +136,12 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Transferred packets on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Packets/s")
 
 
@@ -142,6 +150,8 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 	@property
 	def rrd_graph(self):
+		_ = self.locale.translate
+
 		return [
 			"DEF:errors_rx=%(file)s:errors_rx:AVERAGE",
 			"DEF:errors_tx=%(file)s:errors_tx:AVERAGE",
@@ -199,10 +209,12 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 	@property
 	def graph_title(self):
+		_ = self.locale.translate
 		return _("Errors/dropped packets on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
+		_ = self.locale.translate
 		return _("Packets/s")
 
 
