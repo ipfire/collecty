@@ -29,6 +29,7 @@ import threading
 import time
 import unicodedata
 
+from .. import locales
 from ..constants import *
 from ..i18n import _
 
@@ -230,15 +231,17 @@ class Plugin(object, metaclass=PluginRegistration):
 
 			return object
 
-	def get_template(self, template_name, object_id):
+	def get_template(self, template_name, object_id, locale=None, timezone=None):
 		for template in self.templates:
 			if not template.name == template_name:
 				continue
 
-			return template(self, object_id)
+			return template(self, object_id, locale=locale, timezone=timezone)
 
-	def generate_graph(self, template_name, object_id="default", **kwargs):
-		template = self.get_template(template_name, object_id=object_id)
+	def generate_graph(self, template_name, object_id="default",
+			timezone=None, locale=None, **kwargs):
+		template = self.get_template(template_name, object_id=object_id,
+			timezone=timezone, locale=locale)
 		if not template:
 			raise RuntimeError("Could not find template %s" % template_name)
 
@@ -436,8 +439,12 @@ class GraphTemplate(object):
 	height = GRAPH_DEFAULT_HEIGHT
 	width  = GRAPH_DEFAULT_WIDTH
 
-	def __init__(self, plugin, object_id):
+	def __init__(self, plugin, object_id, locale=None, timezone=None):
 		self.plugin = plugin
+
+		# Save localisation parameters
+		self.locale = locales.get(locale)
+		self.timezone = timezone
 
 		# Get all required RRD objects
 		self.object_id = object_id
@@ -521,7 +528,7 @@ class GraphTemplate(object):
 
 		return files
 
-	def generate_graph(self, interval=None, timezone=None, locale=None, **kwargs):
+	def generate_graph(self, interval=None, **kwargs):
 		args = self._make_command_line(interval, **kwargs)
 
 		self.log.info(_("Generating graph %s") % self)
@@ -540,7 +547,7 @@ class GraphTemplate(object):
 		# Convert arguments to string
 		args = [str(e) for e in args]
 
-		with Environment(timezone, locale):
+		with Environment(self.timezone, self.locale.lang):
 			graph = rrdtool.graphv("-", *args)
 
 		return graph.get("image")

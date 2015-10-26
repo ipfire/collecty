@@ -29,6 +29,7 @@ import threading
 import time
 
 from . import bus
+from . import locales
 from . import plugins
 
 from .constants import *
@@ -79,6 +80,8 @@ class Collecty(object):
 
 		log.debug(_("Collecty successfully initialized with %s plugins") \
 			% len(self.plugins))
+
+		log.debug(_("Supported locales: %s") % ", ".join(locales.get_supported_locales()))
 
 	def add_plugin(self, plugin_class):
 		# Try initialising a new plugin. If that fails, we will log the
