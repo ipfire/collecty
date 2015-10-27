@@ -103,7 +103,7 @@ class GraphTemplateProcessor(base.GraphTemplate):
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
-		return _("CPU usage")
+		return _("Processor Usage")
 
 	@property
 	def graph_vertical_label(self):
