@@ -156,7 +156,7 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 		_ = self.locale.translate
 		return _("Number of open connections")
 
-	def get_object_table(self, object_id):
+	def get_object_table(self):
 		return {
 			"file" : self.plugin.get_object("layer3-protocols"),
 		}
@@ -249,7 +249,7 @@ class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplat
 		return sorted(ConntrackTable._layer4_protocols,
 			key=lambda x: self.protocol_sortorder.get(x, 99))
 
-	def get_object_table(self, object_id):
+	def get_object_table(self):
 		return {
 			"file" : self.plugin.get_object("layer4-protocols"),
 		}
