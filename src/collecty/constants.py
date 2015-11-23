@@ -32,6 +32,9 @@ DEFAULT_LOCALE = "en_GB.utf8"
 DEFAULT_TIMEZONE = "UTC"
 
 GRAPH_DEFAULT_ARGUMENTS = (
+	# Change the background colour
+	"--color", "BACK#FFFFFF",
+
 	# Disable the border around the image.
 	"--border", "0",
 
