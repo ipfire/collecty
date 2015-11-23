@@ -306,7 +306,7 @@ class SensorFanObject(SensorBaseObject):
 		)
 
 	@property
-	def mimimum(self):
+	def minimum(self):
 		try:
 			return self.sensor.minimum
 		except AttributeError:
