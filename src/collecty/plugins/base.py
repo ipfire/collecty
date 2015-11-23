@@ -264,6 +264,13 @@ class Plugin(object, metaclass=PluginRegistration):
 
 		return template.graph_info()
 
+	def last_update(self, object_id="default"):
+		object = self.get_object(object_id)
+		if not object:
+			raise RuntimeError("Could not find object %s" % object_id)
+
+		return object.last_update()
+
 
 class Object(object):
 	# The schema of the RRD database.
@@ -358,6 +365,39 @@ class Object(object):
 
 	def info(self):
 		return rrdtool.info(self.file)
+
+	def last_update(self):
+		"""
+			Returns a dictionary with the timestamp and
+			data set of the last database update.
+		"""
+		return {
+			"dataset"   : self.last_dataset,
+			"timestamp" : self.last_updated,
+		}
+
+	def _last_update(self):
+		return rrdtool.lastupdate(self.file)
+
+	@property
+	def last_updated(self):
+		"""
+			Returns the timestamp when this database was last updated
+		"""
+		lu = self._last_update()
+
+		if lu:
+			return lu.get("date")
+
+	@property
+	def last_dataset(self):
+		"""
+			Returns the latest dataset in the database
+		"""
+		lu = self._last_update()
+
+		if lu:
+			return lu.get("ds")
 
 	@property
 	def stepsize(self):

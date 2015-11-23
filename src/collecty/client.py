@@ -20,6 +20,7 @@
 ###############################################################################
 
 import argparse
+import datetime
 import dbus
 import os
 import platform
@@ -36,6 +37,23 @@ class CollectyClient(object):
 		self.bus = dbus.SystemBus()
 
 		self.proxy = self.bus.get_object(BUS_DOMAIN, "/GraphGenerator")
+
+	def last_update(self, template_name, **kwargs):
+		last_update = self.proxy.LastUpdate(template_name, kwargs)
+
+		if last_update:
+			last_update["timestamp"] = datetime.datetime.strptime(last_update["timestamp"], "%Y-%m-%dT%H:%M:%S")
+
+		return last_update
+
+	def last_update_cli(self, ns):
+		last_update = self.last_update(ns.template, object_id=ns.object)
+
+		print(_("Last update: %s") % last_update.get("timestamp"))
+
+		dataset = last_update.get("dataset")
+		for k, v in dataset.items():
+			print("%16s = %s" % (k, v))
 
 	def list_templates(self):
 		templates = self.proxy.ListTemplates()
@@ -135,6 +153,15 @@ class CollectyClient(object):
 			help=_("Height of the generated image"))
 		parser_generate_graph.add_argument("--width", type=int, default=0,
 			help=_("Width of the generated image"))
+
+		# last-update
+		parser_last_update = subparsers.add_parser("last-update",
+			help=_("Fetch the last dataset in the database"))
+		parser_last_update.add_argument("--template",
+			help=_("The graph template identifier"), required=True)
+		parser_last_update.add_argument("--object",
+			help=_("Object identifier"), default="default")
+		parser_last_update.set_defaults(func=self.last_update_cli)
 
 		# list-templates
 		parser_list_templates = subparsers.add_parser("list-templates",

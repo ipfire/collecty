@@ -98,6 +98,19 @@ class GraphGenerator(dbus.service.Object):
 		"""
 		return self.collecty.graph_info(template_name, **kwargs)
 
+	@dbus.service.method(BUS_DOMAIN, in_signature="sa{sv}", out_signature="a{sv}")
+	def LastUpdate(self, template_name, kwargs):
+		"""
+			Returns a graph generated from the given template and object.
+		"""
+		last_update = self.collecty.last_update(template_name, **kwargs)
+
+		# Serialise datetime as string
+		if last_update:
+			last_update["timestamp"] = last_update["timestamp"].isoformat()
+
+		return last_update
+
 	@dbus.service.method(BUS_DOMAIN, in_signature="", out_signature="as")
 	def ListTemplates(self):
 		"""
