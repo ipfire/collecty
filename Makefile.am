@@ -86,6 +86,7 @@ collectydir = $(pythondir)/collecty
 
 collectyplugins_PYTHON = \
 	src/collecty/plugins/base.py \
+	src/collecty/plugins/contextswitches.py \
 	src/collecty/plugins/conntrack.py \
 	src/collecty/plugins/cpufreq.py \
 	src/collecty/plugins/disk.py \

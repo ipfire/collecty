@@ -2,7 +2,7 @@
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
-# Copyright (C) 2012 IPFire development team                                  #
+# Copyright (C) 2015 IPFire development team                                  #
 #                                                                             #
 # This program is free software: you can redistribute it and/or modify        #
 # it under the terms of the GNU General Public License as published by        #
@@ -19,17 +19,69 @@
 #                                                                             #
 ###############################################################################
 
-from .base import Timer, get
+import re
 
 from . import base
-from . import contextswitches
-from . import conntrack
-from . import cpufreq
-from . import disk
-from . import entropy
-from . import interface
-from . import latency
-from . import loadavg
-from . import processor
-from . import memory
-from . import sensors
+
+from ..i18n import _
+
+class GraphTemplateContextSwitches(base.GraphTemplate):
+	name = "context-switches"
+
+	@property
+	def rrd_graph(self):
+		_ = self.locale.translate
+
+		return [
+			"DEF:ctxt=%(file)s:ctxt:AVERAGE",
+
+			"AREA:ctxt#90EE90:%-15s" % _("Context Switches"),
+			"VDEF:ctxtmax=ctxt,MAXIMUM",
+			"VDEF:ctxtmin=ctxt,MINIMUM",
+			"VDEF:ctxtavg=ctxt,AVERAGE",
+			"GPRINT:ctxtmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:ctxtmin:%12s\:" % _("Minimum") + " %6.2lf" ,
+			"GPRINT:ctxtavg:%12s\:" % _("Average") + " %6.2lf\\n",
+		]
+
+	lower_limit = 0
+
+	@property
+	def graph_title(self):
+		_ = self.locale.translate
+		return _("Context Switches")
+
+	@property
+	def graph_vertical_label(self):
+		_ = self.locale.translate
+		return _("Context Switches/s")
+
+
+class ContextSwitchesObject(base.Object):
+	rrd_schema = [
+		"DS:ctxt:DERIVE:0:U",
+	]
+
+	@property
+	def id(self):
+		return "default"
+
+	def collect(self):
+		expr = re.compile(r"^ctxt (\d+)$")
+
+		with open("/proc/stat") as f:
+			for line in f.readlines():
+				m = re.match(expr, line)
+				if m:
+					return m.group(1)
+
+
+class ContextSwitchesPlugin(base.Plugin):
+	name = "context-switches"
+	description = "Context Switches Plugin"
+
+	templates = [GraphTemplateContextSwitches]
+
+	@property
+	def objects(self):
+		yield ContextSwitchesObject(self)
