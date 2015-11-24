@@ -31,6 +31,8 @@ DEFAULT_IMAGE_FORMAT = "SVG"
 DEFAULT_LOCALE = "en_GB.utf8"
 DEFAULT_TIMEZONE = "UTC"
 
+SUPPORTED_IMAGE_FORMATS = ("SVG", "PNG", "PDF")
+
 GRAPH_DEFAULT_ARGUMENTS = (
 	# Change the background colour
 	"--color", "BACK#FFFFFF",

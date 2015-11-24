@@ -84,7 +84,7 @@ class CollectyClient(object):
 
 	def generate_graph_cli(self, ns):
 		kwargs = {
-			"format"    : ns.format,
+			"format"    : ns.format or self._guess_format(ns.filename),
 			"object_id" : ns.object,
 		}
 
@@ -117,6 +117,22 @@ class CollectyClient(object):
 		print(_("Title      : %(title)s (%(template)s - %(object_id)s)") % graph)
 		print(_("Image size : %(image_width)sx%(image_height)spx") % graph)
 
+	def _guess_format(self, filename):
+		parts = filename.split(".")
+
+		if parts:
+			# The extension is the last part
+			extension = parts[-1]
+
+			# Image formats are all uppercase
+			extension = extension.upper()
+
+			if extension in SUPPORTED_IMAGE_FORMATS:
+				return extension
+
+		# Otherwise fall back to the default format
+		return DEFAULT_IMAGE_FORMAT
+
 	def version_cli(self, args):
 		daemon_version = self.proxy.Version()
 
@@ -136,8 +152,7 @@ class CollectyClient(object):
 		parser_generate_graph.set_defaults(func=self.generate_graph_cli)
 		parser_generate_graph.add_argument("--filename",
 			help=_("filename"), required=True)
-		parser_generate_graph.add_argument("--format",
-			help=_("image format"), default=DEFAULT_IMAGE_FORMAT)
+		parser_generate_graph.add_argument("--format", help=_("image format"))
 		parser_generate_graph.add_argument("--interval", help=_("interval"))
 		parser_generate_graph.add_argument("--object",
 			help=_("Object identifier"), default="default")
