@@ -2,7 +2,7 @@
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
-# Copyright (C) 2012 IPFire development team                                  #
+# Copyright (C) 2015 IPFire development team                                  #
 #                                                                             #
 # This program is free software: you can redistribute it and/or modify        #
 # it under the terms of the GNU General Public License as published by        #
@@ -19,18 +19,69 @@
 #                                                                             #
 ###############################################################################
 
-from .base import Timer, get
+import re
 
 from . import base
-from . import contextswitches
-from . import conntrack
-from . import cpufreq
-from . import disk
-from . import entropy
-from . import interface
-from . import interrupts
-from . import latency
-from . import loadavg
-from . import processor
-from . import memory
-from . import sensors
+
+from ..i18n import _
+
+class GraphTemplateSystemInterrupts(base.GraphTemplate):
+	name = "system-interrupts"
+
+	@property
+	def rrd_graph(self):
+		_ = self.locale.translate
+
+		return [
+			"DEF:intr=%(file)s:intr:AVERAGE",
+
+			"AREA:intr#90EE90:%-15s" % _("System Interrupts"),
+			"VDEF:intrmax=intr,MAXIMUM",
+			"VDEF:intrmin=intr,MINIMUM",
+			"VDEF:intravg=intr,AVERAGE",
+			"GPRINT:intrmax:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:intrmin:%12s\:" % _("Minimum") + " %6.2lf" ,
+			"GPRINT:intravg:%12s\:" % _("Average") + " %6.2lf\\n",
+		]
+
+	lower_limit = 0
+
+	@property
+	def graph_title(self):
+		_ = self.locale.translate
+		return _("System Interrupts")
+
+	@property
+	def graph_vertical_label(self):
+		_ = self.locale.translate
+		return _("System Interrupts/s")
+
+
+class SystemInterruptsObject(base.Object):
+	rrd_schema = [
+		"DS:intr:DERIVE:0:U",
+	]
+
+	@property
+	def id(self):
+		return "default"
+
+	def collect(self):
+		expr = re.compile(r"^intr (\d+)")
+
+		with open("/proc/stat") as f:
+			for line in f.readlines():
+				m = re.match(expr, line)
+				if m:
+					return m.group(1)
+
+
+class SystemInterruptsPlugin(base.Plugin):
+	name = "system-interrupts"
+	description = "System Interrupts Plugin"
+
+	templates = [GraphTemplateSystemInterrupts]
+
+	@property
+	def objects(self):
+		yield SystemInterruptsObject(self)
