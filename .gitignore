@@ -8,6 +8,9 @@
 /src/systemd/collecty.service
 /tmp
 *.py[co]
+/*.pdf
+/*.png
+/*.svg
 /*.tar.bz2
 /*.tar.gz
 /*.tar.xz
