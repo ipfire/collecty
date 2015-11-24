@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Ersan YILDIRIM <ersan73@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: IPFire Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-26 18:19+0100\n"
+"POT-Creation-Date: 2015-11-24 02:37+0000\n"
 "PO-Revision-Date: 2015-10-26 17:22+0000\n"
 "Last-Translator: Michael Tremer <michael.tremer@ipfire.org>\n"
-"Language-Team: Turkish (http://www.transifex.com/mstremer/ipfire/language/tr/)\n"
+"Language-Team: Turkish (http://www.transifex.com/mstremer/ipfire/language/"
+"tr/)\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../src/collecty/bus.py:54
@@ -30,67 +31,86 @@ msgstr ""
 msgid "Stopping bus thread"
 msgstr ""
 
-#: ../src/collecty/client.py:89
+#: ../src/collecty/client.py:52
+#, python-format
+msgid "Last update: %s"
+msgstr ""
+
+#: ../src/collecty/client.py:117
+#, python-format
+msgid "Title      : %(title)s (%(template)s - %(object_id)s)"
+msgstr ""
+
+#: ../src/collecty/client.py:118
+#, python-format
+msgid "Image size : %(image_width)sx%(image_height)spx"
+msgstr ""
+
+#: ../src/collecty/client.py:139
 #, python-format
 msgid "collecty %s running on Python %s"
 msgstr ""
 
-#: ../src/collecty/client.py:93
+#: ../src/collecty/client.py:143
 #, python-format
 msgid "daemon %s"
 msgstr ""
 
-#: ../src/collecty/client.py:101
+#: ../src/collecty/client.py:151
 msgid "Generate a graph image"
 msgstr ""
 
-#: ../src/collecty/client.py:104
+#: ../src/collecty/client.py:154
 msgid "filename"
 msgstr ""
 
-#: ../src/collecty/client.py:106
+#: ../src/collecty/client.py:155
 msgid "image format"
 msgstr ""
 
-#: ../src/collecty/client.py:107
+#: ../src/collecty/client.py:156
 msgid "interval"
 msgstr ""
 
-#: ../src/collecty/client.py:109
+#: ../src/collecty/client.py:158 ../src/collecty/client.py:178
 msgid "Object identifier"
 msgstr ""
 
-#: ../src/collecty/client.py:111
+#: ../src/collecty/client.py:160 ../src/collecty/client.py:176
 msgid "The graph template identifier"
 msgstr ""
 
-#: ../src/collecty/client.py:113
+#: ../src/collecty/client.py:162
 msgid "Generate the graph with timestamps plotted for the given timezone"
 msgstr ""
 
-#: ../src/collecty/client.py:115
+#: ../src/collecty/client.py:164
 msgid "Generate the graph with this locale"
 msgstr ""
 
-#: ../src/collecty/client.py:119
+#: ../src/collecty/client.py:168
 msgid "Height of the generated image"
 msgstr ""
 
-#: ../src/collecty/client.py:121
+#: ../src/collecty/client.py:170
 msgid "Width of the generated image"
 msgstr ""
 
-#: ../src/collecty/client.py:125
+#: ../src/collecty/client.py:174
+msgid "Fetch the last dataset in the database"
+msgstr ""
+
+#: ../src/collecty/client.py:183
 msgid "Lists all graph templates"
 msgstr ""
 
 #. version
-#: ../src/collecty/client.py:129
+#: ../src/collecty/client.py:187
 msgid "Show version"
 msgstr ""
 
 #. Brand all generated graphs.
-#: ../src/collecty/constants.py:49
+#: ../src/collecty/constants.py:54
 msgid "Created by collecty"
 msgstr "Collecty tarafından oluşturuldu"
 
@@ -136,52 +156,52 @@ msgstr "%d kaydetme sinyali"
 msgid "Caught signal %d"
 msgstr "Yakalanan %d sinyali"
 
-#: ../src/collecty/daemon.py:252
+#: ../src/collecty/daemon.py:266
 #, python-format
 msgid "Worker thread %s has been initialised"
 msgstr ""
 
-#: ../src/collecty/daemon.py:262
+#: ../src/collecty/daemon.py:276
 #, python-format
 msgid "Worker thread %s has been started"
 msgstr ""
 
-#: ../src/collecty/daemon.py:276
+#: ../src/collecty/daemon.py:290
 #, python-format
 msgid "Worker thread %s has been terminated"
 msgstr ""
 
-#: ../src/collecty/daemon.py:295
+#: ../src/collecty/daemon.py:309
 msgid "Initialised write queue"
 msgstr ""
 
-#: ../src/collecty/daemon.py:298
+#: ../src/collecty/daemon.py:312
 msgid "Write queue process started"
 msgstr ""
 
-#: ../src/collecty/daemon.py:310
+#: ../src/collecty/daemon.py:324
 msgid "Write queue process stopped"
 msgstr ""
 
-#: ../src/collecty/daemon.py:329
+#: ../src/collecty/daemon.py:343
 msgid "No data to commit"
 msgstr ""
 
-#: ../src/collecty/daemon.py:334
+#: ../src/collecty/daemon.py:348
 msgid "Submitting data to the databases..."
 msgstr ""
 
-#: ../src/collecty/daemon.py:352
+#: ../src/collecty/daemon.py:366
 #, python-format
 msgid "Emptied write queue in %.2fs"
 msgstr ""
 
-#: ../src/collecty/daemon.py:355
+#: ../src/collecty/daemon.py:369
 #, python-format
 msgid "Committing %(counter)s entries to %(filename)s"
 msgstr ""
 
-#: ../src/collecty/daemon.py:367
+#: ../src/collecty/daemon.py:381
 #, python-format
 msgid "Could not update RRD database %s: %s"
 msgstr ""
@@ -221,12 +241,12 @@ msgstr ""
 msgid "Generated graph %s in %.1fms"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:346
+#: ../src/collecty/plugins/base.py:362
 #, python-format
 msgid "Created RRD file %s."
 msgstr "%s RRD dosyası oluşturuldu."
 
-#: ../src/collecty/plugins/base.py:534
+#: ../src/collecty/plugins/base.py:583
 #, python-format
 msgid "Generating graph %s"
 msgstr ""
@@ -268,18 +288,16 @@ msgstr ""
 #: ../src/collecty/plugins/interface.py:202
 #: ../src/collecty/plugins/latency.py:89 ../src/collecty/plugins/latency.py:96
 #: ../src/collecty/plugins/loadavg.py:45 ../src/collecty/plugins/loadavg.py:53
-#: ../src/collecty/plugins/loadavg.py:61 ../src/collecty/plugins/memory.py:50
-#: ../src/collecty/plugins/memory.py:58 ../src/collecty/plugins/memory.py:66
-#: ../src/collecty/plugins/memory.py:82
-#: ../src/collecty/plugins/processor.py:49
+#: ../src/collecty/plugins/loadavg.py:61 ../src/collecty/plugins/memory.py:48
+#: ../src/collecty/plugins/memory.py:56 ../src/collecty/plugins/memory.py:64
+#: ../src/collecty/plugins/memory.py:80 ../src/collecty/plugins/processor.py:49
 #: ../src/collecty/plugins/processor.py:57
 #: ../src/collecty/plugins/processor.py:65
 #: ../src/collecty/plugins/processor.py:73
 #: ../src/collecty/plugins/processor.py:81
 #: ../src/collecty/plugins/processor.py:89
 #: ../src/collecty/plugins/processor.py:97
-#: ../src/collecty/plugins/sensors.py:71
-#: ../src/collecty/plugins/sensors.py:165
+#: ../src/collecty/plugins/sensors.py:71 ../src/collecty/plugins/sensors.py:165
 msgid "Minimum"
 msgstr "En az"
 
@@ -298,18 +316,16 @@ msgstr "En az"
 #: ../src/collecty/plugins/interface.py:201
 #: ../src/collecty/plugins/latency.py:88 ../src/collecty/plugins/latency.py:95
 #: ../src/collecty/plugins/loadavg.py:44 ../src/collecty/plugins/loadavg.py:52
-#: ../src/collecty/plugins/loadavg.py:60 ../src/collecty/plugins/memory.py:49
-#: ../src/collecty/plugins/memory.py:57 ../src/collecty/plugins/memory.py:65
-#: ../src/collecty/plugins/memory.py:81
-#: ../src/collecty/plugins/processor.py:48
+#: ../src/collecty/plugins/loadavg.py:60 ../src/collecty/plugins/memory.py:47
+#: ../src/collecty/plugins/memory.py:55 ../src/collecty/plugins/memory.py:63
+#: ../src/collecty/plugins/memory.py:79 ../src/collecty/plugins/processor.py:48
 #: ../src/collecty/plugins/processor.py:56
 #: ../src/collecty/plugins/processor.py:64
 #: ../src/collecty/plugins/processor.py:72
 #: ../src/collecty/plugins/processor.py:80
 #: ../src/collecty/plugins/processor.py:88
 #: ../src/collecty/plugins/processor.py:96
-#: ../src/collecty/plugins/sensors.py:70
-#: ../src/collecty/plugins/sensors.py:164
+#: ../src/collecty/plugins/sensors.py:70 ../src/collecty/plugins/sensors.py:164
 msgid "Maximum"
 msgstr "En fazla"
 
@@ -328,18 +344,16 @@ msgstr "En fazla"
 #: ../src/collecty/plugins/interface.py:203
 #: ../src/collecty/plugins/latency.py:90 ../src/collecty/plugins/latency.py:97
 #: ../src/collecty/plugins/loadavg.py:46 ../src/collecty/plugins/loadavg.py:54
-#: ../src/collecty/plugins/loadavg.py:62 ../src/collecty/plugins/memory.py:51
-#: ../src/collecty/plugins/memory.py:59 ../src/collecty/plugins/memory.py:67
-#: ../src/collecty/plugins/memory.py:83
-#: ../src/collecty/plugins/processor.py:50
+#: ../src/collecty/plugins/loadavg.py:62 ../src/collecty/plugins/memory.py:49
+#: ../src/collecty/plugins/memory.py:57 ../src/collecty/plugins/memory.py:65
+#: ../src/collecty/plugins/memory.py:81 ../src/collecty/plugins/processor.py:50
 #: ../src/collecty/plugins/processor.py:58
 #: ../src/collecty/plugins/processor.py:66
 #: ../src/collecty/plugins/processor.py:74
 #: ../src/collecty/plugins/processor.py:82
 #: ../src/collecty/plugins/processor.py:90
 #: ../src/collecty/plugins/processor.py:98
-#: ../src/collecty/plugins/sensors.py:69
-#: ../src/collecty/plugins/sensors.py:163
+#: ../src/collecty/plugins/sensors.py:69 ../src/collecty/plugins/sensors.py:163
 msgid "Average"
 msgstr "Ortalama"
 
@@ -389,9 +403,8 @@ msgid "Protocol States of all %s connections"
 msgstr ""
 
 #: ../src/collecty/plugins/cpufreq.py:37
-#: ../src/collecty/plugins/processor.py:106
-msgid "CPU usage"
-msgstr "CPU kullanımı"
+msgid "Processor Frequencies"
+msgstr ""
 
 #: ../src/collecty/plugins/cpufreq.py:42
 msgid "Frequency"
@@ -662,15 +675,15 @@ msgstr "Ortalama yük"
 msgid "Load"
 msgstr "Yük"
 
-#: ../src/collecty/plugins/memory.py:45
+#: ../src/collecty/plugins/memory.py:43
 msgid "Used memory"
 msgstr "Kullanılan bellek"
 
-#: ../src/collecty/plugins/memory.py:53
+#: ../src/collecty/plugins/memory.py:51
 msgid "Buffered data"
 msgstr "Arabelleğe alınan veri"
 
-#: ../src/collecty/plugins/memory.py:61
+#: ../src/collecty/plugins/memory.py:59
 msgid "Cached data"
 msgstr "Önbelleğe alınmış veri"
 
@@ -681,15 +694,15 @@ msgstr "Önbelleğe alınmış veri"
 #. "GPRINT:freemax:%12s\:" % _("Maximum") + " %6.2lf" ,
 #. "GPRINT:freemin:%12s\:" % _("Minimum") + " %6.2lf",
 #. "GPRINT:freeavg:%12s\:" % _("Average") + " %6.2lf\\n",
-#: ../src/collecty/plugins/memory.py:77
+#: ../src/collecty/plugins/memory.py:75
 msgid "Used Swap space"
 msgstr "Kullanılan takas alanı"
 
-#: ../src/collecty/plugins/memory.py:89
+#: ../src/collecty/plugins/memory.py:87
 msgid "Memory Usage"
 msgstr "Kullanılan Bellek"
 
-#: ../src/collecty/plugins/memory.py:94
+#: ../src/collecty/plugins/memory.py:92
 msgid "Percent"
 msgstr "Yüzde"
 
@@ -721,6 +734,11 @@ msgstr "Yumuşak kesme"
 msgid "Idle"
 msgstr ""
 
+#: ../src/collecty/plugins/processor.py:106
+#, fuzzy
+msgid "Processor Usage"
+msgstr "Kullanılan Bellek"
+
 #: ../src/collecty/plugins/processor.py:111
 msgid "Jiffies"
 msgstr ""
@@ -730,8 +748,7 @@ msgstr ""
 msgid "Temperature Thresholds"
 msgstr ""
 
-#: ../src/collecty/plugins/sensors.py:78
-#: ../src/collecty/plugins/sensors.py:188
+#: ../src/collecty/plugins/sensors.py:78 ../src/collecty/plugins/sensors.py:188
 msgid "Critical"
 msgstr ""
 
@@ -747,3 +764,6 @@ msgstr ""
 #: ../src/collecty/plugins/sensors.py:197
 msgid "Processor"
 msgstr ""
+
+#~ msgid "CPU usage"
+#~ msgstr "CPU kullanımı"
