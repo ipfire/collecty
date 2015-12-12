@@ -381,6 +381,33 @@ class WriteQueue(threading.Thread):
 			self.log.critical(_("Could not update RRD database %s: %s") \
 				% (filename, e))
 
+	def commit_file(self, filename):
+		"""
+			Commits all data that is in the write queue for the given
+			RRD database.
+		"""
+		results, others = [], []
+
+		# We will have to walk through the entire queue since we cannot
+		# ready any items selectively. Everything that belongs to our
+		# transaction is kept. Everything else will be put back into the
+		# queue.
+		while not self._queue.empty():
+			result = self._queue.get()
+
+			if result.file == filename:
+				results.append(result)
+			else:
+				others.append(result)
+
+		# Put back all items that did not match
+		for result in others:
+			self._queue.put(result)
+
+		# Write everything else to disk
+		if results:
+			self._commit_file(filename, results)
+
 
 class QueueObject(object):
 	def __init__(self, file, time, data):

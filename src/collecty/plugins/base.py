@@ -454,6 +454,9 @@ class Object(object):
 		# Make sure that the RRD database has been created
 		self.create()
 
+		# Write everything to disk that is in the write queue
+		self.collecty.write_queue.commit_file(self.file)
+
 
 class GraphTemplate(object):
 	# A unique name to identify this graph template.
@@ -578,6 +581,11 @@ class GraphTemplate(object):
 		return files
 
 	def generate_graph(self, interval=None, **kwargs):
+		# Make sure that all collected data is in the database
+		# to get a recent graph image
+		if self.object:
+			self.object.commit()
+
 		args = self._make_command_line(interval, **kwargs)
 
 		self.log.info(_("Generating graph %s") % self)
