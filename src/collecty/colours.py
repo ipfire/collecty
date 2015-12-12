@@ -19,5 +19,15 @@
 #                                                                             #
 ###############################################################################
 
-LIGHT_GREEN = "#00CC33"
-LIGHT_RED   = "#CC0033"
+BLACK        = "#000000"
+WHITE        = "#FFFFFF"
+
+YELLOW       = "#FFFF33"
+LIGHT_YELLOW = "#FFFF66"
+
+LIGHT_GREEN  = "#00CC33"
+LIGHT_RED    = "#CC0033"
+
+COLOUR_OK    = LIGHT_GREEN
+COLOUR_ERROR = LIGHT_RED
+COLOUR_WARN  = LIGHT_YELLOW

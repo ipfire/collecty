@@ -97,6 +97,7 @@ collectyplugins_PYTHON = \
 	src/collecty/plugins/__init__.py \
 	src/collecty/plugins/interface.py \
 	src/collecty/plugins/interrupts.py \
+	src/collecty/plugins/ipfrag.py \
 	src/collecty/plugins/latency.py \
 	src/collecty/plugins/loadavg.py \
 	src/collecty/plugins/memory.py \

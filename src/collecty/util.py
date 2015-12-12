@@ -19,6 +19,14 @@
 #                                                                             #
 ###############################################################################
 
+import os
+
+import logging
+log = logging.getLogger("collecty.util")
+log.propagate = 1
+
+from .constants import *
+
 def __add_colour(colour, amount):
 	colour = colour.strip("#")
 
@@ -48,3 +56,94 @@ def darken(colour, scale=0.1):
 		and darkens the colour.
 	"""
 	return __add_colour(colour, 0xff * -scale)
+
+def get_network_interfaces():
+	"""
+		Returns all real network interfaces
+	"""
+	for interface in os.listdir("/sys/class/net"):
+		# Skip some unwanted interfaces.
+		if interface == "lo" or interface.startswith("mon."):
+			continue
+
+		path = os.path.join("/sys/class/net", interface)
+		if not os.path.isdir(path):
+			continue
+
+		yield interface
+
+class ProcNetSnmpParser(object):
+	"""
+		This class parses /proc/net/snmp{,6} and allows
+		easy access to the values.
+	"""
+	def __init__(self, intf=None):
+		self.intf = intf
+		self._data = {}
+
+		if not self.intf:
+			self._data.update(self._parse())
+
+		self._data.update(self._parse6())
+
+	def _parse(self):
+		res = {}
+
+		with open("/proc/net/snmp") as f:
+			keys = {}
+
+			for line in f.readlines():
+				line = line.strip()
+
+				# Stop after an empty line
+				if not line:
+					break
+
+				type, values = line.split(": ", 1)
+
+				# Check if the keys are already known
+				if type in keys:
+					values = (int(v) for v in values.split())
+					res[type] = dict(zip(keys[type], values))
+
+				# Otherwise remember the keys
+				else:
+					keys[type] = values.split()
+
+		return res
+
+	def _parse6(self):
+		res = {}
+
+		fn = "/proc/net/snmp6"
+		if self.intf:
+			fn = os.path.join("/proc/net/dev_snmp6", self.intf)
+
+		with open(fn) as f:
+			for line in f.readlines():
+				key, val = line.split()
+
+				try:
+					type, key = key.split("6", 1)
+				except ValueError:
+					continue
+
+				type += "6"
+				val = int(val)
+
+				try:
+					res[type][key] = val
+				except KeyError:
+					res[type] = { key : val }
+
+		return res
+
+	def get(self, proto, key):
+		"""
+			Retrieves a value from the internally
+			parse dictionary read from /proc/net/snmp.
+		"""
+		try:
+			return self._data[proto][key]
+		except KeyError:
+			pass

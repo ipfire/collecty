@@ -19,15 +19,12 @@
 #                                                                             #
 ###############################################################################
 
-
-
 import os
 
 from . import base
+from .. import util
 
 from ..i18n import _
-
-SYS_CLASS_NET = "/sys/class/net"
 
 COLOUR_RX = "B22222"
 COLOUR_RX_AREA = "%sAA" % COLOUR_RX
@@ -243,7 +240,7 @@ class InterfaceObject(base.Object):
 		return self.interface
 
 	def collect(self):
-		interface_path = os.path.join(SYS_CLASS_NET, self.interface)
+		interface_path = os.path.join("/sys/class/net", self.interface)
 
 		# Check if the interface exists.
 		if not os.path.exists(interface_path):
@@ -295,19 +292,7 @@ class InterfacePlugin(base.Plugin):
 
 	interval = 30
 
-	def get_interfaces(self):
-		for interface in os.listdir(SYS_CLASS_NET):
-			# Skip some unwanted interfaces.
-			if interface == "lo" or interface.startswith("mon."):
-				continue
-
-			path = os.path.join(SYS_CLASS_NET, interface)
-			if not os.path.isdir(path):
-				continue
-
-			yield interface
-
 	@property
 	def objects(self):
-		for interface in self.get_interfaces():
+		for interface in util.get_network_interfaces():
 			yield InterfaceObject(self, interface=interface)

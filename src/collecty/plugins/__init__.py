@@ -30,6 +30,7 @@ from . import disk
 from . import entropy
 from . import interface
 from . import interrupts
+from . import ipfrag
 from . import latency
 from . import loadavg
 from . import processor
