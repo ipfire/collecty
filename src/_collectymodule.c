@@ -22,6 +22,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <linux/hdreg.h>
+#include <mntent.h>
 #include <oping.h>
 #include <sensors/error.h>
 #include <sensors/sensors.h>
@@ -1044,8 +1045,59 @@ static PyObject* _collecty_get_detected_sensors(PyObject* o, PyObject* args) {
 	return list;
 }
 
+static int _collecty_mountpoint_is_virtual(const struct mntent* mp) {
+	// Ignore all ramdisks
+	if (mp->mnt_fsname[0] != '/')
+		return 1;
+
+	// Ignore network mounts
+	if (hasmntopt(mp, "_netdev") != NULL)
+		return 1;
+
+	return 0;
+}
+
+static PyObject* _collecty_get_mountpoints() {
+	FILE* fp = setmntent(_PATH_MOUNTED, "r");
+	if (!fp)
+		return NULL;
+
+	PyObject* list = PyList_New(0);
+	int r = 0;
+
+	struct mntent* mountpoint = getmntent(fp);
+	while (mountpoint) {
+		if (!_collecty_mountpoint_is_virtual(mountpoint)) {
+			// Create a tuple with the information of the mountpoint
+			PyObject* mp = PyTuple_New(4);
+			PyTuple_SET_ITEM(mp, 0, PyUnicode_FromString(mountpoint->mnt_fsname));
+			PyTuple_SET_ITEM(mp, 1, PyUnicode_FromString(mountpoint->mnt_dir));
+			PyTuple_SET_ITEM(mp, 2, PyUnicode_FromString(mountpoint->mnt_type));
+			PyTuple_SET_ITEM(mp, 3, PyUnicode_FromString(mountpoint->mnt_opts));
+
+			// Append the tuple to the list
+			r = PyList_Append(list, mp);
+			if (r)
+				break;
+		}
+
+		// Move on to the next mountpoint
+		mountpoint = getmntent(fp);
+	}
+
+	endmntent(fp);
+
+	if (r) {
+		Py_DECREF(list);
+		return NULL;
+	}
+
+	return list;
+}
+
 static PyMethodDef collecty_module_methods[] = {
 	{"get_detected_sensors", (PyCFunction)_collecty_get_detected_sensors, METH_VARARGS, NULL},
+	{"get_mountpoints", (PyCFunction)_collecty_get_mountpoints, METH_NOARGS, NULL},
 	{"sensors_cleanup", (PyCFunction)_collecty_sensors_cleanup, METH_NOARGS, NULL},
 	{"sensors_init", (PyCFunction)_collecty_sensors_init, METH_NOARGS, NULL},
 	{NULL},

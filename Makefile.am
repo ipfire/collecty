@@ -75,12 +75,14 @@ collecty_PYTHON = \
 	src/collecty/__version__.py \
 	src/collecty/bus.py \
 	src/collecty/client.py \
+	src/collecty/colours.py \
 	src/collecty/constants.py \
 	src/collecty/daemon.py \
 	src/collecty/errors.py \
 	src/collecty/i18n.py \
 	src/collecty/locales.py \
-	src/collecty/logger.py
+	src/collecty/logger.py \
+	src/collecty/util.py
 
 collectydir = $(pythondir)/collecty
 
@@ -89,6 +91,7 @@ collectyplugins_PYTHON = \
 	src/collecty/plugins/contextswitches.py \
 	src/collecty/plugins/conntrack.py \
 	src/collecty/plugins/cpufreq.py \
+	src/collecty/plugins/df.py \
 	src/collecty/plugins/disk.py \
 	src/collecty/plugins/entropy.py \
 	src/collecty/plugins/__init__.py \

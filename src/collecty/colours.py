@@ -2,7 +2,7 @@
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
-# Copyright (C) 2012 IPFire development team                                  #
+# Copyright (C) 2015 IPFire development team                                  #
 #                                                                             #
 # This program is free software: you can redistribute it and/or modify        #
 # it under the terms of the GNU General Public License as published by        #
@@ -19,19 +19,5 @@
 #                                                                             #
 ###############################################################################
 
-from .base import Timer, get
-
-from . import base
-from . import contextswitches
-from . import conntrack
-from . import cpufreq
-from . import df
-from . import disk
-from . import entropy
-from . import interface
-from . import interrupts
-from . import latency
-from . import loadavg
-from . import processor
-from . import memory
-from . import sensors
+LIGHT_GREEN = "#00CC33"
+LIGHT_RED   = "#CC0033"

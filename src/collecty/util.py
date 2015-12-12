@@ -2,7 +2,7 @@
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
-# Copyright (C) 2012 IPFire development team                                  #
+# Copyright (C) 2015 IPFire development team                                  #
 #                                                                             #
 # This program is free software: you can redistribute it and/or modify        #
 # it under the terms of the GNU General Public License as published by        #
@@ -19,19 +19,32 @@
 #                                                                             #
 ###############################################################################
 
-from .base import Timer, get
+def __add_colour(colour, amount):
+	colour = colour.strip("#")
 
-from . import base
-from . import contextswitches
-from . import conntrack
-from . import cpufreq
-from . import df
-from . import disk
-from . import entropy
-from . import interface
-from . import interrupts
-from . import latency
-from . import loadavg
-from . import processor
-from . import memory
-from . import sensors
+	colour = (
+		int(colour[0:2], 16),
+		int(colour[2:4], 16),
+		int(colour[4:6], 16),
+	)
+
+	# Scale the colour
+	colour = (e + amount for e in colour)
+	colour = (max(e, 0) for e in colour)
+	colour = (min(e, 255) for e in colour)
+
+	return "#%02x%02x%02x" % tuple(colour)
+
+def lighten(colour, scale=0.1):
+	"""
+		Takes a hexadecimal colour code
+		and brightens the colour.
+	"""
+	return __add_colour(colour, 0xff * scale)
+
+def darken(colour, scale=0.1):
+	"""
+		Takes a hexadecimal colour code
+		and darkens the colour.
+	"""
+	return __add_colour(colour, 0xff * -scale)
