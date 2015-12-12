@@ -60,7 +60,14 @@ AC_PROG_CC_C_O
 AC_PROG_GCC_TRADITIONAL
 
 AC_CHECK_HEADERS_ONCE([
+	errno.h
+	fcntl.h
+	linux/hdreg.h
 	mntent.h
+	stdbool.h
+	string.h
+	sys/ioctl.h
+	time.h
 ])
 
 AC_PATH_PROG([XSLTPROC], [xsltproc])
