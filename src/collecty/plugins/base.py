@@ -516,7 +516,7 @@ class GraphTemplate(object):
 		return self.plugin.log
 
 	def _make_command_line(self, interval, format=DEFAULT_IMAGE_FORMAT,
-			width=None, height=None):
+			width=None, height=None, with_title=True):
 		args = []
 
 		args += GRAPH_DEFAULT_ARGUMENTS
@@ -530,7 +530,7 @@ class GraphTemplate(object):
 		args += self.rrd_graph_args
 
 		# Graph title
-		if self.graph_title:
+		if with_title and self.graph_title:
 			args += ["--title", self.graph_title]
 
 		# Vertical label
