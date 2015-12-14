@@ -631,14 +631,6 @@ class GraphTemplate(object):
 
 		return self._object_table
 
-	def get_object_files(self):
-		files = {}
-
-		for id, obj in self.object_table.items():
-			files[id] = obj.file
-
-		return files
-
 	def generate_graph(self, interval=None, **kwargs):
 		# Make sure that all collected data is in the database
 		# to get a recent graph image
@@ -648,8 +640,6 @@ class GraphTemplate(object):
 		args = self._make_command_line(interval, **kwargs)
 
 		self.log.info(_("Generating graph %s") % self)
-
-		#object_files = self.get_object_files()
 
 		if self.object:
 			args += self.object.make_rrd_defs()
