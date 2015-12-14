@@ -31,6 +31,7 @@ import time
 import unicodedata
 
 from .. import locales
+from .. import util
 from ..constants import *
 from ..i18n import _
 
@@ -465,6 +466,21 @@ class Object(object):
 
 		return defs
 
+	def get_stddev(self, interval=None):
+		args = self.make_rrd_defs()
+
+		# Add the correct interval
+		args += ["--start", util.make_interval(interval)]
+
+		for name in self.rrd_schema_names:
+			args += [
+				"VDEF:%s_stddev=%s,STDEV" % (name, name),
+				"PRINT:%s_stddev:%%lf" % name,
+			]
+
+		x, y, vals = rrdtool.graph("/dev/null", *args)
+		return dict(zip(self.rrd_schema_names, vals))
+
 	def execute(self):
 		if self.collected:
 			raise RuntimeError("This object has already collected its data")
@@ -505,15 +521,6 @@ class GraphTemplate(object):
 
 	# Extra arguments passed to rrdgraph.
 	rrd_graph_args = []
-
-	intervals = {
-		None   : "-3h",
-		"hour" : "-1h",
-		"day"  : "-25h",
-		"month": "-30d",
-		"week" : "-360h",
-		"year" : "-365d",
-	}
 
 	# Default dimensions for this graph
 	height = GRAPH_DEFAULT_HEIGHT
@@ -583,13 +590,8 @@ class GraphTemplate(object):
 			if self.upper_limit is not None:
 				args += ["--upper-limit", self.upper_limit]
 
-		try:
-			interval = self.intervals[interval]
-		except KeyError:
-			interval = "end-%s" % interval
-
 		# Add interval
-		args += ["--start", interval]
+		args += ["--start", util.make_interval(interval)]
 
 		return args
 

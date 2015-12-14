@@ -72,6 +72,12 @@ def get_network_interfaces():
 
 		yield interface
 
+def make_interval(interval):
+	try:
+		return INTERVALS[interval]
+	except KeyError:
+		return "end-%s" % interval
+
 class ProcNetSnmpParser(object):
 	"""
 		This class parses /proc/net/snmp{,6} and allows
