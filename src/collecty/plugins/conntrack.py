@@ -136,6 +136,9 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 		"ipv4"  : "#cccc33",
 	}
 
+	def get_object(self, *args):
+		return self.plugin.get_object("layer3-protocols")
+
 	@property
 	def protocol_descriptions(self):
 		_ = self.locale.translate
@@ -156,10 +159,9 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 		_ = self.locale.translate
 		return _("Number of open connections")
 
-	def get_object_table(self):
-		return {
-			"file" : self.plugin.get_object("layer3-protocols"),
-		}
+	@property
+	def rrd_defs(self):
+		return []
 
 	@property
 	def rrd_graph(self):
@@ -179,16 +181,11 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 				"legend_cur"  : "%10s\: %%8.0lf" % _("Current"),
 			}
 
-			args += [
-				"DEF:%(proto)s=%%(file)s:%(proto)s:AVERAGE" % i,
+			args += self.object.make_rrd_defs(proto) + [
 				"AREA:%(proto)s%(colour)s:%(description)-15s:STACK" % i,
-				"VDEF:%(proto)s_cur=%(proto)s,LAST" % i,
 				"GPRINT:%(proto)s_cur:%(legend_cur)s" % i,
-				"VDEF:%(proto)s_avg=%(proto)s,AVERAGE" % i,
 				"GPRINT:%(proto)s_avg:%(legend_avg)s" % i,
-				"VDEF:%(proto)s_min=%(proto)s,MINIMUM" % i,
 				"GPRINT:%(proto)s_min:%(legend_min)s" % i,
-				"VDEF:%(proto)s_max=%(proto)s,MAXIMUM" % i,
 				"GPRINT:%(proto)s_max:%(legend_max)s\\n" % i,
 			]
 
@@ -239,6 +236,9 @@ class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplat
 		"dccp"    : 7,
 	}
 
+	def get_object(self, *args):
+		return self.plugin.get_object("layer4-protocols")
+
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
@@ -248,12 +248,6 @@ class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplat
 	def protocols(self):
 		return sorted(ConntrackTable._layer4_protocols,
 			key=lambda x: self.protocol_sortorder.get(x, 99))
-
-	def get_object_table(self):
-		return {
-			"file" : self.plugin.get_object("layer4-protocols"),
-		}
-
 
 
 class ConntrackProtocolWithStatesGraphTemplate(base.GraphTemplate):
@@ -378,16 +372,11 @@ class ConntrackProtocolWithStatesGraphTemplate(base.GraphTemplate):
 				"legend_cur"  : "%10s\: %%8.0lf" % _("Current"),
 			}
 
-			args += [
-				"DEF:%(state)s=%%(file)s:%(state)s:AVERAGE" % i,
+			args += self.object.make_rrd_defs(state) + [
 				"AREA:%(state)s%(colour)s:%(description)-15s:STACK" % i,
-				"VDEF:%(state)s_cur=%(state)s,LAST" % i,
 				"GPRINT:%(state)s_cur:%(legend_cur)s" % i,
-				"VDEF:%(state)s_avg=%(state)s,AVERAGE" % i,
 				"GPRINT:%(state)s_avg:%(legend_avg)s" % i,
-				"VDEF:%(state)s_min=%(state)s,MINIMUM" % i,
 				"GPRINT:%(state)s_min:%(legend_min)s" % i,
-				"VDEF:%(state)s_max=%(state)s,MAXIMUM" % i,
 				"GPRINT:%(state)s_max:%(legend_max)s\\n" % i,
 			]
 

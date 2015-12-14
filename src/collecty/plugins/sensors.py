@@ -51,11 +51,6 @@ class GraphTemplateSensorsTemperature(base.GraphTemplate):
 			"CDEF:value_high=value,high,GT,value,UNKN,IF",
 			"CDEF:value_normal=value,high,GT,UNKN,value,IF",
 
-			"VDEF:value_cur=value,LAST",
-			"VDEF:value_avg=value,AVERAGE",
-			"VDEF:value_max=value,MAXIMUM",
-			"VDEF:value_min=value,MINIMUM",
-
 			# Get data points for the threshold lines
 			"VDEF:critical_line=critical,MINIMUM",
 			"VDEF:low_line=low,MAXIMUM",
@@ -152,10 +147,6 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 			# Change colour when the value gets above high
 			"CDEF:value_high=value,high,GT,value,UNKN,IF",
 			"CDEF:value_normal=value,high,GT,UNKN,value,IF",
-
-			"VDEF:value_avg=value,AVERAGE",
-			"VDEF:value_max=value,MAXIMUM",
-			"VDEF:value_min=value,MINIMUM",
 
 			"LINE3:value_high#FF0000",
 			"LINE3:value_normal#000000:%-15s\l" % _("Temperature"),

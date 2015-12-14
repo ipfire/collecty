@@ -45,9 +45,6 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 		_ = self.locale.translate
 
 		return [
-			"DEF:bytes_rx=%(file)s:bytes_rx:AVERAGE",
-			"DEF:bytes_tx=%(file)s:bytes_tx:AVERAGE",
-
 			# Convert everything into bits.
 			"CDEF:bits_rx=bytes_rx,8,*",
 			"CDEF:bits_tx=bytes_tx,8,*",
@@ -58,18 +55,12 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 
 			# Draw the received area.
 			"AREA:bits_rx#%s:%-15s" % (COLOUR_RX_AREA, _("Received")),
-			"VDEF:bits_rx_min=bits_rx,MINIMUM",
-			"VDEF:bits_rx_max=bits_rx,MAXIMUM",
-			"VDEF:bits_rx_avg=bits_rx,AVERAGE",
 			"GPRINT:bits_rx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_rx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_rx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
 
 			# Draw the transmitted area.
 			"AREA:bits_tx#%s:%-15s" % (COLOUR_TX_AREA, _("Transmitted")),
-			"VDEF:bits_tx_min=bits_tx,MINIMUM",
-			"VDEF:bits_tx_max=bits_tx,MAXIMUM",
-			"VDEF:bits_tx_avg=bits_tx,AVERAGE",
 			"GPRINT:bits_tx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_tx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_tx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
@@ -105,23 +96,14 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 		_ = self.locale.translate
 
 		return [
-			"DEF:packets_rx=%(file)s:packets_rx:AVERAGE",
-			"DEF:packets_tx=%(file)s:packets_tx:AVERAGE",
-
 			# Draw the received area.
 			"AREA:packets_rx#%s:%-15s" % (COLOUR_RX_AREA, _("Received")),
-			"VDEF:packets_rx_min=packets_rx,MINIMUM",
-			"VDEF:packets_rx_max=packets_rx,MAXIMUM",
-			"VDEF:packets_rx_avg=packets_rx,AVERAGE",
 			"GPRINT:packets_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:packets_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:packets_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
 
 			# Draw the transmitted area.
 			"AREA:packets_tx#%s:%-15s" % (COLOUR_TX_AREA, _("Transmitted")),
-			"VDEF:packets_tx_min=packets_tx,MINIMUM",
-			"VDEF:packets_tx_max=packets_tx,MAXIMUM",
-			"VDEF:packets_tx_avg=packets_tx,AVERAGE",
 			"GPRINT:packets_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:packets_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:packets_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
@@ -150,21 +132,12 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 		_ = self.locale.translate
 
 		return [
-			"DEF:errors_rx=%(file)s:errors_rx:AVERAGE",
-			"DEF:errors_tx=%(file)s:errors_tx:AVERAGE",
-			"DEF:dropped_rx=%(file)s:dropped_rx:AVERAGE",
-			"DEF:dropped_tx=%(file)s:dropped_tx:AVERAGE",
-			"DEF:collisions=%(file)s:collisions:AVERAGE",
-
 			# Invert the transmitted packets to create upside down graph.
 			"CDEF:errors_tx_inv=errors_tx,-1,*",
 			"CDEF:dropped_tx_inv=dropped_tx,-1,*",
 
 			# Draw the receive errors.
 			"AREA:errors_rx#228B2277:%-15s" % _("Receive errors"),
-			"VDEF:errors_rx_min=errors_rx,MINIMUM",
-			"VDEF:errors_rx_max=errors_rx,MAXIMUM",
-			"VDEF:errors_rx_avg=errors_rx,AVERAGE",
 			"GPRINT:errors_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:errors_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:errors_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
@@ -172,9 +145,6 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 			# Draw the transmit errors.
 			"AREA:errors_tx_inv#B2222277:%-15s" % _("Transmit errors"),
-			"VDEF:errors_tx_min=errors_tx,MINIMUM",
-			"VDEF:errors_tx_max=errors_tx,MAXIMUM",
-			"VDEF:errors_tx_avg=errors_tx,AVERAGE",
 			"GPRINT:errors_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:errors_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:errors_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
@@ -182,9 +152,6 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 			# Draw the receive drops.
 			"LINE2:dropped_rx#228B22:%-15s" % _("Receive drops"),
-			"VDEF:dropped_rx_min=dropped_rx,MINIMUM",
-			"VDEF:dropped_rx_max=dropped_rx,MAXIMUM",
-			"VDEF:dropped_rx_avg=dropped_rx,AVERAGE",
 			"GPRINT:dropped_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
@@ -192,9 +159,6 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 			# Draw the transmit drops.
 			"LINE2:dropped_tx#B22222:%-15s" % _("Transmit drops"),
-			"VDEF:dropped_tx_min=dropped_tx,MINIMUM",
-			"VDEF:dropped_tx_max=dropped_tx,MAXIMUM",
-			"VDEF:dropped_tx_avg=dropped_tx,AVERAGE",
 			"GPRINT:dropped_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",

@@ -35,12 +35,7 @@ class GraphTemplateDiskBadSectors(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:bad_sectors=%(file)s:bad_sectors:AVERAGE",
-
 			"AREA:bad_sectors#ff0000:%s" % _("Bad Sectors"),
-
-			"VDEF:bad_sectors_cur=bad_sectors,LAST",
-			"VDEF:bad_sectors_max=bad_sectors,MAXIMUM",
 			"GPRINT:bad_sectors_cur:%12s\:" % _("Current") + " %9.2lf",
 			"GPRINT:bad_sectors_max:%12s\:" % _("Maximum") + " %9.2lf\\n",
 		]
@@ -64,31 +59,20 @@ class GraphTemplateDiskBytes(base.GraphTemplate):
 		_ = self.locale.translate
 
 		rrd_graph = [
-			"DEF:read_sectors=%(file)s:read_sectors:AVERAGE",
-			"DEF:write_sectors=%(file)s:write_sectors:AVERAGE",
-
 			"CDEF:read_bytes=read_sectors,512,*",
 			"CDEF:write_bytes=write_sectors,512,*",
 
 			"LINE1:read_bytes#ff0000:%-15s" % _("Read"),
-			"VDEF:read_cur=read_bytes,LAST",
-			"VDEF:read_min=read_bytes,MINIMUM",
-			"VDEF:read_max=read_bytes,MAXIMUM",
-			"VDEF:read_avg=read_bytes,AVERAGE",
-			"GPRINT:read_cur:%12s\:" % _("Current") + " %9.2lf",
-			"GPRINT:read_max:%12s\:" % _("Maximum") + " %9.2lf",
-			"GPRINT:read_min:%12s\:" % _("Minimum") + " %9.2lf",
-			"GPRINT:read_avg:%12s\:" % _("Average") + " %9.2lf\\n",
+			"GPRINT:read_bytes_cur:%12s\:" % _("Current") + " %9.2lf",
+			"GPRINT:read_bytes_max:%12s\:" % _("Maximum") + " %9.2lf",
+			"GPRINT:read_bytes_min:%12s\:" % _("Minimum") + " %9.2lf",
+			"GPRINT:read_bytes_avg:%12s\:" % _("Average") + " %9.2lf\\n",
 
 			"LINE1:write_bytes#00ff00:%-15s" % _("Written"),
-			"VDEF:write_cur=write_bytes,LAST",
-			"VDEF:write_min=write_bytes,MINIMUM",
-			"VDEF:write_max=write_bytes,MAXIMUM",
-			"VDEF:write_avg=write_bytes,AVERAGE",
-			"GPRINT:write_cur:%12s\:" % _("Current") + " %9.2lf",
-			"GPRINT:write_max:%12s\:" % _("Maximum") + " %9.2lf",
-			"GPRINT:write_min:%12s\:" % _("Minimum") + " %9.2lf",
-			"GPRINT:write_avg:%12s\:" % _("Average") + " %9.2lf\\n",
+			"GPRINT:write_bytes_cur:%12s\:" % _("Current") + " %9.2lf",
+			"GPRINT:write_bytes_max:%12s\:" % _("Maximum") + " %9.2lf",
+			"GPRINT:write_bytes_min:%12s\:" % _("Minimum") + " %9.2lf",
+			"GPRINT:write_bytes_avg:%12s\:" % _("Average") + " %9.2lf\\n",
 		]
 
 		return rrd_graph
@@ -114,28 +98,17 @@ class GraphTemplateDiskIoOps(base.GraphTemplate):
 		_ = self.locale.translate
 
 		rrd_graph = [
-			"DEF:read_ios=%(file)s:read_ios:AVERAGE",
-			"DEF:write_ios=%(file)s:write_ios:AVERAGE",
-
 			"LINE1:read_ios#ff0000:%-15s" % _("Read"),
-			"VDEF:read_cur=read_ios,LAST",
-			"VDEF:read_min=read_ios,MINIMUM",
-			"VDEF:read_max=read_ios,MAXIMUM",
-			"VDEF:read_avg=read_ios,AVERAGE",
-			"GPRINT:read_cur:%12s\:" % _("Current") + " %6.2lf",
-			"GPRINT:read_max:%12s\:" % _("Maximum") + " %6.2lf",
-			"GPRINT:read_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:read_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:read_ios_cur:%12s\:" % _("Current") + " %6.2lf",
+			"GPRINT:read_ios_max:%12s\:" % _("Maximum") + " %6.2lf",
+			"GPRINT:read_ios_min:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:read_ios_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
 			"LINE1:write_ios#00ff00:%-15s" % _("Written"),
-			"VDEF:write_cur=write_ios,LAST",
-			"VDEF:write_min=write_ios,MINIMUM",
-			"VDEF:write_max=write_ios,MAXIMUM",
-			"VDEF:write_avg=write_ios,AVERAGE",
-			"GPRINT:write_cur:%12s\:" % _("Current") + " %6.2lf",
-			"GPRINT:write_max:%12s\:" % _("Maximum") + " %6.2lf",
-			"GPRINT:write_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:write_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:write_ios_cur:%12s\:" % _("Current") + " %6.2lf",
+			"GPRINT:write_ios_max:%12s\:" % _("Maximum") + " %6.2lf",
+			"GPRINT:write_ios_min:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:write_ios_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 		]
 
 		return rrd_graph
@@ -161,14 +134,13 @@ class GraphTemplateDiskTemperature(base.GraphTemplate):
 		_ = self.locale.translate
 
 		rrd_graph = [
-			"DEF:kelvin=%(file)s:temperature:AVERAGE",
-			"CDEF:celsius=kelvin,273.15,-",
-
-			"LINE2:celsius#ff0000:%s" % _("Temperature"),
+			"CDEF:celsius=temperature,273.15,-",
 			"VDEF:temp_cur=celsius,LAST",
 			"VDEF:temp_min=celsius,MINIMUM",
 			"VDEF:temp_max=celsius,MAXIMUM",
 			"VDEF:temp_avg=celsius,AVERAGE",
+
+			"LINE2:celsius#ff0000:%s" % _("Temperature"),
 			"GPRINT:temp_cur:%12s\:" % _("Current") + " %3.2lf",
 			"GPRINT:temp_max:%12s\:" % _("Maximum") + " %3.2lf",
 			"GPRINT:temp_min:%12s\:" % _("Minimum") + " %3.2lf",

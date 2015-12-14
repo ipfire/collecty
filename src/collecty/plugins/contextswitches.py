@@ -33,15 +33,10 @@ class GraphTemplateContextSwitches(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:ctxt=%(file)s:ctxt:AVERAGE",
-
 			"AREA:ctxt#90EE90:%-15s" % _("Context Switches"),
-			"VDEF:ctxtmax=ctxt,MAXIMUM",
-			"VDEF:ctxtmin=ctxt,MINIMUM",
-			"VDEF:ctxtavg=ctxt,AVERAGE",
-			"GPRINT:ctxtmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:ctxtmin:%12s\:" % _("Minimum") + " %6.2lf" ,
-			"GPRINT:ctxtavg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:ctxt_max:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:ctxt_min:%12s\:" % _("Minimum") + " %6.2lf" ,
+			"GPRINT:ctxt_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 		]
 
 	lower_limit = 0

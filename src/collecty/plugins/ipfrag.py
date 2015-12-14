@@ -35,74 +35,43 @@ class GraphTemplateIPv6Fragmentation(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:frags_oks=%(file)s:ip6_frags_oks:AVERAGE",
-			"DEF:frags_fails=%(file)s:ip6_frags_fails:AVERAGE",
-			"DEF:reasm_timeout=%(file)s:ip6_reasm_timeout:AVERAGE",
-			"DEF:reasm_oks=%(file)s:ip6_reasm_oks:AVERAGE",
-			"DEF:reasm_fails=%(file)s:ip6_reasm_fails:AVERAGE",
-
-			"CDEF:reasm_real_fails=reasm_fails,reasm_timeout,-",
-
-			"VDEF:frags_oks_cur=frags_oks,LAST",
-			"VDEF:frags_oks_avg=frags_oks,AVERAGE",
-			"VDEF:frags_oks_max=frags_oks,MAXIMUM",
-			"VDEF:frags_oks_min=frags_oks,MINIMUM",
-
-			"VDEF:frags_fails_cur=frags_fails,LAST",
-			"VDEF:frags_fails_avg=frags_fails,AVERAGE",
-			"VDEF:frags_fails_max=frags_fails,MAXIMUM",
-			"VDEF:frags_fails_min=frags_fails,MINIMUM",
-
-			"VDEF:reasm_oks_cur=reasm_oks,LAST",
-			"VDEF:reasm_oks_avg=reasm_oks,AVERAGE",
-			"VDEF:reasm_oks_max=reasm_oks,MAXIMUM",
-			"VDEF:reasm_oks_min=reasm_oks,MINIMUM",
-
-			"VDEF:reasm_fails_cur=reasm_real_fails,LAST",
-			"VDEF:reasm_fails_avg=reasm_real_fails,AVERAGE",
-			"VDEF:reasm_fails_max=reasm_real_fails,MAXIMUM",
-			"VDEF:reasm_fails_min=reasm_real_fails,MINIMUM",
-
-			"VDEF:reasm_timeout_cur=reasm_timeout,LAST",
-			"VDEF:reasm_timeout_avg=reasm_timeout,AVERAGE",
-			"VDEF:reasm_timeout_max=reasm_timeout,MAXIMUM",
-			"VDEF:reasm_timeout_min=reasm_timeout,MINIMUM",
+			"CDEF:ip6_reasm_real_fails=ip6_reasm_fails,ip6_reasm_timeout,-",
 
 			# Reassembly
-			"AREA:reasm_real_fails%s:%-24s" % \
+			"AREA:ip6_reasm_real_fails%s:%-24s" % \
 				(util.lighten(COLOUR_ERROR), _("Failed Reassemblies")),
-			"GPRINT:reasm_fails_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:reasm_fails_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:reasm_fails_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:reasm_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"GPRINT:ip6_reasm_fails_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip6_reasm_fails_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip6_reasm_fails_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip6_reasm_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
 
-			"AREA:reasm_timeout%s:%-24s:STACK" % \
+			"AREA:ip6_reasm_timeout%s:%-24s:STACK" % \
 				(util.lighten(COLOUR_WARN), _("Reassembly Timeouts")),
-			"GPRINT:reasm_timeout_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:reasm_timeout_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:reasm_timeout_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:reasm_timeout_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"GPRINT:ip6_reasm_timeout_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip6_reasm_timeout_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip6_reasm_timeout_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip6_reasm_timeout_min:%s %%5.0lf%%s\\j" % _("Min"),
 
-			"LINE2:reasm_oks%s:%-24s" % (BLACK, _("Successful Reassemblies")),
-			"GPRINT:reasm_oks_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:reasm_oks_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:reasm_oks_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:reasm_oks_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"LINE2:ip6_reasm_oks%s:%-24s" % (BLACK, _("Successful Reassemblies")),
+			"GPRINT:ip6_reasm_oks_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip6_reasm_oks_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip6_reasm_oks_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip6_reasm_oks_min:%s %%5.0lf%%s\\j" % _("Min"),
 
 			"COMMENT: \\n", # empty line
 
 			# Fragmentation
-			"LINE2:frags_fails%s:%-24s" % (COLOUR_ERROR, _("Failed Fragmentations")),
-			"GPRINT:frags_fails_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:frags_fails_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:frags_fails_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:frags_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"LINE2:ip6_frags_fails%s:%-24s" % (COLOUR_ERROR, _("Failed Fragmentations")),
+			"GPRINT:ip6_frags_fails_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip6_frags_fails_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip6_frags_fails_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip6_frags_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
 
-			"LINE2:frags_oks%s:%-24s" % (COLOUR_OK, _("Fragmented Packets")),
-			"GPRINT:frags_oks_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:frags_oks_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:frags_oks_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:frags_oks_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"LINE2:ip6_frags_oks%s:%-24s" % (COLOUR_OK, _("Fragmented Packets")),
+			"GPRINT:ip6_frags_oks_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip6_frags_oks_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip6_frags_oks_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip6_frags_oks_min:%s %%5.0lf%%s\\j" % _("Min"),
 		]
 
 	@property
@@ -135,74 +104,43 @@ class GraphTemplateIPv4Fragmentation(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:frags_oks=%(file)s:ip4_frags_oks:AVERAGE",
-			"DEF:frags_fails=%(file)s:ip4_frags_fails:AVERAGE",
-			"DEF:reasm_timeout=%(file)s:ip4_reasm_timeout:AVERAGE",
-			"DEF:reasm_oks=%(file)s:ip4_reasm_oks:AVERAGE",
-			"DEF:reasm_fails=%(file)s:ip4_reasm_fails:AVERAGE",
-
-			"CDEF:reasm_real_fails=reasm_fails,reasm_timeout,-",
-
-			"VDEF:frags_oks_cur=frags_oks,LAST",
-			"VDEF:frags_oks_avg=frags_oks,AVERAGE",
-			"VDEF:frags_oks_max=frags_oks,MAXIMUM",
-			"VDEF:frags_oks_min=frags_oks,MINIMUM",
-
-			"VDEF:frags_fails_cur=frags_fails,LAST",
-			"VDEF:frags_fails_avg=frags_fails,AVERAGE",
-			"VDEF:frags_fails_max=frags_fails,MAXIMUM",
-			"VDEF:frags_fails_min=frags_fails,MINIMUM",
-
-			"VDEF:reasm_oks_cur=reasm_oks,LAST",
-			"VDEF:reasm_oks_avg=reasm_oks,AVERAGE",
-			"VDEF:reasm_oks_max=reasm_oks,MAXIMUM",
-			"VDEF:reasm_oks_min=reasm_oks,MINIMUM",
-
-			"VDEF:reasm_fails_cur=reasm_real_fails,LAST",
-			"VDEF:reasm_fails_avg=reasm_real_fails,AVERAGE",
-			"VDEF:reasm_fails_max=reasm_real_fails,MAXIMUM",
-			"VDEF:reasm_fails_min=reasm_real_fails,MINIMUM",
-
-			"VDEF:reasm_timeout_cur=reasm_timeout,LAST",
-			"VDEF:reasm_timeout_avg=reasm_timeout,AVERAGE",
-			"VDEF:reasm_timeout_max=reasm_timeout,MAXIMUM",
-			"VDEF:reasm_timeout_min=reasm_timeout,MINIMUM",
+			"CDEF:ip4_reasm_real_fails=ip4_reasm_fails,ip4_reasm_timeout,-",
 
 			# Reassembly
-			"AREA:reasm_real_fails%s:%-24s" % \
+			"AREA:ip4_reasm_real_fails%s:%-24s" % \
 				(util.lighten(COLOUR_ERROR), _("Failed Reassemblies")),
-			"GPRINT:reasm_fails_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:reasm_fails_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:reasm_fails_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:reasm_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"GPRINT:ip4_reasm_fails_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip4_reasm_fails_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip4_reasm_fails_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip4_reasm_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
 
-			"AREA:reasm_timeout%s:%-24s:STACK" % \
+			"AREA:ip4_reasm_timeout%s:%-24s:STACK" % \
 				(util.lighten(COLOUR_WARN), _("Reassembly Timeouts")),
-			"GPRINT:reasm_timeout_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:reasm_timeout_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:reasm_timeout_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:reasm_timeout_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"GPRINT:ip4_reasm_timeout_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip4_reasm_timeout_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip4_reasm_timeout_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip4_reasm_timeout_min:%s %%5.0lf%%s\\j" % _("Min"),
 
-			"LINE2:reasm_oks%s:%-24s" % (BLACK, _("Successful Reassemblies")),
-			"GPRINT:reasm_oks_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:reasm_oks_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:reasm_oks_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:reasm_oks_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"LINE2:ip4_reasm_oks%s:%-24s" % (BLACK, _("Successful Reassemblies")),
+			"GPRINT:ip4_reasm_oks_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip4_reasm_oks_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip4_reasm_oks_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip4_reasm_oks_min:%s %%5.0lf%%s\\j" % _("Min"),
 
 			"COMMENT: \\n", # empty line
 
 			# Fragmentation
-			"LINE2:frags_fails%s:%-24s" % (COLOUR_ERROR, _("Failed Fragmentations")),
-			"GPRINT:frags_fails_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:frags_fails_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:frags_fails_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:frags_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"LINE2:ip4_frags_fails%s:%-24s" % (COLOUR_ERROR, _("Failed Fragmentations")),
+			"GPRINT:ip4_frags_fails_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip4_frags_fails_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip4_frags_fails_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip4_frags_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
 
-			"LINE2:frags_oks%s:%-24s" % (COLOUR_OK, _("Fragmented Packets")),
-			"GPRINT:frags_oks_cur:%s %%5.0lf%%s" % _("Now"),
-			"GPRINT:frags_oks_avg:%s %%5.0lf%%s" % _("Avg"),
-			"GPRINT:frags_oks_max:%s %%5.0lf%%s" % _("Max"),
-			"GPRINT:frags_oks_min:%s %%5.0lf%%s\\j" % _("Min"),
+			"LINE2:ip4_frags_oks%s:%-24s" % (COLOUR_OK, _("Fragmented Packets")),
+			"GPRINT:ip4_frags_oks_cur:%s %%5.0lf%%s" % _("Now"),
+			"GPRINT:ip4_frags_oks_avg:%s %%5.0lf%%s" % _("Avg"),
+			"GPRINT:ip4_frags_oks_max:%s %%5.0lf%%s" % _("Max"),
+			"GPRINT:ip4_frags_oks_min:%s %%5.0lf%%s\\j" % _("Min"),
 		]
 
 	@property

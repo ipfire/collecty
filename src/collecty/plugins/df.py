@@ -37,16 +37,6 @@ class GraphTemplateDiskUsage(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:used=%(file)s:used:AVERAGE",
-			"VDEF:used_cur=used,LAST",
-			"VDEF:used_min=used,MINIMUM",
-			"VDEF:used_max=used,MAXIMUM",
-
-			"DEF:free=%(file)s:free:AVERAGE",
-			"VDEF:free_cur=free,LAST",
-			"VDEF:free_min=free,MINIMUM",
-			"VDEF:free_max=free,MAXIMUM",
-
 			# Calculate the percentage of the currently used
 			# space since this is helps the user very much to
 			# judge
@@ -94,41 +84,29 @@ class GraphTemplateInodeUsage(base.GraphTemplate):
 		_ = self.locale.translate
 
 		rrd_graph = [
-			"DEF:used=%(file)s:inodes_used:AVERAGE",
-			"VDEF:used_cur=used,LAST",
-			"VDEF:used_min=used,MINIMUM",
-			"VDEF:used_max=used,MAXIMUM",
-
-			"DEF:free=%(file)s:inodes_free:AVERAGE",
-			"VDEF:free_cur=free,LAST",
-			"VDEF:free_min=free,MINIMUM",
-			"VDEF:free_max=free,MAXIMUM",
-
 			# Calculate the percentage of the currently used
 			# inodes since this is helps the user very much to
 			# judge
-			"CDEF:percentage_used=100,used,*,used,free,+,/",
-			"VDEF:percentage_used_now=percentage_used,LAST",
+			"CDEF:percentage_used=100,inodes_used,*,inodes_used,inodes_free,+,/",
 			"CDEF:percentage_left=100,percentage_used,-",
-			"VDEF:percentage_left_now=percentage_left,LAST",
 
 			# Area for the used inodes
-			"AREA:used%s:%s" % (util.lighten(LIGHT_RED, .66), _("Used")),
+			"AREA:inodes_used%s:%s" % (util.lighten(LIGHT_RED, .66), _("Used")),
 			"GPRINT:percentage_used_now: (%6.2lf%%)",
-			"GPRINT:used_cur:%12s\:" % _("Current") + " %9.2lf%s",
-			"GPRINT:used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:used_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
+			"GPRINT:inodes_used_cur:%12s\:" % _("Current") + " %9.2lf%s",
+			"GPRINT:inodes_used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
+			"GPRINT:inodes_used_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
 
 			# Stacked area of unused inodes
-			"AREA:free%s:%s:STACK" % (util.lighten(LIGHT_GREEN, .66), _("Free")),
+			"AREA:inodes_free%s:%s:STACK" % (util.lighten(LIGHT_GREEN, .66), _("Free")),
 			"GPRINT:percentage_left_now: (%6.2lf%%)",
-			"GPRINT:free_cur:%12s\:" % _("Current") + " %9.2lf%s",
-			"GPRINT:free_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:free_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
+			"GPRINT:inodes_free_cur:%12s\:" % _("Current") + " %9.2lf%s",
+			"GPRINT:inodes_free_min:%12s\:" % _("Minimum") + " %9.2lf%s",
+			"GPRINT:inodes_free_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
 
 			# Add contour lines for the areas
-			"LINE:used%s" % LIGHT_RED,
-			"LINE:free%s::STACK" % LIGHT_GREEN,
+			"LINE:inodes_used%s" % LIGHT_RED,
+			"LINE:inodes_free%s::STACK" % LIGHT_GREEN,
 		]
 
 		return rrd_graph

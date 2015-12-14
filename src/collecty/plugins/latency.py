@@ -40,14 +40,6 @@ class GraphTemplateLatency(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:latency6=%(file)s:latency6:AVERAGE",
-			"DEF:loss6=%(file)s:loss6:AVERAGE",
-			"DEF:stddev6=%(file)s:stddev6:AVERAGE",
-
-			"DEF:latency4=%(file)s:latency4:AVERAGE",
-			"DEF:loss4=%(file)s:loss4:AVERAGE",
-			"DEF:stddev4=%(file)s:stddev4:AVERAGE",
-
 			# Compute the biggest loss and convert into percentage
 			"CDEF:ploss=loss6,loss4,MAX,100,*",
 
@@ -63,15 +55,8 @@ class GraphTemplateLatency(base.GraphTemplate):
 			"CDEF:l050=ploss,25,50,LIMIT,UN,UNKN,INF,IF",
 			"CDEF:l099=ploss,50,99,LIMIT,UN,UNKN,INF,IF",
 
-			"VDEF:latency6min=latency6,MINIMUM",
-			"VDEF:latency6max=latency6,MAXIMUM",
-			"VDEF:latency6avg=latency6,AVERAGE",
-			"VDEF:latency4min=latency4,MINIMUM",
-			"VDEF:latency4max=latency4,MAXIMUM",
-			"VDEF:latency4avg=latency4,AVERAGE",
-
-			"LINE1:latency6avg#00ff0066:%s" % _("Average latency (IPv6)"),
-			"LINE1:latency4avg#ff000066:%s\\r" % _("Average latency (IPv4)"),
+			"LINE1:latency6_avg#00ff0066:%s" % _("Average latency (IPv6)"),
+			"LINE1:latency4_avg#ff000066:%s\\r" % _("Average latency (IPv4)"),
 
 			"COMMENT:%s" % _("Packet Loss"),
 			"AREA:l005#ffffff:%s" % _("0-5%%"),
@@ -85,16 +70,16 @@ class GraphTemplateLatency(base.GraphTemplate):
 			"AREA:spacer4",
 			"AREA:stddevarea4#ff000033:STACK",
 			"LINE2:latency4#ff0000:%s" % _("Latency (IPv4)"),
-			"GPRINT:latency4max:%12s\:" % _("Maximum") + " %6.2lf",
-			"GPRINT:latency4min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:latency4avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:latency4_max:%12s\:" % _("Maximum") + " %6.2lf",
+			"GPRINT:latency4_min:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:latency4_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
 			"AREA:spacer6",
 			"AREA:stddevarea6#00ff0033:STACK",
 			"LINE2:latency6#00ff00:%s" % _("Latency (IPv6)"),
-			"GPRINT:latency6max:%12s\:" % _("Maximum") + " %6.2lf",
-			"GPRINT:latency6min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:latency6avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:latency6_max:%12s\:" % _("Maximum") + " %6.2lf",
+			"GPRINT:latency6_min:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:latency6_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 		]
 
 	@property

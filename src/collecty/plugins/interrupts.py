@@ -33,15 +33,10 @@ class GraphTemplateSystemInterrupts(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:intr=%(file)s:intr:AVERAGE",
-
 			"AREA:intr#90EE90:%-15s" % _("System Interrupts"),
-			"VDEF:intrmax=intr,MAXIMUM",
-			"VDEF:intrmin=intr,MINIMUM",
-			"VDEF:intravg=intr,AVERAGE",
-			"GPRINT:intrmax:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:intrmin:%12s\:" % _("Minimum") + " %6.2lf" ,
-			"GPRINT:intravg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:intr_max:%12s\:" % _("Maximum") + " %6.2lf" ,
+			"GPRINT:intr_min:%12s\:" % _("Minimum") + " %6.2lf" ,
+			"GPRINT:intr_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 		]
 
 	lower_limit = 0

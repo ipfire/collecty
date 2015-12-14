@@ -35,15 +35,10 @@ class GraphTemplateEntropy(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:entropy=%(file)s:entropy:AVERAGE",
-
 			"LINE3:entropy#ff0000:%-15s" % _("Available entropy"),
-			"VDEF:entrmin=entropy,MINIMUM",
-			"VDEF:entrmax=entropy,MAXIMUM",
-			"VDEF:entravg=entropy,AVERAGE",
-			"GPRINT:entrmax:%12s\:" % _("Maximum") + " %5.0lf",
-			"GPRINT:entrmin:%12s\:" % _("Minimum") + " %5.0lf",
-			"GPRINT:entravg:%12s\:" % _("Average") + " %5.0lf\\n",
+			"GPRINT:entropy_max:%12s\:" % _("Maximum") + " %5.0lf",
+			"GPRINT:entropy_min:%12s\:" % _("Minimum") + " %5.0lf",
+			"GPRINT:entropy_avg:%12s\:" % _("Average") + " %5.0lf\\n",
 		]
 
 	lower_limit = 0

@@ -23,6 +23,7 @@ import datetime
 import logging
 import math
 import os
+import re
 import rrdtool
 import tempfile
 import threading
@@ -32,6 +33,8 @@ import unicodedata
 from .. import locales
 from ..constants import *
 from ..i18n import _
+
+DEF_MATCH = re.compile(r"C?DEF:([A-Za-z0-9_]+)=")
 
 class Timer(object):
 	def __init__(self, timeout, heartbeat=1):
@@ -437,6 +440,23 @@ class Object(object):
 
 		return schema
 
+	def make_rrd_defs(self, prefix=None):
+		defs = []
+
+		for line in self.rrd_schema:
+			(def_type, name, type, lower_limit, upper_limit) = line.split(":")
+
+			if prefix:
+				p = "%s_%s" % (prefix, name)
+			else:
+				p = name
+
+			defs += [
+				"DEF:%s=%s:%s:AVERAGE" % (p, self.file, name),
+			]
+
+		return defs
+
 	def execute(self):
 		if self.collected:
 			raise RuntimeError("This object has already collected its data")
@@ -565,6 +585,27 @@ class GraphTemplate(object):
 
 		return args
 
+	def _add_vdefs(self, args):
+		ret = []
+
+		for arg in args:
+			ret.append(arg)
+
+			# Search for all DEFs and CDEFs
+			m = re.match(DEF_MATCH, "%s" % arg)
+			if m:
+				name = m.group(1)
+
+				# Add the VDEFs for minimum, maximum, etc. values
+				ret += [
+					"VDEF:%s_cur=%s,LAST" % (name, name),
+					"VDEF:%s_avg=%s,AVERAGE" % (name, name),
+					"VDEF:%s_max=%s,MAXIMUM" % (name, name),
+					"VDEF:%s_min=%s,MINIMUM" % (name, name),
+				]
+
+		return ret
+
 	def get_object(self, *args, **kwargs):
 		return self.plugin.get_object(*args, **kwargs)
 
@@ -597,20 +638,20 @@ class GraphTemplate(object):
 		args = self._make_command_line(interval, **kwargs)
 
 		self.log.info(_("Generating graph %s") % self)
-		self.log.debug("  args: %s" % args)
 
-		object_files = self.get_object_files()
+		#object_files = self.get_object_files()
 
-		for item in self.rrd_graph:
-			try:
-				args.append(item % object_files)
-			except TypeError:
-				args.append(item)
+		if self.object:
+			args += self.object.make_rrd_defs()
 
-			self.log.debug("  %s" % args[-1])
+		args += self.rrd_graph
+		args = self._add_vdefs(args)
 
 		# Convert arguments to string
 		args = [str(e) for e in args]
+
+		for arg in args:
+			self.log.debug("  %s" % arg)
 
 		with Environment(self.timezone, self.locale.lang):
 			graph = rrdtool.graphv("-", *args)
