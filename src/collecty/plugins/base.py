@@ -440,12 +440,20 @@ class Object(object):
 
 		return schema
 
+	@property
+	def rrd_schema_names(self):
+		ret = []
+
+		for line in self.rrd_schema:
+			(prefix, name, type, lower_limit, upper_limit) = line.split(":")
+			ret.append(name)
+
+		return ret
+
 	def make_rrd_defs(self, prefix=None):
 		defs = []
 
-		for line in self.rrd_schema:
-			(def_type, name, type, lower_limit, upper_limit) = line.split(":")
-
+		for name in self.rrd_schema_names:
 			if prefix:
 				p = "%s_%s" % (prefix, name)
 			else:
