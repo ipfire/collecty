@@ -129,7 +129,7 @@ class ConntrackTable(object):
 class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 	name = "conntrack-layer3-protocols"
 
-	protocols = ConntrackTable._layer3_protocols
+	_protocols = ConntrackTable._layer3_protocols
 
 	protocol_colours = {
 		"ipv6"  : "#cc0033",
@@ -138,6 +138,18 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 
 	def get_object(self, *args):
 		return self.plugin.get_object("layer3-protocols")
+
+	@property
+	def protocols(self):
+		# Order the protocols by standard deviation which will give us cleaner graphs
+		# http://stackoverflow.com/questions/13958409/how-to-graph-rrd-stackable-data-by-standard-deviation-to-maximize-readability
+		stddev = self.object.get_stddev()
+
+		protos = {}
+		for p in self._protocols:
+			protos[p] = stddev.get(p)
+
+		return sorted(protos, key=protos.get)
 
 	@property
 	def protocol_descriptions(self):
@@ -168,7 +180,7 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 		_ = self.locale.translate
 		args = []
 
-		for proto in reversed(self.protocols):
+		for proto in self.protocols:
 			i = {
 				"colour"      : self.protocol_colours.get(proto, "#000000"),
 				"description" : self.protocol_descriptions.get(proto, proto),
@@ -245,7 +257,7 @@ class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplat
 		return _("Connections by IP Protocols")
 
 	@property
-	def protocols(self):
+	def _protocols(self):
 		return sorted(ConntrackTable._layer4_protocols,
 			key=lambda x: self.protocol_sortorder.get(x, 99))
 
