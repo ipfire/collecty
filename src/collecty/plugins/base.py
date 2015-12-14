@@ -516,15 +516,23 @@ class GraphTemplate(object):
 		return self.plugin.log
 
 	def _make_command_line(self, interval, format=DEFAULT_IMAGE_FORMAT,
-			width=None, height=None, with_title=True):
-		args = []
+			width=None, height=None, with_title=True, thumbnail=False):
+		args = [e for e in GRAPH_DEFAULT_ARGUMENTS]
 
-		args += GRAPH_DEFAULT_ARGUMENTS
+		# Set the default dimensions
+		default_height, default_width = GRAPH_DEFAULT_HEIGHT, GRAPH_DEFAULT_WIDTH
+
+		# A thumbnail doesn't have a legend and other labels
+		if thumbnail:
+			args.append("--only-graph")
+
+			default_height = THUMBNAIL_DEFAULT_HEIGHT
+			default_width = THUMBNAIL_DEFAULT_WIDTH
 
 		args += [
 			"--imgformat", format,
-			"--height", "%s" % (height or self.height),
-			"--width", "%s" % (width or self.width),
+			"--height", "%s" % (height or default_height),
+			"--width", "%s" % (width or default_width),
 		]
 
 		args += self.rrd_graph_args
