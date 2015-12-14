@@ -36,7 +36,6 @@ class GraphTemplateEntropy(base.GraphTemplate):
 
 		return [
 			"DEF:entropy=%(file)s:entropy:AVERAGE",
-			"CDEF:entropytrend=entropy,43200,TREND",
 
 			"LINE3:entropy#ff0000:%-15s" % _("Available entropy"),
 			"VDEF:entrmin=entropy,MINIMUM",
@@ -45,8 +44,6 @@ class GraphTemplateEntropy(base.GraphTemplate):
 			"GPRINT:entrmax:%12s\:" % _("Maximum") + " %5.0lf",
 			"GPRINT:entrmin:%12s\:" % _("Minimum") + " %5.0lf",
 			"GPRINT:entravg:%12s\:" % _("Average") + " %5.0lf\\n",
-
-			"LINE3:entropytrend#000000",
 		]
 
 	lower_limit = 0
