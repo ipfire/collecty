@@ -93,7 +93,14 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 	]
 
 	def get_temperature_sensors(self):
-		return self.plugin.get_detected_sensor_objects("coretemp-*")
+		# Use the coretemp module if available
+		sensors = self.plugin.get_detected_sensor_objects("coretemp-*")
+
+		# Fall back to the ACPI sensor
+		if not sensors:
+			sensors = self.plugin.get_detected_sensor_objects("acpitz-virtual-*")
+
+		return sensors
 
 	def get_objects(self, *args, **kwargs):
 		sensors = self.get_temperature_sensors()
