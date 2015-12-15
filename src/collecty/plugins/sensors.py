@@ -145,8 +145,8 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 			"CDEF:all_value_c_high=all_value_c,all_high_c,GT,all_value_c,UNKN,IF",
 			"CDEF:all_value_c_normal=all_value_c,all_high_c,GT,UNKN,all_value_c,IF",
 
-			"LINE3:all_value_c_high#FF0000",
-			"LINE3:all_value_c_normal#000000:%-15s\l" % _("Temperature"),
+			"LINE2:all_value_c_high#FF0000",
+			"LINE2:all_value_c_normal#000000:%-15s\l" % _("Temperature"),
 
 			"GPRINT:all_value_c_avg:    %-15s %%6.2lf °C\l" % _("Average"),
 			"GPRINT:all_value_c_max:    %-15s %%6.2lf °C\l" % _("Maximum"),
@@ -157,7 +157,7 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 			rrd_graph += [
 				# TODO these lines were supposed to be dashed, but that
 				# didn't really work here
-				"LINE2:%s_value_c%s:%-10s" % (id, colour, core.sensor.label),
+				"LINE1:%s_value_c%s:%-10s" % (id, colour, core.sensor.label),
 			]
 
 		# Draw the critical line
