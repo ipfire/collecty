@@ -31,6 +31,9 @@ class GraphTemplateCPUFreq(base.GraphTemplate):
 
 	lower_limit = 0
 
+	def get_objects(self, *args, **kwargs):
+		return list(self.plugin.objects)
+
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
@@ -41,44 +44,22 @@ class GraphTemplateCPUFreq(base.GraphTemplate):
 		_ = self.locale.translate
 		return "%s [%s]" % (_("Frequency"), _("Hz"))
 
-	def get_object_table(self):
-		objects_table = {}
-
-		for processor in self.plugin.objects:
-			objects_table[processor.id] = processor
-
-		return objects_table
-
-	core_colours = {
-		"cpu0" : "#ff000066",
-		"cpu1" : "#00ff0066",
-		"cpu2" : "#0000ff66",
-		"cpu3" : "#ffff0066",
-	}
+	processor_colours = [
+		"#ff000066",
+		"#00ff0066",
+		"#0000ff66",
+		"#ffff0066",
+	]
 
 	@property
 	def rrd_graph(self):
 		rrd_graph = []
 
-		for core, processor in sorted(self.object_table.items()):
-			i = {
-				"core"   : core,
-				"colour" : self.core_colours.get(core, "#000000"),
-				"name"   : processor.name,
-			}
-
-			core_graph = [
-				"DEF:current_%(core)s=%%(%(core)s)s:current:AVERAGE",
-				"DEF:minimum_%(core)s=%%(%(core)s)s:minimum:AVERAGE",
-				"DEF:maximum_%(core)s=%%(%(core)s)s:maximum:AVERAGE",
-
-				"VDEF:avg_%(core)s=current_%(core)s,AVERAGE",
-
-				"LINE2:current_%(core)s%(colour)s:%(name)-10s",
-				"GPRINT:avg_%(core)s:%%6.2lf %%sHz\l",
+		for processor, colour in zip(self.objects, self.processor_colours):
+			rrd_graph += processor.make_rrd_defs(processor.id) + [
+				"LINE2:%s%s:%-10s" % (processor.id, colour, processor.name),
+				"GPRINT:%s:%%6.2lf %%sHz" % processor.id,
 			]
-
-			rrd_graph += [line % i for line in core_graph]
 
 		return rrd_graph
 
