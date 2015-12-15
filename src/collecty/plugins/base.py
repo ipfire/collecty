@@ -303,6 +303,9 @@ class Object(object):
 	def __repr__(self):
 		return "<%s>" % self.__class__.__name__
 
+	def __lt__(self, other):
+		return self.id < other.id
+
 	@property
 	def collecty(self):
 		return self.plugin.collecty
@@ -537,7 +540,8 @@ class GraphTemplate(object):
 		self.object_id = object_id
 
 		# Get the main object
-		self.object = self.get_object(self.object_id)
+		self.objects = self.get_objects(self.object_id)
+		self.objects.sort()
 
 	def __repr__(self):
 		return "<%s>" % self.__class__.__name__
@@ -549,6 +553,14 @@ class GraphTemplate(object):
 	@property
 	def log(self):
 		return self.plugin.log
+
+	@property
+	def object(self):
+		"""
+			Shortcut to the main object
+		"""
+		if len(self.objects) == 1:
+			return self.objects[0]
 
 	def _make_command_line(self, interval, format=DEFAULT_IMAGE_FORMAT,
 			width=None, height=None, with_title=True, thumbnail=False):
@@ -595,6 +607,18 @@ class GraphTemplate(object):
 
 		return args
 
+	def _add_defs(self):
+		use_prefix = len(self.objects) >= 2
+
+		args = []
+		for object in self.objects:
+			if use_prefix:
+				args += object.make_rrd_defs(object.id)
+			else:
+				args += object.make_rrd_defs()
+
+		return args
+
 	def _add_vdefs(self, args):
 		ret = []
 
@@ -616,33 +640,25 @@ class GraphTemplate(object):
 
 		return ret
 
-	def get_object(self, *args, **kwargs):
-		return self.plugin.get_object(*args, **kwargs)
+	def get_objects(self, *args, **kwargs):
+		object = self.plugin.get_object(*args, **kwargs)
 
-	def get_object_table(self):
-		return {
-			"file" : self.object,
-		}
-
-	@property
-	def object_table(self):
-		if not hasattr(self, "_object_table"):
-			self._object_table = self.get_object_table()
-
-		return self._object_table
+		return [object,]
 
 	def generate_graph(self, interval=None, **kwargs):
+		assert self.objects, "Cannot render graph without any objects"
+
 		# Make sure that all collected data is in the database
 		# to get a recent graph image
-		if self.object:
-			self.object.commit()
+		for object in self.objects:
+			object.commit()
 
 		args = self._make_command_line(interval, **kwargs)
 
 		self.log.info(_("Generating graph %s") % self)
 
-		if self.object:
-			args += self.object.make_rrd_defs()
+		# Add DEFs for all objects
+		args += self._add_defs()
 
 		args += self.rrd_graph
 		args = self._add_vdefs(args)

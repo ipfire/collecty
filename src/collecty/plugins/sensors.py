@@ -90,95 +90,76 @@ class GraphTemplateSensorsTemperature(base.GraphTemplate):
 class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 	name = "processor-temperature"
 
-	core_colours = {
-		"core0" : "#ff000033",
-		"core1" : "#0000ff33",
-		"core2" : "#00ff0033",
-		"core3" : "#0000ff33",
-	}
+	core_colours = [
+		"#ff000033",
+		"#0000ff33",
+		"#00ff0033",
+		"#0000ff33",
+	]
 
 	def get_temperature_sensors(self):
 		return self.plugin.get_detected_sensor_objects("coretemp-*")
 
-	def get_object_table(self):
-		objects_table = {}
+	def get_objects(self, *args, **kwargs):
+		sensors = self.get_temperature_sensors()
 
-		counter = 0
-		for object in self.get_temperature_sensors():
-			objects_table["core%s" % counter] = object
-			counter += 1
-
-		return objects_table
+		return list(sensors)
 
 	@property
 	def rrd_graph(self):
 		_ = self.locale.translate
 		rrd_graph = []
 
-		cores = sorted(self.object_table.keys())
+		counter = 0
+		ids = []
 
-		for core in cores:
-			i = {
-				"core" : core,
-			}
+		for core in self.objects:
+			id = "core%s" % counter
+			ids.append(id)
+			counter += 1
 
-			core_graph = [
-				"DEF:value_kelvin_%(core)s=%%(%(core)s)s:value:AVERAGE",
-				"DEF:critical_kelvin_%(core)s=%%(%(core)s)s:critical:AVERAGE",
-				"DEF:high_kelvin_%(core)s=%%(%(core)s)s:high:AVERAGE",
-
+			rrd_graph += core.make_rrd_defs(id) + [
 				# Convert everything to celsius
-				"CDEF:value_%(core)s=value_kelvin_%(core)s,273.15,-",
-				"CDEF:critical_%(core)s=critical_kelvin_%(core)s,273.15,-",
-				"CDEF:high_%(core)s=high_kelvin_%(core)s,273.15,-",
+				"CDEF:%s_value_c=%s_value,273.15,-" % (id, id),
+				"CDEF:%s_critical_c=%s_critical,273.15,-" % (id, id),
+				"CDEF:%s_high_c=%s_high,273.15,-" % (id, id),
 			]
 
-			rrd_graph += [line % i for line in core_graph]
-
-		all_core_values = ("value_%s" % c for c in cores)
-		all_core_highs  = ("high_%s"  % c for c in cores)
+		all_core_values = ("%s_value_c" % id for id in ids)
+		all_core_highs  = ("%s_high_c"  % id for id in ids)
 
 		rrd_graph += [
 			# Compute the temperature of the processor
 			# by taking the average of all cores
-			"CDEF:value=%s,%s,AVG" % (",".join(all_core_values), len(cores)),
-			"CDEF:high=%s,MIN" % ",".join(all_core_highs),
+			"CDEF:all_value_c=%s,%s,AVG" % (",".join(all_core_values), len(ids)),
+			"CDEF:all_high_c=%s,MIN" % ",".join(all_core_highs),
 
 			# Change colour when the value gets above high
-			"CDEF:value_high=value,high,GT,value,UNKN,IF",
-			"CDEF:value_normal=value,high,GT,UNKN,value,IF",
+			"CDEF:all_value_c_high=all_value_c,all_high_c,GT,all_value_c,UNKN,IF",
+			"CDEF:all_value_c_normal=all_value_c,all_high_c,GT,UNKN,all_value_c,IF",
 
-			"LINE3:value_high#FF0000",
-			"LINE3:value_normal#000000:%-15s\l" % _("Temperature"),
+			"LINE3:all_value_c_high#FF0000",
+			"LINE3:all_value_c_normal#000000:%-15s\l" % _("Temperature"),
 
-			"GPRINT:value_avg:    %-15s %%6.2lf °C\l" % _("Average"),
-			"GPRINT:value_max:    %-15s %%6.2lf °C\l" % _("Maximum"),
-			"GPRINT:value_min:    %-15s %%6.2lf °C\l" % _("Minimum"),
+			"GPRINT:all_value_c_avg:    %-15s %%6.2lf °C\l" % _("Average"),
+			"GPRINT:all_value_c_max:    %-15s %%6.2lf °C\l" % _("Maximum"),
+			"GPRINT:all_value_c_min:    %-15s %%6.2lf °C\l" % _("Minimum"),
 		]
 
-		for core in cores:
-			object = self.object_table.get(core)
-
-			i = {
-				"colour" : self.core_colours.get(core, "#000000"),
-				"core"   : core,
-				"label"  : object.sensor.label,
-			}
-
-			core_graph = [
+		for id, core, colour in zip(ids, self.objects, self.core_colours):
+			rrd_graph += [
 				# TODO these lines were supposed to be dashed, but that
 				# didn't really work here
-				"LINE2:value_%(core)s%(colour)s:%(label)-10s",
+				"LINE2:%s_value_c%s:%-10s" % (id, colour, core.sensor.label),
 			]
 
-			rrd_graph += [line % i for line in core_graph]
-
 		# Draw the critical line
-		rrd_graph += [
-			"VDEF:critical_line=critical_core0,MINIMUM",
-			"HRULE:critical_line#000000:%-15s" % _("Critical"),
-			"GPRINT:critical_line:%%6.2lf °C\\r",
-		]
+		for id in ids:
+			rrd_graph += [
+				"HRULE:%s_critical_c_min#000000:%-15s" % (id, _("Critical")),
+				"GPRINT:%s_critical_c_min:%%6.2lf °C\\r",
+			]
+			break
 
 		return rrd_graph
 

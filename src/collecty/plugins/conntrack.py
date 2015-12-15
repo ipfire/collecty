@@ -136,8 +136,10 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 		"ipv4"  : "#cccc33",
 	}
 
-	def get_object(self, *args):
-		return self.plugin.get_object("layer3-protocols")
+	def get_objects(self, *args):
+		return [
+			self.plugin.get_object("layer3-protocols"),
+		]
 
 	@property
 	def protocols(self):
@@ -248,8 +250,10 @@ class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplat
 		"dccp"    : 7,
 	}
 
-	def get_object(self, *args):
-		return self.plugin.get_object("layer4-protocols")
+	def get_objects(self, *args):
+		return [
+			self.plugin.get_object("layer4-protocols"),
+		]
 
 	@property
 	def graph_title(self):
