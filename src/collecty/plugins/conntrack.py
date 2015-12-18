@@ -185,24 +185,15 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 		args = []
 
 		for proto in self.protocols:
-			i = {
-				"colour"      : self.protocol_colours.get(proto, COLOUR_OTHER),
-				"description" : self.protocol_descriptions.get(proto, proto),
-				"proto"       : proto,
-				"type"        : type,
+			colour = self.protocol_colours.get(proto, COLOUR_OTHER)
+			description = self.protocol_descriptions.get(proto, proto)
 
-				"legend_min"  : "%10s\: %%8.0lf" % _("Minimum"),
-				"legend_max"  : "%10s\: %%8.0lf" % _("Maximum"),
-				"legend_avg"  : "%10s\: %%8.0lf" % _("Average"),
-				"legend_cur"  : "%10s\: %%8.0lf" % _("Current"),
-			}
-
-			args += self.object.make_rrd_defs(proto) + [
-				"AREA:%(proto)s%(colour)s:%(description)-15s:STACK" % i,
-				"GPRINT:%(proto)s_cur:%(legend_cur)s" % i,
-				"GPRINT:%(proto)s_avg:%(legend_avg)s" % i,
-				"GPRINT:%(proto)s_min:%(legend_min)s" % i,
-				"GPRINT:%(proto)s_max:%(legend_max)s\\n" % i,
+			args += [
+				"AREA:%s%s:%-15s:STACK" % (proto, colour, description),
+				"GPRINT:%s_cur:%-6s %%8.0lf" % (proto, _("Now")),
+				"GPRINT:%s_avg:%-6s %%8.0lf" % (proto, _("Avg")),
+				"GPRINT:%s_min:%-6s %%8.0lf" % (proto, _("Min")),
+				"GPRINT:%s_max:%-6s %%8.0lf\\l" % (proto, _("Max")),
 			]
 
 		return args
