@@ -19,10 +19,9 @@
 #                                                                             #
 ###############################################################################
 
-
-
 from . import base
 
+from ..colours import *
 from ..i18n import _
 
 class GraphTemplateProcessor(base.GraphTemplate):
@@ -33,37 +32,37 @@ class GraphTemplateProcessor(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"AREA:user#90EE90:%-15s" % _("User"),
+			"AREA:user%s:%-15s" % (CPU_USER, _("User")),
 			"GPRINT:user_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:user_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:user_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"STACK:nice#4169E1:%-15s" % _("Nice"),
+			"STACK:nice%s:%-15s" % (CPU_NICE, _("Nice")),
 			"GPRINT:nice_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:nice_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:nice_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"STACK:sys#DC143C:%-15s" % _("System"),
+			"STACK:sys%s:%-15s" % (CPU_SYS, _("System")),
 			"GPRINT:sys_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:sys_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:sys_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"STACK:wait#483D8B:%-15s" % _("Wait"),
+			"STACK:wait%s:%-15s" % (CPU_WAIT, _("Wait")),
 			"GPRINT:wait_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:wait_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:wait_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"STACK:irq#DAA520:%-15s" % _("Interrupt"),
+			"STACK:irq%s:%-15s" % (CPU_IRQ, _("Interrupt")),
 			"GPRINT:irq_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:irq_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:irq_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"STACK:sirq#FFD700:%-15s" % _("Soft interrupt"),
+			"STACK:sirq%s:%-15s" % (CPU_SIRQ, _("Soft Interrupt")),
 			"GPRINT:sirq_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:sirq_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:sirq_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"STACK:idle#EFEFEF:%-15s" % _("Idle"),
+			"STACK:idle%s:%-15s" % (CPU_IDLE, _("Idle")),
 			"GPRINT:idle_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:idle_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:idle_avg:%12s\:" % _("Average") + " %6.2lf\\n",

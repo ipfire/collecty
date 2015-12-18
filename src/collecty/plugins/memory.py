@@ -22,6 +22,8 @@
 from . import base
 
 from ..i18n import _
+from .. import util
+from ..colours import *
 
 class GraphTemplateMemory(base.GraphTemplate):
 	name = "memory"
@@ -34,17 +36,17 @@ class GraphTemplateMemory(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"AREA:used#90EE90:%-15s" % _("Used memory"),
+			"AREA:used%s:%-15s" % (util.lighten(MEMORY_USED, AREA_OPACITY), _("Used memory")),
 			"GPRINT:used_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:used_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:used_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"STACK:buffered#4169E1:%-15s" % _("Buffered data"),
+			"STACK:buffered%s:%-15s" % (util.lighten(MEMORY_BUFFERED, AREA_OPACITY), _("Buffered data")),
 			"GPRINT:buffered_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:buffered_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:buffered_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"STACK:cached#FFD700:%-15s" % _("Cached data"),
+			"STACK:cached%s:%-15s" % (util.lighten(MEMORY_CACHED, AREA_OPACITY), _("Cached data")),
 			"GPRINT:cached_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:cached_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:cached_avg:%12s\:" % _("Average") + " %6.2lf\\n",
@@ -54,10 +56,15 @@ class GraphTemplateMemory(base.GraphTemplate):
 #			"GPRINT:free_min:%12s\:" % _("Minimum") + " %6.2lf",
 #			"GPRINT:free_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
-			"LINE3:swap#ff0000:%-15s" % _("Used Swap space"),
+			"LINE3:swap%s:%-15s" % (MEMORY_SWAP, _("Used Swap space")),
 			"GPRINT:swap_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:swap_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:swap_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+
+			# Draw the outlines of the areas
+			"LINE1:used%s" % MEMORY_USED,
+			"LINE1:buffered%s::STACK" % MEMORY_BUFFERED,
+			"LINE1:cached%s::STACK" % MEMORY_CACHED,
 		]
 
 	@property

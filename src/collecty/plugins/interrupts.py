@@ -23,6 +23,7 @@ import re
 
 from . import base
 
+from ..colours import *
 from ..i18n import _
 
 class GraphTemplateSystemInterrupts(base.GraphTemplate):
@@ -33,10 +34,13 @@ class GraphTemplateSystemInterrupts(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"AREA:intr#90EE90:%-15s" % _("System Interrupts"),
+			"AREA:intr%s:%-15s" % (
+				util.lighten(PRIMARY, AREA_OPACITY), _("System Interrupts"),
+			),
 			"GPRINT:intr_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:intr_min:%12s\:" % _("Minimum") + " %6.2lf" ,
 			"GPRINT:intr_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"LINE1:intr%s" % PRIMARY,
 		]
 
 	lower_limit = 0

@@ -23,6 +23,7 @@ import os
 
 from . import base
 
+from ..colours import *
 from ..i18n import _
 
 CONNTRACK_FILE = "/proc/net/nf_conntrack"
@@ -132,8 +133,9 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 	_protocols = ConntrackTable._layer3_protocols
 
 	protocol_colours = {
-		"ipv6"  : "#cc0033",
-		"ipv4"  : "#cccc33",
+		"ipv6"  : COLOUR_IPV6,
+		"ipv4"  : COLOUR_IPV4,
+		"other" : COLOUR_IPVX,
 	}
 
 	def get_objects(self, *args):
@@ -184,7 +186,7 @@ class ConntrackLayer3ProtocolsGraphTemplate(base.GraphTemplate):
 
 		for proto in self.protocols:
 			i = {
-				"colour"      : self.protocol_colours.get(proto, "#000000"),
+				"colour"      : self.protocol_colours.get(proto, COLOUR_OTHER),
 				"description" : self.protocol_descriptions.get(proto, proto),
 				"proto"       : proto,
 				"type"        : type,
@@ -216,13 +218,13 @@ class ConntrackLayer4ProtocolsGraphTemplate(ConntrackLayer3ProtocolsGraphTemplat
 	name = "conntrack-layer4-protocols"
 
 	protocol_colours = {
-		"tcp"     : "#336600",
-		"udp"     : "#666633",
-		"icmp"    : "#336666",
-		"igmp"    : "#666699",
-		"udplite" : "#3366cc",
-		"sctp"    : "#6666ff",
-		"dccp"    : "#33cc00",
+		"tcp"     : COLOUR_TCP,
+		"udp"     : COLOUR_UDP,
+		"icmp"    : COLOUR_ICMP,
+		"igmp"    : COLOUR_IGMP,
+		"udplite" : COLOUR_UDPLITE,
+		"sctp"    : COLOUR_SCTP,
+		"dccp"    : COLOUR_DCCP,
 	}
 
 	@property
@@ -270,43 +272,6 @@ class ConntrackProtocolWithStatesGraphTemplate(base.GraphTemplate):
 	name = "conntrack-protocol-states"
 
 	lower_limit = 0
-
-	states_colours = {
-		"dccp" : {
-			"CLOSEREQ"          : "#000000",
-			"CLOSING"           : "#111111",
-			"IGNORE"            : "#222222",
-			"INVALID"           : "#333333",
-			"NONE"              : "#444444",
-			"OPEN"              : "#555555",
-			"PARTOPEN"          : "#666666",
-			"REQUEST"           : "#777777",
-			"RESPOND"           : "#888888",
-			"TIME_WAIT"         : "#999999",
-		},
-		"sctp" : {
-			"CLOSED"            : "#000000",
-			"COOKIE_ECHOED"     : "#111111",
-			"COOKIE_WAIT"       : "#222222",
-			"ESTABLISHED"       : "#333333",
-			"NONE"              : "#444444",
-			"SHUTDOWN_ACK_SENT" : "#555555",
-			"SHUTDOWN_RECD"     : "#666666",
-			"SHUTDOWN_SENT"     : "#777777",
-		},
-		"tcp" : {
-			"CLOSE"             : "#ffffff",
-			"CLOSE_WAIT"        : "#999999",
-			"ESTABLISHED"       : "#000000",
-			"FIN_WAIT"          : "#888888",
-			"LAST_ACK"          : "#777777",
-			"NONE"              : "#000000",
-			"SYN_RECV"          : "#111111",
-			"SYN_SENT"          : "#222222",
-			"SYN_SENT2"         : "#333333",
-			"TIME_WAIT"         : "#444444",
-		},
-	}
 
 	states_descriptions = {
 		"dccp" : {},
@@ -377,7 +342,7 @@ class ConntrackProtocolWithStatesGraphTemplate(base.GraphTemplate):
 
 		for state in reversed(self.states):
 			i = {
-				"colour"      : self.states_colours[self.protocol].get(state, "#000000"),
+				"colour"      : COLOURS_PROTOCOL_STATES.get(state, BLACK),
 				"description" : self.states_descriptions[self.protocol].get(state, state),
 				"proto"       : self.protocol,
 				"state"       : state,

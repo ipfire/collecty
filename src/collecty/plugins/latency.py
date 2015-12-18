@@ -24,6 +24,8 @@ import socket
 import collecty._collecty
 from . import base
 
+from .. import util
+from ..colours import *
 from ..i18n import _
 
 PING_HOSTS = [
@@ -39,6 +41,7 @@ class GraphTemplateLatency(base.GraphTemplate):
 	def rrd_graph(self):
 		_ = self.locale.translate
 
+		colour_bg = AMBER
 		return [
 			# Compute the biggest loss and convert into percentage
 			"CDEF:ploss=loss6,loss4,MAX,100,*",
@@ -55,28 +58,42 @@ class GraphTemplateLatency(base.GraphTemplate):
 			"CDEF:l050=ploss,25,50,LIMIT,UN,UNKN,INF,IF",
 			"CDEF:l099=ploss,50,99,LIMIT,UN,UNKN,INF,IF",
 
-			"LINE1:latency6_avg#00ff0066:%s" % _("Average latency (IPv6)"),
-			"LINE1:latency4_avg#ff000066:%s\\r" % _("Average latency (IPv4)"),
+			"LINE2:latency6_avg%s:%s" % (
+				util.transparency(COLOUR_IPV6, .5),
+				_("Average latency (IPv6)"),
+			),
+			"LINE2:latency4_avg%s:%s\\r" % (
+				util.transparency(COLOUR_IPV4, .5),
+				_("Average latency (IPv4)"),
+			),
 
 			"COMMENT:%s" % _("Packet Loss"),
-			"AREA:l005#ffffff:%s" % _("0-5%%"),
-			"AREA:l010#cccccc:%s" % _("5-10%%"),
-			"AREA:l025#999999:%s" % _("10-25%%"),
-			"AREA:l050#666666:%s" % _("25-50%%"),
-			"AREA:l099#333333:%s" % _("50-99%%") + "\\r",
+			"AREA:l005%s:%s" % (
+				util.transparency(colour_bg, .2), _("0-5%"),
+			),
+			"AREA:l010%s:%s" % (
+				util.transparency(colour_bg, .4), _("5-10%"),
+			),
+			"AREA:l025%s:%s" % (
+				util.transparency(colour_bg, .6), _("10-25%"),
+			),
+			"AREA:l050%s:%s" % (
+				util.transparency(colour_bg, .8), _("25-50%"),
+			),
+			"AREA:l099%s:%s\\r" % (colour_bg, _("50-99%")),
 
 			"COMMENT: \\n", # empty line
 
 			"AREA:spacer4",
-			"AREA:stddevarea4#ff000033:STACK",
-			"LINE2:latency4#ff0000:%s" % _("Latency (IPv4)"),
+			"AREA:stddevarea4%s:STACK" % util.lighten(COLOUR_IPV4, STDDEV_OPACITY),
+			"LINE2:latency4%s:%s" % (COLOUR_IPV4, _("Latency (IPv4)")),
 			"GPRINT:latency4_max:%12s\:" % _("Maximum") + " %6.2lf",
 			"GPRINT:latency4_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:latency4_avg:%12s\:" % _("Average") + " %6.2lf\\n",
 
 			"AREA:spacer6",
-			"AREA:stddevarea6#00ff0033:STACK",
-			"LINE2:latency6#00ff00:%s" % _("Latency (IPv6)"),
+			"AREA:stddevarea6%s:STACK" % util.lighten(COLOUR_IPV6, STDDEV_OPACITY),
+			"LINE2:latency6%s:%s" % (COLOUR_IPV6, _("Latency (IPv6)")),
 			"GPRINT:latency6_max:%12s\:" % _("Maximum") + " %6.2lf",
 			"GPRINT:latency6_min:%12s\:" % _("Minimum") + " %6.2lf",
 			"GPRINT:latency6_avg:%12s\:" % _("Average") + " %6.2lf\\n",

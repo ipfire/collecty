@@ -23,6 +23,7 @@ import re
 
 from . import base
 
+from ..colours import *
 from ..i18n import _
 
 class GraphTemplateContextSwitches(base.GraphTemplate):
@@ -33,10 +34,14 @@ class GraphTemplateContextSwitches(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"AREA:ctxt#90EE90:%-15s" % _("Context Switches"),
+			"AREA:ctxt%s:%-15s" % (
+				util.lighten(PRIMARY, AREA_OPACITY),
+				_("Context Switches"),
+			),
 			"GPRINT:ctxt_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:ctxt_min:%12s\:" % _("Minimum") + " %6.2lf" ,
 			"GPRINT:ctxt_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"LINE1:ctxt%s" % PRIMARY,
 		]
 
 	lower_limit = 0

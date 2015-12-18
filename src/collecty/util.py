@@ -57,6 +57,12 @@ def darken(colour, scale=0.1):
 	"""
 	return __add_colour(colour, 0xff * -scale)
 
+def transparency(colour, scale=0.1):
+	"""
+		Adds transparency to the given colour code
+	"""
+	return "%s%02X" % (colour, 0xff * scale)
+
 def get_network_interfaces():
 	"""
 		Returns all real network interfaces

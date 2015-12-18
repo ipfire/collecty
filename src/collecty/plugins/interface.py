@@ -23,13 +23,9 @@ import os
 
 from . import base
 from .. import util
+from ..colours import *
 
 from ..i18n import _
-
-COLOUR_RX = "B22222"
-COLOUR_RX_AREA = "%sAA" % COLOUR_RX
-COLOUR_TX = "228B22"
-COLOUR_TX_AREA = "%sAA" % COLOUR_TX
 
 class GraphTemplateInterfaceBase(base.GraphTemplate):
 	@property
@@ -54,26 +50,26 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 			"VDEF:bits_tx_95p=bits_tx,95,PERCENT",
 
 			# Draw the received area.
-			"AREA:bits_rx#%s:%-15s" % (COLOUR_RX_AREA, _("Received")),
+			"AREA:bits_rx%s:%-15s" % (util.lighten(COLOUR_RX, AREA_OPACITY), _("Received")),
 			"GPRINT:bits_rx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_rx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_rx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
 
 			# Draw the transmitted area.
-			"AREA:bits_tx#%s:%-15s" % (COLOUR_TX_AREA, _("Transmitted")),
+			"AREA:bits_tx%s:%-15s" % (util.lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted")),
 			"GPRINT:bits_tx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_tx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_tx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
 
 			# Draw outlines.
-			"LINE1:bits_rx#%s" % COLOUR_RX,
-			"LINE1:bits_tx#%s" % COLOUR_TX,
+			"LINE1:bits_rx%s" % COLOUR_RX,
+			"LINE1:bits_tx%s" % COLOUR_TX,
 
 			# Draw the 95% lines.
 			"COMMENT:--- %s ---\\n" % _("95th percentile"),
-			"LINE2:bits_rx_95p#%s:%-15s" % (COLOUR_RX, _("Received")),
+			"LINE2:bits_rx_95p%s:%-15s" % (COLOUR_RX, _("Received")),
 			"GPRINT:bits_rx_95p:%s" % _("%8.2lf %sbps") + "\\n",
-			"LINE2:bits_tx_95p#%s:%-15s" % (COLOUR_TX, _("Transmitted")),
+			"LINE2:bits_tx_95p%s:%-15s" % (COLOUR_TX, _("Transmitted")),
 			"GPRINT:bits_tx_95p:%s" % _("%8.2lf %sbps") + "\\n",
 		]
 
@@ -97,20 +93,24 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 
 		return [
 			# Draw the received area.
-			"AREA:packets_rx#%s:%-15s" % (COLOUR_RX_AREA, _("Received")),
+			"AREA:packets_rx%s:%-15s" % (
+				util.lighten(COLOUR_RX, AREA_OPACITY), _("Received"),
+			),
 			"GPRINT:packets_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:packets_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:packets_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
 
 			# Draw the transmitted area.
-			"AREA:packets_tx#%s:%-15s" % (COLOUR_TX_AREA, _("Transmitted")),
+			"AREA:packets_tx%s:%-15s" % (
+				util.lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted"),
+			),
 			"GPRINT:packets_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:packets_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:packets_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
 
 			# Draw outlines of the areas on top.
-			"LINE1:packets_rx#%s" % COLOUR_RX,
-			"LINE1:packets_tx#%s" % COLOUR_TX,
+			"LINE1:packets_rx%s" % COLOUR_RX,
+			"LINE1:packets_tx%s" % COLOUR_TX,
 		]
 
 	@property
@@ -137,35 +137,43 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 			"CDEF:dropped_tx_inv=dropped_tx,-1,*",
 
 			# Draw the receive errors.
-			"AREA:errors_rx#228B2277:%-15s" % _("Receive errors"),
+			"AREA:errors_rx%s:%-15s" % (
+				util.lighten(COLOUR_RX, AREA_OPACITY), _("Receive errors"),
+			),
 			"GPRINT:errors_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:errors_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:errors_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-			"LINE1:errors_rx#228B22",
+			"LINE1:errors_rx%s" % COLOUR_RX,
 
 			# Draw the transmit errors.
-			"AREA:errors_tx_inv#B2222277:%-15s" % _("Transmit errors"),
+			"AREA:errors_tx_inv%s:%-15s" % (
+				util.lighten(COLOUR_TX, AREA_OPACITY), _("Transmit errors"),
+			),
 			"GPRINT:errors_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:errors_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:errors_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-			"LINE1:errors_tx_inv#B22222",
+			"LINE1:errors_tx_inv%s" % COLOUR_TX,
 
 			# Draw the receive drops.
-			"LINE2:dropped_rx#228B22:%-15s" % _("Receive drops"),
+			"LINE2:dropped_rx%s:%-15s" % (
+				util.lighten(AMBER, AREA_OPACITY), _("Receive drops"),
+			),
 			"GPRINT:dropped_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
 			"LINE1:dropped_rx#228B22",
 
 			# Draw the transmit drops.
-			"LINE2:dropped_tx#B22222:%-15s" % _("Transmit drops"),
+			"LINE2:dropped_tx%s:%-15s" % (
+				util.lighten(TEAL, AREA_OPACITY), _("Transmit drops"),
+			),
 			"GPRINT:dropped_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
-			"LINE1:dropped_tx#B22222",
+			"LINE1:dropped_tx%s" % TEAL,
 
 			# Draw the collisions as a line.
-			"LINE3:collisions#8B0000:%-15s" % _("Collisions") + "\\n",
+			"LINE2:collisions%s:%-15s\l" % (COLOUR_CRITICAL, _("Collisions")),
 		]
 
 	@property

@@ -23,6 +23,7 @@ import os
 
 from . import base
 
+from ..colours import *
 from ..i18n import _
 
 class GraphTemplateLoadAvg(base.GraphTemplate):
@@ -32,37 +33,36 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 	def rrd_graph(self):
 		_ = self.locale.translate
 
-		return [
-			"AREA:load1#ff0000:%s" % _("Load average  1m"),
-			"GPRINT:load1_max:%12s\:" % _("Maximum") + " %6.2lf",
-			"GPRINT:load1_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:load1_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+		rrd_graph = []
 
-			"AREA:load5#ff9900:%s" % _("Load average  5m"),
-			"GPRINT:load5_max:%12s\:" % _("Maximum") + " %6.2lf",
-			"GPRINT:load5_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:load5_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+		for id, colour, when in zip(self.object.rrd_schema_names,
+				LOAD_AVG_COLOURS, ("1m", "5m", "15m")):
+			rrd_graph = [
+				"LINE2:%s%s:%s" % (id, colour, _("Load Average %s") % when),
+				"GPRINT:%s_max:%12s\: %%6.2lf" % (id, _("Maximum")),
+				"GPRINT:%s_min:%12s\: %%6.2lf" % (id, _("Minimum")),
+				"GPRINT:%s_avg:%12s\: %%6.2lf\l" % (id, _("Average")),
+			] + rrd_graph
 
-			"AREA:load15#ffff00:%s" % _("Load average 15m"),
-			"GPRINT:load15_max:%12s\:" % _("Maximum") + " %6.2lf",
-			"GPRINT:load15_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:load15_avg:%12s\:" % _("Average") + " %6.2lf\\n",
-
-			"LINE:load5#dd8800",
-			"LINE:load1#dd0000",
-		]
+		return rrd_graph
 
 	lower_limit = 0
 
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
-		return _("Load average")
+		return _("Load Average")
 
 	@property
 	def graph_vertical_label(self):
 		_ = self.locale.translate
 		return _("Load")
+
+	@property
+	def rrd_graph_args(self):
+		return [
+			"--legend-direction=bottomup",
+		]
 
 
 class LoadAvgObject(base.Object):

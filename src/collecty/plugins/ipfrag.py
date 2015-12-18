@@ -24,6 +24,7 @@ import os
 from .. import util
 from . import base
 
+from ..colours  import *
 from ..constants import *
 from ..i18n import _
 

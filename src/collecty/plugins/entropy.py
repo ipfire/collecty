@@ -23,6 +23,7 @@ import os
 
 from . import base
 
+from ..colours import *
 from ..i18n import _
 
 ENTROPY_FILE = "/proc/sys/kernel/random/entropy_avail"
@@ -35,7 +36,7 @@ class GraphTemplateEntropy(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"LINE3:entropy#ff0000:%-15s" % _("Available entropy"),
+			"LINE2:entropy%s:%-15s" % (PRIMARY, _("Available entropy")),
 			"GPRINT:entropy_max:%12s\:" % _("Maximum") + " %5.0lf",
 			"GPRINT:entropy_min:%12s\:" % _("Minimum") + " %5.0lf",
 			"GPRINT:entropy_avg:%12s\:" % _("Average") + " %5.0lf\\n",
