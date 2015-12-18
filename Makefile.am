@@ -110,7 +110,12 @@ pkgpyexec_LTLIBRARIES = \
 	_collecty.la
 
 _collecty_la_SOURCES = \
-	src/_collectymodule.c
+	src/_collecty/_collectymodule.c \
+	src/_collecty/_collectymodule.h \
+	src/_collecty/blockdev.c \
+	src/_collecty/ping.c \
+	src/_collecty/sensors.c \
+	src/_collecty/utils.c
 
 _collecty_la_CFLAGS = \
 	$(AM_CFLAGS) \
