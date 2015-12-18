@@ -643,7 +643,10 @@ class GraphTemplate(object):
 	def get_objects(self, *args, **kwargs):
 		object = self.plugin.get_object(*args, **kwargs)
 
-		return [object,]
+		if object:
+			return [object,]
+
+		return []
 
 	def generate_graph(self, interval=None, **kwargs):
 		assert self.objects, "Cannot render graph without any objects"
@@ -657,10 +660,13 @@ class GraphTemplate(object):
 
 		self.log.info(_("Generating graph %s") % self)
 
-		# Add DEFs for all objects
-		args += self._add_defs()
+		rrd_graph = self.rrd_graph
 
-		args += self.rrd_graph
+		# Add DEFs for all objects
+		if not any((e.startswith("DEF:") for e in rrd_graph)):
+			args += self._add_defs()
+
+		args += rrd_graph
 		args = self._add_vdefs(args)
 
 		# Convert arguments to string

@@ -36,44 +36,39 @@ class GraphTemplateSensorsTemperature(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"DEF:value_kelvin=%(file)s:value:AVERAGE",
-			"DEF:critical_kelvin=%(file)s:critical:AVERAGE",
-			"DEF:high_kelvin=%(file)s:high:AVERAGE",
-			"DEF:low_kelvin=%(file)s:low:AVERAGE",
-
-			# Convert everything to celsius
-			"CDEF:value=value_kelvin,273.15,-",
-			"CDEF:critical=critical_kelvin,273.15,-",
-			"CDEF:high=high_kelvin,273.15,-",
-			"CDEF:low=low_kelvin,273.15,-",
+			# Convert everything to Celsius
+			"CDEF:value_c=value,273.15,-",
+			"CDEF:critical_c=critical,273.15,-",
+			"CDEF:high_c=high,273.15,-",
+			"CDEF:low_c=low,273.15,-",
 
 			# Change colour when the value gets above high
-			"CDEF:value_high=value,high,GT,value,UNKN,IF",
-			"CDEF:value_normal=value,high,GT,UNKN,value,IF",
+			"CDEF:value_c_high=value_c,high_c,GT,value_c,UNKN,IF",
+			"CDEF:value_c_normal=value_c,high_c,GT,UNKN,value_c,IF",
 
 			# Get data points for the threshold lines
-			"VDEF:critical_line=critical,MINIMUM",
-			"VDEF:low_line=low,MAXIMUM",
+			"VDEF:critical_c_line=critical_c,MINIMUM",
+			"VDEF:low_c_line=low_c,MAXIMUM",
 
 			# Draw the temperature value
-			"LINE3:value_high#ff0000",
-			"LINE2:value_normal#00ff00:%-15s" % _("Temperature"),
+			"LINE3:value_c_high#ff0000",
+			"LINE2:value_c_normal#00ff00:%-15s" % _("Temperature"),
 
 			# Draw the legend
-			"GPRINT:value_cur:%%10.2lf °C\l",
-			"GPRINT:value_avg:  %-15s %%6.2lf °C\l" % _("Average"),
-			"GPRINT:value_max:  %-15s %%6.2lf °C\l" % _("Maximum"),
-			"GPRINT:value_min:  %-15s %%6.2lf °C\l" % _("Minimum"),
+			"GPRINT:value_c_cur:%10.2lf °C\l",
+			"GPRINT:value_c_avg:  %-15s %%6.2lf °C\l" % _("Average"),
+			"GPRINT:value_c_max:  %-15s %%6.2lf °C\l" % _("Maximum"),
+			"GPRINT:value_c_min:  %-15s %%6.2lf °C\l" % _("Minimum"),
 
 			# Empty line
 			"COMMENT: \\n",
 
 			# Draw boundary lines
 			"COMMENT:%s\:" % _("Temperature Thresholds"),
-			"HRULE:critical_line#000000:%-15s" % _("Critical"),
-			"GPRINT:critical_line:%%6.2lf °C\\r",
-			"HRULE:low_line#0000ff:%-15s" % _("Low"),
-			"GPRINT:low_line:%%6.2lf °C\\r",
+			"HRULE:critical_c_line#000000:%-15s" % _("Critical"),
+			"GPRINT:critical_c_line:%6.2lf °C\\r",
+			"HRULE:low_c_line#0000ff:%-15s" % _("Low"),
+			"GPRINT:low_c_line:%6.2lf °C\\r",
 		]
 
 	@property
@@ -98,7 +93,14 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 	]
 
 	def get_temperature_sensors(self):
-		return self.plugin.get_detected_sensor_objects("coretemp-*")
+		# Use the coretemp module if available
+		sensors = self.plugin.get_detected_sensor_objects("coretemp-*")
+
+		# Fall back to the ACPI sensor
+		if not sensors:
+			sensors = self.plugin.get_detected_sensor_objects("acpitz-virtual-*")
+
+		return sensors
 
 	def get_objects(self, *args, **kwargs):
 		sensors = self.get_temperature_sensors()
@@ -125,21 +127,26 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 				"CDEF:%s_high_c=%s_high,273.15,-" % (id, id),
 			]
 
+		# Compute the temperature of the processor
+		# by taking the average of all cores
 		all_core_values = ("%s_value_c" % id for id in ids)
-		all_core_highs  = ("%s_high_c"  % id for id in ids)
+		rrd_graph += [
+			"CDEF:all_value_c=%s,%s,AVG" % (",".join(all_core_values), len(ids)),
+		]
+
+		# Get the high threshold of the first core
+		# (assuming that all cores have the same threshold)
+		for id in ids:
+			rrd_graph.append("CDEF:all_high_c=%s_high_c" % id)
+			break
 
 		rrd_graph += [
-			# Compute the temperature of the processor
-			# by taking the average of all cores
-			"CDEF:all_value_c=%s,%s,AVG" % (",".join(all_core_values), len(ids)),
-			"CDEF:all_high_c=%s,MIN" % ",".join(all_core_highs),
-
 			# Change colour when the value gets above high
 			"CDEF:all_value_c_high=all_value_c,all_high_c,GT,all_value_c,UNKN,IF",
 			"CDEF:all_value_c_normal=all_value_c,all_high_c,GT,UNKN,all_value_c,IF",
 
-			"LINE3:all_value_c_high#FF0000",
-			"LINE3:all_value_c_normal#000000:%-15s\l" % _("Temperature"),
+			"LINE2:all_value_c_high#FF0000",
+			"LINE2:all_value_c_normal#000000:%-15s\l" % _("Temperature"),
 
 			"GPRINT:all_value_c_avg:    %-15s %%6.2lf °C\l" % _("Average"),
 			"GPRINT:all_value_c_max:    %-15s %%6.2lf °C\l" % _("Maximum"),
@@ -150,14 +157,14 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 			rrd_graph += [
 				# TODO these lines were supposed to be dashed, but that
 				# didn't really work here
-				"LINE2:%s_value_c%s:%-10s" % (id, colour, core.sensor.label),
+				"LINE1:%s_value_c%s:%-10s" % (id, colour, core.sensor.label),
 			]
 
 		# Draw the critical line
 		for id in ids:
 			rrd_graph += [
 				"HRULE:%s_critical_c_min#000000:%-15s" % (id, _("Critical")),
-				"GPRINT:%s_critical_c_min:%%6.2lf °C\\r",
+				"GPRINT:%s_critical_c_min:%%6.2lf °C\\r" % id,
 			]
 			break
 
