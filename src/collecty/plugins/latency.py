@@ -29,6 +29,11 @@ from ..colours import *
 from ..i18n import _
 
 PING_HOSTS = [
+	# gateway is a special name that is automatically
+	# resolved by myhostname to the default gateway.
+	"gateway",
+
+	# The IPFire main server
 	"ping.ipfire.org",
 ]
 
