@@ -59,6 +59,7 @@ PyObject* BlockDevice_get_temperature(PyObject* self);
 /* ping */
 PyObject* PyExc_PingError;
 PyObject* PyExc_PingAddHostError;
+PyObject* PyExc_PingNoReplyError;
 
 typedef struct {
 	PyObject_HEAD

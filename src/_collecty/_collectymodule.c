@@ -66,6 +66,10 @@ PyMODINIT_FUNC PyInit__collecty(void) {
 	Py_INCREF(PyExc_PingAddHostError);
 	PyModule_AddObject(m, "PingAddHostError", PyExc_PingAddHostError);
 
+	PyExc_PingNoReplyError = PyErr_NewException("_collecty.PingNoReplyError", NULL, NULL);
+	Py_INCREF(PyExc_PingNoReplyError);
+	PyModule_AddObject(m, "PingNoReplyError", PyExc_PingNoReplyError);
+
 	Py_INCREF(&SensorType);
 	PyModule_AddObject(m, "Sensor", (PyObject*)&SensorType);
 

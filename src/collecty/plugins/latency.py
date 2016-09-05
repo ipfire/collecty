@@ -159,6 +159,11 @@ class LatencyObject(base.Object):
 				result += (None, None, None)
 				continue
 
+			except collecty._collecty.PingNoReplyError:
+				# Unknown but 100% loss
+				result += (None, None, 1)
+				continue
+
 			except collecty._collecty.PingError as e:
 				self.log.warning(_("Could not run latency check for %(host)s: %(msg)s") \
 					% { "host" : self.hostname, "msg" : e })
