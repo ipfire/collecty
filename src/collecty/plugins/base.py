@@ -214,17 +214,14 @@ class Plugin(object, metaclass=PluginRegistration):
 		if not isinstance(result, tuple) and not isinstance(result, list):
 			return result
 
-		# Replace all Nones by NaN
+		# Replace all Nones by UNKNOWN
 		s = []
 
 		for e in result:
 			if e is None:
-				e = "NaN"
+				e = "U"
 
-			# Format as string
-			e = "%s" % e
-
-			s.append(e)
+			s.append("%s" % e)
 
 		return ":".join(s)
 
