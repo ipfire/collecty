@@ -296,8 +296,14 @@ PyObject* BlockDevice_get_temperature(PyObject* self) {
 
 	uint64_t mkelvin;
 	int r = sk_disk_smart_get_temperature(device->disk, &mkelvin);
-	if (r)
+	if (r) {
+		// Temperature not available but SMART is supported
+		if (errno == ENOENT) {
+			PyErr_Format(PyExc_OSError, "Device does not have a temperature");
+		}
+
 		return NULL;
+	}
 
 	// Convert the temperature to Kelvin
 	return PyFloat_FromDouble((double)mkelvin / 1000.0);

@@ -267,7 +267,10 @@ class DiskObject(base.Object):
 		if not self.is_smart_supported():
 			return "NaN"
 
-		return self.device.get_temperature()
+		try:
+			return self.device.get_temperature()
+		except OSError:
+			return "NaN"
 
 	def get_bad_sectors(self):
 		if not self.is_smart_supported():
