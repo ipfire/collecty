@@ -32,42 +32,52 @@ class GraphTemplateProcessor(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"AREA:user%s:%-15s" % (CPU_USER, _("User")),
-			"GPRINT:user_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:user_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:user_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"CDEF:total=user,nice,+,sys,+,wait,+,irq,+,sirq,+,idle,+",
 
-			"STACK:nice%s:%-15s" % (CPU_NICE, _("Nice")),
-			"GPRINT:nice_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:nice_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:nice_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"CDEF:user_p=100,user,*,total,/",
+			"AREA:user_p%s:%-15s" % (CPU_USER, _("User")),
+			"GPRINT:user_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:user_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:user_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
 
-			"STACK:sys%s:%-15s" % (CPU_SYS, _("System")),
-			"GPRINT:sys_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:sys_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:sys_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"CDEF:nice_p=100,nice,*,total,/",
+			"STACK:nice_p%s:%-15s" % (CPU_NICE, _("Nice")),
+			"GPRINT:nice_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:nice_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:nice_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
 
-			"STACK:wait%s:%-15s" % (CPU_WAIT, _("Wait")),
-			"GPRINT:wait_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:wait_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:wait_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"CDEF:sys_p=100,sys,*,total,/",
+			"STACK:sys_p%s:%-15s" % (CPU_SYS, _("System")),
+			"GPRINT:sys_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:sys_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:sys_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
 
-			"STACK:irq%s:%-15s" % (CPU_IRQ, _("Interrupt")),
-			"GPRINT:irq_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:irq_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:irq_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"CDEF:wait_p=100,wait,*,total,/",
+			"STACK:wait_p%s:%-15s" % (CPU_WAIT, _("Wait")),
+			"GPRINT:wait_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:wait_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:wait_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
 
-			"STACK:sirq%s:%-15s" % (CPU_SIRQ, _("Soft Interrupt")),
-			"GPRINT:sirq_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:sirq_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:sirq_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"CDEF:irq_p=100,irq,*,total,/",
+			"STACK:irq_p%s:%-15s" % (CPU_IRQ, _("Interrupt")),
+			"GPRINT:irq_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:irq_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:irq_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
 
-			"STACK:idle%s:%-15s" % (CPU_IDLE, _("Idle")),
-			"GPRINT:idle_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:idle_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:idle_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"CDEF:sirq_p=100,sirq,*,total,/",
+			"STACK:sirq_p%s:%-15s" % (CPU_SIRQ, _("Soft Interrupt")),
+			"GPRINT:sirq_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:sirq_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:sirq_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
+
+			"CDEF:idle_p=100,idle,*,total,/",
+			"STACK:idle_p%s:%-15s" % (CPU_IDLE, _("Idle")),
+			"GPRINT:idle_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:idle_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:idle_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
 		]
 
+	upper_limit = 100
 	lower_limit = 0
 
 	@property
@@ -78,7 +88,7 @@ class GraphTemplateProcessor(base.GraphTemplate):
 	@property
 	def graph_vertical_label(self):
 		_ = self.locale.translate
-		return _("Jiffies")
+		return _("Percent")
 
 
 class ProcessorObject(base.Object):
