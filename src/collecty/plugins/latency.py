@@ -107,7 +107,13 @@ class GraphTemplateLatency(base.GraphTemplate):
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
-		return _("Latency to %s") % self.object.hostname
+
+		if self.object.hostname == "gateway":
+			hostname = _("Default Gateway")
+		else:
+			hostname = self.object.hostname
+
+		return _("Latency to %s") % hostname
 
 	@property
 	def graph_vertical_label(self):
