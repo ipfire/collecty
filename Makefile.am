@@ -155,14 +155,15 @@ CLEANFILES += \
 
 # ------------------------------------------------------------------------------
 
+.PHONY: man
+man: $(MANPAGES) $(MANPAGES_HTML)
+
 if ENABLE_MANPAGES
 MANPAGES = \
 	man/collectyd.1
 
 MANPAGES_XML  = $(patsubst %.1,%.xml,$(patsubst %.5,%.xml,$(MANPAGES)))
 MANPAGES_HTML = $(patsubst %.xml,%.html,$(MANPAGES_XML))
-
-man: $(MANPAGES) $(MANPAGES_HTML)
 
 man_MANS = \
 	$(MANPAGES)
