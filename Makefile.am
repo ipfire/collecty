@@ -93,7 +93,6 @@ collectyplugins_PYTHON = \
 	src/collecty/plugins/cpufreq.py \
 	src/collecty/plugins/df.py \
 	src/collecty/plugins/disk.py \
-	src/collecty/plugins/entropy.py \
 	src/collecty/plugins/__init__.py \
 	src/collecty/plugins/interface.py \
 	src/collecty/plugins/interrupts.py \

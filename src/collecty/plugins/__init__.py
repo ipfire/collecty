@@ -27,7 +27,6 @@ from . import conntrack
 from . import cpufreq
 from . import df
 from . import disk
-from . import entropy
 from . import interface
 from . import interrupts
 from . import ipfrag
