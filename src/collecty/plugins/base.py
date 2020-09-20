@@ -141,6 +141,9 @@ class Plugin(object, metaclass=PluginRegistration):
 	# The default interval for all plugins
 	interval = 60
 
+	# Priority
+	priority = 0
+
 	def __init__(self, collecty, **kwargs):
 		self.collecty = collecty
 
