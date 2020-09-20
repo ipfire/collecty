@@ -19,14 +19,13 @@
 #                                                                             #
 ###############################################################################
 
-from collecty import _collecty
 import os
+
+from .. import _collecty
+from . import base
 
 from ..constants import *
 from ..colours import *
-from . import base
-
-from ..i18n import _
 
 class GraphTemplateDiskUsage(base.GraphTemplate):
 	name = "disk-usage"

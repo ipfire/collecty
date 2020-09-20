@@ -21,11 +21,10 @@
 
 import os
 
-from . import base
 from .. import util
-from ..colours import *
+from . import base
 
-from ..i18n import _
+from ..colours import *
 
 class GraphTemplateInterfaceBase(base.GraphTemplate):
 	@property

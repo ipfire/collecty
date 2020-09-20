@@ -22,7 +22,6 @@
 from . import base
 
 from ..colours import *
-from ..i18n import _
 
 class GraphTemplateProcessor(base.GraphTemplate):
 	name = "processor"

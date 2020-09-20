@@ -24,8 +24,6 @@ import re
 
 from . import base
 
-from ..i18n import _
-
 class GraphTemplateCPUFreq(base.GraphTemplate):
 	name = "cpufreq"
 

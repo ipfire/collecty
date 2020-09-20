@@ -24,7 +24,6 @@ import os
 from . import base
 
 from ..colours import *
-from ..i18n import _
 
 CONNTRACK_FILE = "/proc/net/nf_conntrack"
 

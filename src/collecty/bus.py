@@ -27,8 +27,8 @@ import gi.repository.GObject
 import logging
 import threading
 
-from .constants import *
 from .i18n import _
+from .constants import *
 
 log = logging.getLogger("collecty.bus")
 

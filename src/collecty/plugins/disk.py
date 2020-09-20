@@ -19,14 +19,13 @@
 #                                                                             #
 ###############################################################################
 
-from collecty import _collecty
 import os
 import re
 
+from .. import _collecty
 from . import base
 
 from ..colours import *
-from ..i18n import _
 
 class GraphTemplateDiskBadSectors(base.GraphTemplate):
 	name = "disk-bad-sectors"

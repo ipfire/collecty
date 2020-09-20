@@ -24,7 +24,6 @@ import re
 from . import base
 
 from ..colours import *
-from ..i18n import _
 
 class GraphTemplateContextSwitches(base.GraphTemplate):
 	name = "context-switches"

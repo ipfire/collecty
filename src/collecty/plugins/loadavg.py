@@ -24,7 +24,6 @@ import os
 from . import base
 
 from ..colours import *
-from ..i18n import _
 
 class GraphTemplateLoadAvg(base.GraphTemplate):
 	name = "loadavg"

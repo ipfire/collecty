@@ -20,13 +20,11 @@
 #                                                                             #
 ###############################################################################
 
-from collecty import _collecty
 import os
 import re
 
+from .. import _collecty
 from . import base
-
-from ..i18n import _
 
 class GraphTemplateSensorsTemperature(base.GraphTemplate):
 	name = "sensors-temperature"

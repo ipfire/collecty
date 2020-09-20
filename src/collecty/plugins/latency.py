@@ -21,11 +21,11 @@
 
 import socket
 
+from .. import _collecty
+from ..i18n import _
 from . import base
 
-from .. import _collecty
 from ..colours import *
-from ..i18n import _
 
 PING_HOSTS = [
 	# gateway is a special name that is automatically

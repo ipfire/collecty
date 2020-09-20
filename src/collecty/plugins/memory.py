@@ -21,7 +21,6 @@
 
 from . import base
 
-from ..i18n import _
 from ..colours import *
 
 class GraphTemplateMemory(base.GraphTemplate):

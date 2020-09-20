@@ -24,9 +24,8 @@ import os
 from .. import util
 from . import base
 
-from ..colours  import *
+from ..colours import *
 from ..constants import *
-from ..i18n import _
 
 class GraphTemplateIPv6Fragmentation(base.GraphTemplate):
 	name = "ipv6-fragmentation"
