@@ -150,7 +150,6 @@ class Plugin(object, metaclass=PluginRegistration):
 
 		# Initialize the logger.
 		self.log = logging.getLogger("collecty.plugins.%s" % self.name)
-		self.log.propagate = 1
 
 		self.data = []
 

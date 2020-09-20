@@ -20,6 +20,7 @@
 ###############################################################################
 
 import datetime
+import logging
 import multiprocessing
 import os
 import queue
@@ -35,7 +36,6 @@ from . import plugins
 from .constants import *
 from .i18n import _
 
-import logging
 log = logging.getLogger("collecty")
 
 class Collecty(object):
@@ -258,7 +258,6 @@ class WorkerThread(threading.Thread):
 		self.daemon = True
 
 		self.log = logging.getLogger("collecty.worker")
-		self.log.propagate = 1
 
 		self.collecty = collecty
 		self.id = id
@@ -301,7 +300,6 @@ class WriteQueue(threading.Thread):
 		self.collecty = collecty
 
 		self.log = logging.getLogger("collecty.queue")
-		self.log.propagate = 1
 
 		self.timer = plugins.Timer(submit_interval)
 		self._queue = queue.PriorityQueue()

@@ -24,14 +24,13 @@ import dbus.mainloop.glib
 import dbus.service
 import gi.repository.GLib
 import gi.repository.GObject
+import logging
 import threading
 
 from .constants import *
 from .i18n import _
 
-import logging
 log = logging.getLogger("collecty.bus")
-log.propagate = 1
 
 class Bus(threading.Thread):
 	def __init__(self, collecty):

@@ -19,11 +19,10 @@
 #                                                                             #
 ###############################################################################
 
+import logging
 import os
 
-import logging
 log = logging.getLogger("collecty.util")
-log.propagate = 1
 
 from .constants import *
 

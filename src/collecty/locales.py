@@ -20,14 +20,13 @@
 ###############################################################################
 
 import gettext
+import logging
 import os
 
 from .constants import *
 from .i18n import TEXTDOMAIN
 
-import logging
 log = logging.getLogger("collecty.locale")
-log.propagate = 1
 
 class Locale(object):
 	def __init__(self, lang):
