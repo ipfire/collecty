@@ -19,7 +19,49 @@
 #                                                                             #
 ###############################################################################
 
-from . import util
+def _add(colour, amount):
+	"""
+		Adds some value to colours
+	"""
+	# Parse hex array
+	bytes = bytearray.fromhex(colour.lstrip("#"))
+
+	if not len(bytes) == 3:
+		raise ValueError("Invalid colour: %s" % colour)
+
+	ret = bytearray()
+
+	for byte in bytes:
+		byte = round(byte * amount)
+
+		# Ensure the result is within range
+		byte = min(byte, 255)
+		byte = max(byte, 0)
+
+		# Update the array
+		ret.append(byte)
+
+	return "#%s" % ret.hex()
+
+def lighten(colour, scale=0.1):
+	"""
+		Takes a hexadecimal colour code
+		and brightens the colour.
+	"""
+	return _add(colour, scale)
+
+def darken(colour, scale=0.1):
+	"""
+		Takes a hexadecimal colour code
+		and darkens the colour.
+	"""
+	return _add(colour, -scale)
+
+def transparency(colour, scale=0.1):
+	"""
+		Adds transparency to the given colour code
+	"""
+	return "%s%02X" % (colour, 0xff * scale)
 
 BLACK        = "#000000"
 WHITE        = "#FFFFFF"
@@ -51,7 +93,7 @@ COLOUR_OK       = LIGHT_GREEN
 COLOUR_CRITICAL = LIGHT_RED
 COLOUR_ERROR    = COLOUR_CRITICAL
 COLOUR_WARN     = LIGHT_YELLOW
-COLOUR_TEXT     = util.lighten(BLACK, 0.87) # 87% grey
+COLOUR_TEXT     = lighten(BLACK, 0.87) # 87% grey
 
 PRIMARY      = INDIGO
 ACCENT       = PINK
@@ -111,7 +153,7 @@ COLOURS_PROTOCOL_STATES = {
 
 	# TCP
 	"CLOSE"             : BLACK,
-	"CLOSE_WAIT"        : util.lighten(BLACK, 0.25),
+	"CLOSE_WAIT"        : lighten(BLACK, 0.25),
 	"ESTABLISHED"       : LIGHT_GREEN,
 	"FIN_WAIT"          : ORANGE,
 	"LAST_ACK"          : PURPLE,
@@ -120,8 +162,8 @@ COLOURS_PROTOCOL_STATES = {
 	"SYN_SENT2"         : AMBER,
 
 	# DCCP
-	"CLOSEREQ"          : util.lighten(BLACK, 0.5),
-	"CLOSING"           : util.lighten(BLACK, 0.25),
+	"CLOSEREQ"          : lighten(BLACK, 0.5),
+	"CLOSING"           : lighten(BLACK, 0.25),
 	"IGNORE"            : WHITE,
 	"INVALID"           : RED,
 	"OPEN"              : LIGHT_GREEN,

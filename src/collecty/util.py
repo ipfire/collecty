@@ -27,42 +27,6 @@ log.propagate = 1
 
 from .constants import *
 
-def __add_colour(colour, amount):
-	colour = colour.strip("#")
-
-	colour = (
-		int(colour[0:2], 16),
-		int(colour[2:4], 16),
-		int(colour[4:6], 16),
-	)
-
-	# Scale the colour
-	colour = (e + amount for e in colour)
-	colour = (max(e, 0) for e in colour)
-	colour = (min(e, 255) for e in colour)
-
-	return "#%02x%02x%02x" % tuple(colour)
-
-def lighten(colour, scale=0.1):
-	"""
-		Takes a hexadecimal colour code
-		and brightens the colour.
-	"""
-	return __add_colour(colour, 0xff * scale)
-
-def darken(colour, scale=0.1):
-	"""
-		Takes a hexadecimal colour code
-		and darkens the colour.
-	"""
-	return __add_colour(colour, 0xff * -scale)
-
-def transparency(colour, scale=0.1):
-	"""
-		Adds transparency to the given colour code
-	"""
-	return "%s%02X" % (colour, 0xff * scale)
-
 def get_network_interfaces():
 	"""
 		Returns all real network interfaces
