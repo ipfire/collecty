@@ -61,7 +61,7 @@ def transparency(colour, scale=0.1):
 	"""
 		Adds transparency to the given colour code
 	"""
-	return "%s%02X" % (colour, 0xff * scale)
+	return "%s%02X" % (colour, round(0xff * scale))
 
 BLACK        = "#000000"
 WHITE        = "#FFFFFF"
