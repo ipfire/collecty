@@ -19,7 +19,7 @@
 #                                                                             #
 ###############################################################################
 
-from .base import Timer, get
+from .base import get
 
 from . import base
 from . import contextswitches

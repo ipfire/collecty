@@ -37,38 +37,6 @@ from ..i18n import _
 
 DEF_MATCH = re.compile(r"C?DEF:([A-Za-z0-9_]+)=")
 
-class Timer(object):
-	def __init__(self, timeout, heartbeat=1):
-		self.timeout = timeout
-		self.heartbeat = heartbeat
-
-		self.delay = 0
-
-		self.reset()
-
-	def reset(self, delay=0):
-		# Save start time.
-		self.start = time.time()
-
-		self.delay = delay
-
-		# Has this timer been killed?
-		self.killed = False
-
-	@property
-	def elapsed(self):
-		return time.time() - self.start - self.delay
-
-	def cancel(self):
-		self.killed = True
-
-	def wait(self):
-		while self.elapsed < self.timeout and not self.killed:
-			time.sleep(self.heartbeat)
-
-		return self.elapsed > self.timeout
-
-
 class Environment(object):
 	"""
 		Sets the correct environment for rrdtool to create
