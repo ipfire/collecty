@@ -82,9 +82,6 @@ class Collecty(object):
 
 		self.plugins.append(plugin)
 
-		# Schedule the plugin to collect
-		self._schedule_plugin(plugin)
-
 	@property
 	def templates(self):
 		for plugin in self.plugins:
@@ -141,6 +138,10 @@ class Collecty(object):
 
 		# Start the bus
 		self.bus.start()
+
+		# Add all plugins to the scheduler
+		for plugin in self.plugins:
+			self._schedule_plugin(plugin)
 
 		# Run the scheduler
 		try:
