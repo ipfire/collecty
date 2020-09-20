@@ -185,6 +185,9 @@ class LatencyPlugin(base.Plugin):
 
 	templates = [GraphTemplateLatency]
 
+	# Because this plugin has the potential to block, we give it a slightly lower priority
+	priority = 10
+
 	@property
 	def objects(self):
 		for hostname in PING_HOSTS:
