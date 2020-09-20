@@ -35,7 +35,7 @@ from .. import util
 from ..constants import *
 from ..i18n import _
 
-DEF_MATCH = re.compile(r"C?DEF:([A-Za-z0-9_]+)=")
+DEF_MATCH = r"C?DEF:([A-Za-z0-9_]+)="
 
 class Environment(object):
 	"""

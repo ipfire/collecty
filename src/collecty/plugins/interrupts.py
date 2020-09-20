@@ -66,7 +66,7 @@ class SystemInterruptsObject(base.Object):
 		return "default"
 
 	def collect(self):
-		expr = re.compile(r"^intr (\d+)")
+		expr = r"^intr (\d+)"
 
 		with open("/proc/stat") as f:
 			for line in f.readlines():

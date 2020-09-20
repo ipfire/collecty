@@ -126,14 +126,12 @@ class CPUFreqPlugin(base.Plugin):
 
 	templates = [GraphTemplateCPUFreq]
 
-	cpuid_pattern = re.compile(r"cpu[0-9]+")
-
 	@property
 	def objects(self):
 		core_ids = []
 
 		for cpuid in os.listdir("/sys/devices/system/cpu"):
-			if not self.cpuid_pattern.match(cpuid):
+			if not re.match(r"cpu[0-9]+", cpuid):
 				continue
 
 			o = CPUFreqObject(self, cpuid)

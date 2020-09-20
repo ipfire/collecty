@@ -67,7 +67,7 @@ class ContextSwitchesObject(base.Object):
 		return "default"
 
 	def collect(self):
-		expr = re.compile(r"^ctxt (\d+)$")
+		expr = r"^ctxt (\d+)$"
 
 		with open("/proc/stat") as f:
 			for line in f.readlines():

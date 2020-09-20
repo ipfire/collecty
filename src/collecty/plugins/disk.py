@@ -292,8 +292,8 @@ class DiskPlugin(base.Plugin):
 	]
 
 	block_device_patterns = [
-		re.compile(r"(x?v|s)d[a-z]+"),
-		re.compile(r"mmcblk[0-9]+"),
+		r"(x?v|s)d[a-z]+",
+		r"mmcblk[0-9]+",
 	]
 
 	@property
@@ -315,7 +315,7 @@ class DiskPlugin(base.Plugin):
 	def _valid_block_device_name(self, name):
 		# Check if the given name matches any of the valid patterns.
 		for pattern in self.block_device_patterns:
-			if pattern.match(name):
+			if re.match(pattern, name):
 				return True
 
 		return False
