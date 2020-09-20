@@ -139,11 +139,6 @@ class Collecty(object):
 		# Register signal handlers.
 		self.register_signal_handler()
 
-		# Cannot do anything if no plugins have been initialised
-		if not self.plugins:
-			log.critical(_("No plugins have been initialised"))
-			return
-
 		# Start the bus
 		self.bus.start()
 
