@@ -21,9 +21,9 @@
 
 import socket
 
-import collecty._collecty
 from . import base
 
+from .. import _collecty
 from ..colours import *
 from ..i18n import _
 
@@ -151,12 +151,12 @@ class LatencyObject(base.Object):
 
 		for family in (socket.AF_INET6, socket.AF_INET):
 			try:
-				p = collecty._collecty.Ping(self.hostname, family=family)
+				p = _collecty.Ping(self.hostname, family=family)
 				p.ping(count=5, deadline=10)
 
 				result += (p.average, p.stddev, p.loss)
 
-			except collecty._collecty.PingAddHostError as e:
+			except _collecty.PingAddHostError as e:
 				self.log.debug(_("Could not add host %(host)s for family %(family)s") \
 					% { "host" : self.hostname, "family" : family })
 
@@ -164,12 +164,12 @@ class LatencyObject(base.Object):
 				result += (None, None, None)
 				continue
 
-			except collecty._collecty.PingNoReplyError:
+			except _collecty.PingNoReplyError:
 				# Unknown but 100% loss
 				result += (None, None, 1)
 				continue
 
-			except collecty._collecty.PingError as e:
+			except _collecty.PingError as e:
 				self.log.warning(_("Could not run latency check for %(host)s: %(msg)s") \
 					% { "host" : self.hostname, "msg" : e })
 
