@@ -50,13 +50,13 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 			"VDEF:bits_tx_95p=bits_tx,95,PERCENT",
 
 			# Draw the received area.
-			"AREA:bits_rx%s:%-15s" % (util.lighten(COLOUR_RX, AREA_OPACITY), _("Received")),
+			"AREA:bits_rx%s:%-15s" % (lighten(COLOUR_RX, AREA_OPACITY), _("Received")),
 			"GPRINT:bits_rx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_rx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_rx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
 
 			# Draw the transmitted area.
-			"AREA:bits_tx%s:%-15s" % (util.lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted")),
+			"AREA:bits_tx%s:%-15s" % (lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted")),
 			"GPRINT:bits_tx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_tx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_tx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
@@ -94,7 +94,7 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 		return [
 			# Draw the received area.
 			"AREA:packets_rx%s:%-15s" % (
-				util.lighten(COLOUR_RX, AREA_OPACITY), _("Received"),
+				lighten(COLOUR_RX, AREA_OPACITY), _("Received"),
 			),
 			"GPRINT:packets_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:packets_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
@@ -102,7 +102,7 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 
 			# Draw the transmitted area.
 			"AREA:packets_tx%s:%-15s" % (
-				util.lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted"),
+				lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted"),
 			),
 			"GPRINT:packets_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:packets_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
@@ -138,7 +138,7 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 			# Draw the receive errors.
 			"AREA:errors_rx%s:%-15s" % (
-				util.lighten(COLOUR_RX, AREA_OPACITY), _("Receive errors"),
+				lighten(COLOUR_RX, AREA_OPACITY), _("Receive errors"),
 			),
 			"GPRINT:errors_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:errors_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
@@ -147,7 +147,7 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 			# Draw the transmit errors.
 			"AREA:errors_tx_inv%s:%-15s" % (
-				util.lighten(COLOUR_TX, AREA_OPACITY), _("Transmit errors"),
+				lighten(COLOUR_TX, AREA_OPACITY), _("Transmit errors"),
 			),
 			"GPRINT:errors_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:errors_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
@@ -156,7 +156,7 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 			# Draw the receive drops.
 			"LINE2:dropped_rx%s:%-15s" % (
-				util.lighten(AMBER, AREA_OPACITY), _("Receive drops"),
+				lighten(AMBER, AREA_OPACITY), _("Receive drops"),
 			),
 			"GPRINT:dropped_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
@@ -165,7 +165,7 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 
 			# Draw the transmit drops.
 			"LINE2:dropped_tx%s:%-15s" % (
-				util.lighten(TEAL, AREA_OPACITY), _("Transmit drops"),
+				lighten(TEAL, AREA_OPACITY), _("Transmit drops"),
 			),
 			"GPRINT:dropped_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),

@@ -35,7 +35,7 @@ class GraphTemplateContextSwitches(base.GraphTemplate):
 
 		return [
 			"AREA:ctxt%s:%-15s" % (
-				util.lighten(PRIMARY, AREA_OPACITY),
+				lighten(PRIMARY, AREA_OPACITY),
 				_("Context Switches"),
 			),
 			"GPRINT:ctxt_max:%12s\:" % _("Maximum") + " %6.2lf" ,

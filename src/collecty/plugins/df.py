@@ -23,7 +23,7 @@ from collecty import _collecty
 import os
 
 from ..constants import *
-from .. import util
+from ..colours import *
 from . import base
 
 from ..i18n import _
@@ -46,14 +46,14 @@ class GraphTemplateDiskUsage(base.GraphTemplate):
 			"VDEF:percentage_left_now=percentage_left,LAST",
 
 			# Area for the used space
-			"AREA:used%s:%s" % (util.lighten(LIGHT_RED, .66), _("Used")),
+			"AREA:used%s:%s" % (lighten(LIGHT_RED, .66), _("Used")),
 			"GPRINT:percentage_used_now: (%6.2lf%%)",
 			"GPRINT:used_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
 			"GPRINT:used_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
 
 			# Stacked area of unused space
-			"AREA:free%s:%s:STACK" % (util.lighten(LIGHT_GREEN, .66), _("Free")),
+			"AREA:free%s:%s:STACK" % (lighten(LIGHT_GREEN, .66), _("Free")),
 			"GPRINT:percentage_left_now: (%6.2lf%%)",
 			"GPRINT:free_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:free_min:%12s\:" % _("Minimum") + " %9.2lf%s",
@@ -91,14 +91,14 @@ class GraphTemplateInodeUsage(base.GraphTemplate):
 			"CDEF:percentage_left=100,percentage_used,-",
 
 			# Area for the used inodes
-			"AREA:inodes_used%s:%s" % (util.lighten(LIGHT_RED, .66), _("Used")),
+			"AREA:inodes_used%s:%s" % (lighten(LIGHT_RED, .66), _("Used")),
 			"GPRINT:percentage_used_now: (%6.2lf%%)",
 			"GPRINT:inodes_used_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:inodes_used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
 			"GPRINT:inodes_used_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
 
 			# Stacked area of unused inodes
-			"AREA:inodes_free%s:%s:STACK" % (util.lighten(LIGHT_GREEN, .66), _("Free")),
+			"AREA:inodes_free%s:%s:STACK" % (lighten(LIGHT_GREEN, .66), _("Free")),
 			"GPRINT:percentage_left_now: (%6.2lf%%)",
 			"GPRINT:inodes_free_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:inodes_free_min:%12s\:" % _("Minimum") + " %9.2lf%s",

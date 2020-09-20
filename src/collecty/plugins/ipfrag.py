@@ -40,14 +40,14 @@ class GraphTemplateIPv6Fragmentation(base.GraphTemplate):
 
 			# Reassembly
 			"AREA:ip6_reasm_real_fails%s:%-24s" % \
-				(util.lighten(COLOUR_ERROR), _("Failed Reassemblies")),
+				(lighten(COLOUR_ERROR), _("Failed Reassemblies")),
 			"GPRINT:ip6_reasm_fails_cur:%s %%5.0lf%%s" % _("Now"),
 			"GPRINT:ip6_reasm_fails_avg:%s %%5.0lf%%s" % _("Avg"),
 			"GPRINT:ip6_reasm_fails_max:%s %%5.0lf%%s" % _("Max"),
 			"GPRINT:ip6_reasm_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
 
 			"AREA:ip6_reasm_timeout%s:%-24s:STACK" % \
-				(util.lighten(COLOUR_WARN), _("Reassembly Timeouts")),
+				(lighten(COLOUR_WARN), _("Reassembly Timeouts")),
 			"GPRINT:ip6_reasm_timeout_cur:%s %%5.0lf%%s" % _("Now"),
 			"GPRINT:ip6_reasm_timeout_avg:%s %%5.0lf%%s" % _("Avg"),
 			"GPRINT:ip6_reasm_timeout_max:%s %%5.0lf%%s" % _("Max"),
@@ -109,14 +109,14 @@ class GraphTemplateIPv4Fragmentation(base.GraphTemplate):
 
 			# Reassembly
 			"AREA:ip4_reasm_real_fails%s:%-24s" % \
-				(util.lighten(COLOUR_ERROR), _("Failed Reassemblies")),
+				(lighten(COLOUR_ERROR), _("Failed Reassemblies")),
 			"GPRINT:ip4_reasm_fails_cur:%s %%5.0lf%%s" % _("Now"),
 			"GPRINT:ip4_reasm_fails_avg:%s %%5.0lf%%s" % _("Avg"),
 			"GPRINT:ip4_reasm_fails_max:%s %%5.0lf%%s" % _("Max"),
 			"GPRINT:ip4_reasm_fails_min:%s %%5.0lf%%s\\j" % _("Min"),
 
 			"AREA:ip4_reasm_timeout%s:%-24s:STACK" % \
-				(util.lighten(COLOUR_WARN), _("Reassembly Timeouts")),
+				(lighten(COLOUR_WARN), _("Reassembly Timeouts")),
 			"GPRINT:ip4_reasm_timeout_cur:%s %%5.0lf%%s" % _("Now"),
 			"GPRINT:ip4_reasm_timeout_avg:%s %%5.0lf%%s" % _("Avg"),
 			"GPRINT:ip4_reasm_timeout_max:%s %%5.0lf%%s" % _("Max"),

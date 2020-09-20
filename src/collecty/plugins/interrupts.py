@@ -35,7 +35,7 @@ class GraphTemplateSystemInterrupts(base.GraphTemplate):
 
 		return [
 			"AREA:intr%s:%-15s" % (
-				util.lighten(PRIMARY, AREA_OPACITY), _("System Interrupts"),
+				lighten(PRIMARY, AREA_OPACITY), _("System Interrupts"),
 			),
 			"GPRINT:intr_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:intr_min:%12s\:" % _("Minimum") + " %6.2lf" ,
