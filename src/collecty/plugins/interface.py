@@ -233,20 +233,10 @@ class InterfaceObject(base.Object):
 			path = os.path.join(interface_path, "statistics", file)
 
 			# Open file and read it's content.
-			f = None
-			try:
-				f = open(path)
-
+			with open(path) as f:
 				line = f.readline()
 				line = line.strip()
 				ret.append(line)
-			except:
-				ret.append("0")
-				raise
-
-			finally:
-				if f:
-					f.close()
 
 		return ret
 

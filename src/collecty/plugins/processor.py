@@ -109,12 +109,8 @@ class ProcessorObject(base.Object):
 		"""
 			Reads the CPU usage.
 		"""
-		f = None
-
-		try:
-			f = open("/proc/stat")
-
-			for line in f.readlines():
+		with open("/proc/stat") as f:
+			for line in f:
 				if not line.startswith("cpu"):
 					continue
 
@@ -131,9 +127,6 @@ class ProcessorObject(base.Object):
 					columns[6], # irq
 					columns[7], # sirq
 				)
-		finally:
-			if f:
-				f.close()
 
 
 class ProcessorPlugin(base.Plugin):

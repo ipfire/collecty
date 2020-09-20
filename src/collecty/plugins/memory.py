@@ -90,11 +90,8 @@ class MemoryObject(base.Object):
 		return "default"
 
 	def collect(self):
-		f = None
-
-		try:
-			f = open("/proc/meminfo")
-			for line in f.readlines():
+		with open("/proc/meminfo") as f:
+			for line in f:
 				if line.startswith("MemTotal:"):
 					total = float(line.split()[1])
 				if line.startswith("MemFree:"):
@@ -121,9 +118,6 @@ class MemoryObject(base.Object):
 				ret.append("0")
 
 			return ret
-		finally:
-			if f:
-				f.close()
 
 
 class MemoryPlugin(base.Plugin):
