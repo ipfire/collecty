@@ -232,11 +232,9 @@ class InterfaceObject(base.Object):
 		for file in files:
 			path = os.path.join(interface_path, "statistics", file)
 
-			# Open file and read it's content.
-			with open(path) as f:
-				line = f.readline()
-				line = line.strip()
-				ret.append(line)
+			ret.append(
+				self.read_file_integer(path),
+			)
 
 		return ret
 

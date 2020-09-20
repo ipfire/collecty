@@ -469,6 +469,34 @@ class Object(object):
 		# Write everything to disk that is in the write queue
 		self.collecty.write_queue.commit_file(self.file)
 
+	# Convenience functions for plugin authors
+
+	def read_file(self, *args, strip=True):
+		"""
+			Reads the content of the given file
+		"""
+		filename = os.path.join(*args)
+
+		with open(filename) as f:
+			value = f.read()
+
+		# Strip any excess whitespace
+		if strip:
+			value = value.strip()
+
+		return value
+
+	def read_file_integer(self, filename):
+		"""
+			Reads the content from a file and returns it as an integer
+		"""
+		value = self.read_file(filename)
+
+		try:
+			return int(value)
+		except ValueError:
+			return None
+
 
 class GraphTemplate(object):
 	# A unique name to identify this graph template.

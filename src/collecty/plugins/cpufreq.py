@@ -91,7 +91,7 @@ class CPUFreqObject(base.Object):
 
 	@property
 	def core_id(self):
-		return self.read_file("topology/core_id")
+		return self.read_file(self.sys_path, "topology/core_id")
 
 	def is_cpufreq_supported(self):
 		path = os.path.join(self.sys_path, "cpufreq")
@@ -105,14 +105,8 @@ class CPUFreqObject(base.Object):
 			self.read_frequency("cpufreq/cpuinfo_max_freq"),
 		)
 
-	def read_file(self, filename):
-		file = os.path.join(self.sys_path, filename)
-
-		with open(file, "r") as f:
-			return f.read().strip()
-
 	def read_frequency(self, filename):
-		val = self.read_file(filename)
+		val = self.read_file(self.sys_path, filename)
 
 		# Convert from kHz to Hz
 		return int(val) * 1000
