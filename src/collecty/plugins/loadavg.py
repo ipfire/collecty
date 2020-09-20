@@ -38,7 +38,7 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 		for id, colour, when in zip(self.object.rrd_schema_names,
 				LOAD_AVG_COLOURS, ("1m", "5m", "15m")):
 			rrd_graph = [
-				"LINE2:%s%s:%s" % (id, colour, _("Load Average %s") % when),
+				"LINE2:%s%s:%-24s" % (id, colour, _("Load Average %s") % when),
 				"GPRINT:%s_max:%12s\: %%6.2lf" % (id, _("Maximum")),
 				"GPRINT:%s_min:%12s\: %%6.2lf" % (id, _("Minimum")),
 				"GPRINT:%s_avg:%12s\: %%6.2lf\l" % (id, _("Average")),
