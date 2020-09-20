@@ -122,8 +122,6 @@ class Plugin(object, metaclass=PluginRegistration):
 		# Initialize the logger.
 		self.log = logging.getLogger("collecty.plugins.%s" % self.name)
 
-		self.data = []
-
 		# Run some custom initialization.
 		self.init(**kwargs)
 
