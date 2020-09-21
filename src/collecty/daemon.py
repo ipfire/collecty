@@ -25,6 +25,8 @@ import queue
 import rrdtool
 import sched
 import signal
+import tarfile
+import tempfile
 import time
 
 from . import bus
@@ -205,6 +207,35 @@ class Collecty(object):
 			raise RuntimeError("Could not find template %s" % template_name)
 
 		return plugin.last_update(*args, **kwargs)
+
+	def backup(self, filename):
+		# Write all data to disk first
+		self.write_queue.commit()
+
+		log.info(_("Backing up to %s..." % filename))
+
+		# Opening a compressed tar file with will have all files added to it
+		with tarfile.open(filename, mode="w:gz") as archive:
+			for path, directories, files in os.walk(DATABASE_DIR):
+				for file in files:
+					# Skip any non-RRD files
+					if not file.endswith(".rrd"):
+						continue
+
+					# Compose the full file path
+					file = os.path.join(path, file)
+
+					log.debug(_("Adding %s to backup...") % file)
+
+					with tempfile.NamedTemporaryFile() as t:
+						rrdtool.dump(file, t.name)
+
+						# Add the file to the archive
+						archive.add(
+							t.name, arcname=file[len(DATABASE_DIR):],
+						)
+
+		log.info(_("Backup finished"))
 
 
 class WriteQueue(object):

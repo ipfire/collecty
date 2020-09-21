@@ -77,6 +77,10 @@ class GraphGenerator(dbus.service.Object):
 
 		self.collecty = collecty
 
+	@dbus.service.method(BUS_DOMAIN, in_signature="s")
+	def Backup(self, filename):
+		self.collecty.backup(filename)
+
 	@dbus.service.method(BUS_DOMAIN, in_signature="sa{sv}", out_signature="a{sv}")
 	def GenerateGraph(self, template_name, kwargs):
 		"""

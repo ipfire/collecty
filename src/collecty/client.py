@@ -38,6 +38,17 @@ class CollectyClient(object):
 
 		self.proxy = self.bus.get_object(BUS_DOMAIN, "/GraphGenerator")
 
+	def backup(self, filename):
+		"""
+			Writes a backup of everything to file given filehandle
+		"""
+		self.proxy.Backup(filename)
+
+	def backup_cli(self, ns):
+		print(_("Backing up..."))
+
+		self.backup(ns.filename)
+
 	def last_update(self, template_name, **kwargs):
 		last_update = self.proxy.LastUpdate(template_name, kwargs)
 
@@ -182,6 +193,13 @@ class CollectyClient(object):
 		parser_list_templates = subparsers.add_parser("list-templates",
 			help=_("Lists all graph templates"))
 		parser_list_templates.set_defaults(func=self.list_templates_cli)
+
+		# backup
+		backup = subparsers.add_parser("backup",
+			help=_("Backup all RRD data"),
+		)
+		backup.add_argument("filename", nargs="?")
+		backup.set_defaults(func=self.backup_cli)
 
 		# version
 		parser_version = subparsers.add_parser("version", help=_("Show version"))
