@@ -33,7 +33,7 @@ class GraphTemplateProcessor(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"CDEF:total=user,nice,+,sys,+,wait,+,irq,+,sirq,+,steal,+,guest,+,idle,+",
+			"CDEF:total=user,nice,+,sys,+,wait,+,irq,+,sirq,+,steal,+,guest,+,guest_nice,+,idle,+",
 
 			"CDEF:user_p=100,user,*,total,/",
 			"AREA:user_p%s:%-15s" % (CPU_USER, _("User")),
@@ -83,6 +83,12 @@ class GraphTemplateProcessor(base.GraphTemplate):
 			"GPRINT:guest_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
 			"GPRINT:guest_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
 
+			"CDEF:guest_nice_p=100,guest_nice,*,total,/",
+			"STACK:guest_nice_p%s:%-15s" % (CPU_GUEST_NICE, _("Guest Nice")),
+			"GPRINT:guest_nice_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:guest_nice_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:guest_nice_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
+
 			"CDEF:idle_p=100,idle,*,total,/",
 			"STACK:idle_p%s:%-15s" % (CPU_IDLE, _("Idle")),
 			"GPRINT:idle_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
@@ -115,6 +121,7 @@ class ProcessorObject(base.Object):
 		"DS:sirq:DERIVE:0:U",
 		"DS:steal:DERIVE:0:U",
 		"DS:guest:DERIVE:0:U",
+		"DS:guest_nice:DERIVE:0:U",
 	]
 
 	def init(self, cpu_id=None):
@@ -141,7 +148,7 @@ class ProcessorObject(base.Object):
 		# Convert values into a list
 		values = values.split()
 
-		if not len(values) == 10:
+		if not len(values) == len(self.rrd_schema):
 			raise ValueError("Received unexpected output from /proc/stat: %s" % values)
 
 		return values
