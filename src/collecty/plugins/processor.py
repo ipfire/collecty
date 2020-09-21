@@ -33,7 +33,7 @@ class GraphTemplateProcessor(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"CDEF:total=user,nice,+,sys,+,wait,+,irq,+,sirq,+,idle,+",
+			"CDEF:total=user,nice,+,sys,+,wait,+,irq,+,sirq,+,steal,+,guest,+,idle,+",
 
 			"CDEF:user_p=100,user,*,total,/",
 			"AREA:user_p%s:%-15s" % (CPU_USER, _("User")),
@@ -70,6 +70,18 @@ class GraphTemplateProcessor(base.GraphTemplate):
 			"GPRINT:sirq_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
 			"GPRINT:sirq_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
 			"GPRINT:sirq_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
+
+			"CDEF:steal_p=100,steal,*,total,/",
+			"STACK:steal_p%s:%-15s" % (CPU_STEAL, _("Steal")),
+			"GPRINT:steal_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:steal_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:steal_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
+
+			"CDEF:guest_p=100,guest,*,total,/",
+			"STACK:guest_p%s:%-15s" % (CPU_GUEST, _("Guest")),
+			"GPRINT:guest_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
+			"GPRINT:guest_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
+			"GPRINT:guest_p_avg:%12s\:" % _("Average") + " %6.2lf%%\\n",
 
 			"CDEF:idle_p=100,idle,*,total,/",
 			"STACK:idle_p%s:%-15s" % (CPU_IDLE, _("Idle")),
