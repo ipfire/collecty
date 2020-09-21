@@ -64,12 +64,7 @@ class Collecty(object):
 		# get from there.
 		self.bus = bus.Bus(self)
 
-		# Add all plugins
-		for plugin in plugins.get():
-			self.add_plugin(plugin)
-
-		log.debug(_("Collecty successfully initialized with %s plugins") \
-			% len(self.plugins))
+		log.debug(_("Collecty successfully initialized"))
 
 	def add_plugin(self, plugin_class):
 		# Try initialising a new plugin. If that fails, we will log the
@@ -82,20 +77,23 @@ class Collecty(object):
 
 		self.plugins.append(plugin)
 
+		# Collect immediately
+		self._schedule_plugin(plugin, interval=0)
+
 	@property
 	def templates(self):
 		for plugin in self.plugins:
 			for template in plugin.templates:
 				yield template
 
-	def _schedule_plugin(self, plugin):
+	def _schedule_plugin(self, plugin, interval=None):
 		"""
 			Schedules a collection event for the given plugin
 		"""
 		log.debug("Scheduling plugin %s for executing in %ss" % (plugin, plugin.interval))
 
 		self.scheduler.enter(
-			plugin.interval, plugin.priority, self._collect, (plugin,),
+			plugin.interval if interval is None else interval, plugin.priority, self._collect, (plugin,),
 		)
 
 	def _schedule_commit(self):
@@ -139,15 +137,18 @@ class Collecty(object):
 		# Start the bus
 		self.bus.start()
 
-		# Add all plugins to the scheduler
-		for plugin in self.plugins:
-			self._schedule_plugin(plugin)
+		# Add all plugins
+		for plugin in plugins.get():
+			self.add_plugin(plugin)
 
 		# Run the scheduler
 		try:
 			self.scheduler.run()
 		except KeyboardInterrupt:
 			pass
+
+		# Clear all plugins
+		self.plugins.clear()
 
 		# Stop the bus thread
 		self.bus.shutdown()
