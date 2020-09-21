@@ -26,8 +26,8 @@ from . import base
 
 from ..colours import *
 
-class GraphTemplateSystemInterrupts(base.GraphTemplate):
-	name = "system-interrupts"
+class GraphTemplateInterrupts(base.GraphTemplate):
+	name = "interrupts"
 
 	@property
 	def rrd_graph(self):
@@ -35,7 +35,7 @@ class GraphTemplateSystemInterrupts(base.GraphTemplate):
 
 		return [
 			"AREA:intr%s:%-15s" % (
-				lighten(PRIMARY, AREA_OPACITY), _("System Interrupts"),
+				lighten(PRIMARY, AREA_OPACITY), _("Interrupts"),
 			),
 			"GPRINT:intr_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:intr_min:%12s\:" % _("Minimum") + " %6.2lf" ,
@@ -50,7 +50,7 @@ class GraphTemplateSystemInterrupts(base.GraphTemplate):
 		_ = self.locale.translate
 
 		if self.object.irq is None:
-			return _("System Interrupts")
+			return _("Interrupts")
 
 		return _("Interrupt %s") % self.object.irq
 
@@ -61,7 +61,7 @@ class GraphTemplateSystemInterrupts(base.GraphTemplate):
 		return _("Interrupts/s")
 
 
-class SystemInterruptObject(base.Object):
+class InterruptObject(base.Object):
 	rrd_schema = [
 		"DS:intr:DERIVE:0:U",
 	]
@@ -92,15 +92,15 @@ class SystemInterruptObject(base.Object):
 		return interrupts[self.irq]
 
 
-class SystemInterruptsPlugin(base.Plugin):
-	name = "system-interrupts"
-	description = "System Interrupts Plugin"
+class InterruptsPlugin(base.Plugin):
+	name = "interrupts"
+	description = "Interrupts Plugin"
 
-	templates = [GraphTemplateSystemInterrupts]
+	templates = [GraphTemplateInterrupts]
 
 	@property
 	def objects(self):
-		yield SystemInterruptObject(self)
+		yield InterruptObject(self)
 
 		for irq in os.listdir("/sys/kernel/irq"):
 			try:
@@ -108,4 +108,4 @@ class SystemInterruptsPlugin(base.Plugin):
 			except (ValueError, TypeError):
 				continue
 
-			yield SystemInterruptObject(self, irq)
+			yield InterruptObject(self, irq)
