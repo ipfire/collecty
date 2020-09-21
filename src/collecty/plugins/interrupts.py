@@ -19,6 +19,7 @@
 #                                                                             #
 ###############################################################################
 
+import os
 import re
 
 from . import base
@@ -55,23 +56,35 @@ class GraphTemplateSystemInterrupts(base.GraphTemplate):
 		return _("System Interrupts/s")
 
 
-class SystemInterruptsObject(base.Object):
+class SystemInterruptObject(base.Object):
 	rrd_schema = [
 		"DS:intr:DERIVE:0:U",
 	]
 
+	def init(self, irq=None):
+		self.irq = irq
+
 	@property
 	def id(self):
-		return "default"
+		if self.irq is None:
+			return "default"
+
+		return "%s" % self.irq
 
 	def collect(self):
-		expr = r"^intr (\d+)"
+		stat = self.read_proc_stat()
 
-		with open("/proc/stat") as f:
-			for line in f.readlines():
-				m = re.match(expr, line)
-				if m:
-					return m.group(1)
+		# Get a list of all interrupt events
+		interrupts = stat.get("intr").split()
+
+		# The first value is the sum of all interrupts
+		total = interrupts.pop(0)
+
+		if self.irq is None:
+			return total
+
+		# Otherwise return the value for a specific IRQ
+		return interrupts[self.irq]
 
 
 class SystemInterruptsPlugin(base.Plugin):
@@ -82,4 +95,12 @@ class SystemInterruptsPlugin(base.Plugin):
 
 	@property
 	def objects(self):
-		yield SystemInterruptsObject(self)
+		yield SystemInterruptObject(self)
+
+		for irq in os.listdir("/sys/kernel/irq"):
+			try:
+				irq = int(irq)
+			except (ValueError, TypeError):
+				continue
+
+			yield SystemInterruptObject(self, irq)

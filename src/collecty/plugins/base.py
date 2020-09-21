@@ -263,7 +263,7 @@ class Object(object):
 		self.create()
 
 	def __repr__(self):
-		return "<%s>" % self.__class__.__name__
+		return "<%s %s>" % (self.__class__.__name__, self.id)
 
 	def __lt__(self, other):
 		return self.id < other.id
