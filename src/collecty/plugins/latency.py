@@ -136,9 +136,6 @@ class LatencyObject(base.Object):
 		"DS:loss4:GAUGE:0:100",
 	]
 
-	def __repr__(self):
-		return "<%s %s>" % (self.__class__.__name__, self.hostname)
-
 	def init(self, hostname):
 		self.hostname = hostname
 
@@ -152,7 +149,7 @@ class LatencyObject(base.Object):
 		for family in (socket.AF_INET6, socket.AF_INET):
 			try:
 				p = _collecty.Ping(self.hostname, family=family)
-				p.ping(count=5, deadline=10)
+				p.ping(count=10, deadline=10)
 
 				result += (p.average, p.stddev, p.loss)
 
