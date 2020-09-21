@@ -21,12 +21,9 @@
 
 import datetime
 import logging
-import math
 import os
 import re
 import rrdtool
-import tempfile
-import threading
 import time
 import unicodedata
 
