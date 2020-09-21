@@ -19,6 +19,8 @@
 #                                                                             #
 ###############################################################################
 
+import multiprocessing
+
 from . import base
 
 from ..colours import *
@@ -99,34 +101,38 @@ class ProcessorObject(base.Object):
 		"DS:wait:DERIVE:0:U",
 		"DS:irq:DERIVE:0:U",
 		"DS:sirq:DERIVE:0:U",
+		"DS:steal:DERIVE:0:U",
+		"DS:guest:DERIVE:0:U",
 	]
+
+	def init(self, cpu_id=None):
+		self.cpu_id = cpu_id
 
 	@property
 	def id(self):
+		if self.cpu_id is not None:
+			return "%s" % self.cpu_id
+
 		return "default"
 
 	def collect(self):
 		"""
 			Reads the CPU usage.
 		"""
-		with open("/proc/stat") as f:
-			for line in f:
-				if not line.startswith("cpu"):
-					continue
+		stat = self.read_proc_stat()
 
-				columns = line.split()
-				if len(columns) < 8:
-					continue
+		if self.cpu_id is None:
+			values = stat.get("cpu")
+		else:
+			values = stat.get("cpu%s" % self.cpu_id)
 
-				return (
-					columns[1], # user
-					columns[2], # nice
-					columns[3], # sys
-					columns[4], # idle
-					columns[5], # wait
-					columns[6], # irq
-					columns[7], # sirq
-				)
+		# Convert values into a list
+		values = values.split()
+
+		if not len(values) == 10:
+			raise ValueError("Received unexpected output from /proc/stat: %s" % values)
+
+		return values
 
 
 class ProcessorPlugin(base.Plugin):
@@ -138,3 +144,7 @@ class ProcessorPlugin(base.Plugin):
 	@property
 	def objects(self):
 		yield ProcessorObject(self)
+
+		num = multiprocessing.cpu_count()
+		for i in range(num):
+			yield ProcessorObject(self, cpu_id=i)

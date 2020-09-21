@@ -497,6 +497,22 @@ class Object(object):
 		except ValueError:
 			return None
 
+	def read_proc_stat(self):
+		"""
+			Reads /proc/stat and returns it as a dictionary
+		"""
+		ret = {}
+
+		with open("/proc/stat") as f:
+			for line in f:
+				# Split the key from the rest of the line
+				key, line = line.split(" ", 1)
+
+				# Remove any line breaks
+				ret[key] = line.rstrip()
+
+		return ret
+
 
 class GraphTemplate(object):
 	# A unique name to identify this graph template.
