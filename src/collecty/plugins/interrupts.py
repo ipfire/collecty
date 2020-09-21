@@ -48,12 +48,17 @@ class GraphTemplateSystemInterrupts(base.GraphTemplate):
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
-		return _("System Interrupts")
+
+		if self.object.irq is None:
+			return _("System Interrupts")
+
+		return _("Interrupt %s") % self.object.irq
 
 	@property
 	def graph_vertical_label(self):
 		_ = self.locale.translate
-		return _("System Interrupts/s")
+
+		return _("Interrupts/s")
 
 
 class SystemInterruptObject(base.Object):
