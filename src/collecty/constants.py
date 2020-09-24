@@ -67,10 +67,12 @@ GRAPH_DEFAULT_WIDTH = 768
 GRAPH_DEFAULT_HEIGHT = 480
 
 # Default column widths
-LEGEND     = "%18s"
-LABEL      = "%-16s"
-PERCENTAGE = "%15.2lf%%"
-INTEGER    = "%18.0lf"
+LABEL       = "%-24s"
+EMPTY_LABEL = "%26s" % ""
+
+COLUMN      = "%16s"
+PERCENTAGE  = "%13.2lf%%"
+INTEGER     = "%16.0lf"
 
 EMPTY_LINE = "COMMENT: \\n"
 

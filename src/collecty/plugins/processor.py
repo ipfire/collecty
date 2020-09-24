@@ -41,11 +41,11 @@ class GraphTemplateProcessor(base.GraphTemplate):
 			"CDEF:total=usage,idle,+",
 
 			# Headline
-			"COMMENT:%s" % (LEGEND % ""),
-			"COMMENT:%s" % (LEGEND % _("Current")),
-			"COMMENT:%s" % (LEGEND % _("Average")),
-			"COMMENT:%s" % (LEGEND % _("Minimum")),
-			"COMMENT:%s\\j" % (LEGEND % _("Maximum")),
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
 
 			"CDEF:usage_p=100,usage,*,total,/",
 			"COMMENT:  %s" % (LABEL % _("Total")),

@@ -34,11 +34,11 @@ class GraphTemplateContextSwitches(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"COMMENT:%s" % (LEGEND % ""),
-			"COMMENT:%s" % (LEGEND % _("Current")),
-			"COMMENT:%s" % (LEGEND % _("Average")),
-			"COMMENT:%s" % (LEGEND % _("Minimum")),
-			"COMMENT:%s\\j" % (LEGEND % _("Maximum")),
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
 
 			"AREA:ctxt%s:%s" % (
 				lighten(PRIMARY, AREA_OPACITY),
@@ -48,7 +48,8 @@ class GraphTemplateContextSwitches(base.GraphTemplate):
 			"GPRINT:ctxt_avg:%s" % INTEGER,
 			"GPRINT:ctxt_min:%s" % INTEGER,
 			"GPRINT:ctxt_max:%s" % INTEGER,
-			"LINE2:ctxt%s" % PRIMARY,
+
+			"LINE1:ctxt%s" % PRIMARY,
 		]
 
 	lower_limit = 0
