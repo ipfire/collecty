@@ -142,13 +142,6 @@ MEMORY_BUFFERED = BLUE
 MEMORY_CACHED   = YELLOW
 MEMORY_SWAP     = RED
 
-# Load average
-LOAD_AVG_COLOURS = (
-	RED,    #  1m
-	ORANGE, #  5m
-	YELLOW, # 15m
-)
-
 COLOURS_PROTOCOL_STATES = {
 	# General states
 	"NONE"              : GREY,

@@ -24,6 +24,7 @@ import os
 from . import base
 
 from ..colours import *
+from ..constants import *
 
 class GraphTemplateLoadAvg(base.GraphTemplate):
 	name = "loadavg"
@@ -32,16 +33,38 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 	def rrd_graph(self):
 		_ = self.locale.translate
 
-		rrd_graph = []
+		rrd_graph = [
+			"LINE2:load15%s:%s" % (
+				YELLOW, LABEL % _("15 Minutes"),
+			),
+			"GPRINT:load15_cur:%s" % FLOAT,
+			"GPRINT:load15_avg:%s" % FLOAT,
+			"GPRINT:load15_min:%s" % FLOAT,
+			"GPRINT:load15_max:%s\\j" % FLOAT,
 
-		for id, colour, when in zip(self.object.rrd_schema_names,
-				LOAD_AVG_COLOURS, ("1m", "5m", "15m")):
-			rrd_graph = [
-				"LINE2:%s%s:%-24s" % (id, colour, _("Load Average %s") % when),
-				"GPRINT:%s_max:%12s\: %%6.2lf" % (id, _("Maximum")),
-				"GPRINT:%s_min:%12s\: %%6.2lf" % (id, _("Minimum")),
-				"GPRINT:%s_avg:%12s\: %%6.2lf" % (id, _("Average")),
-			] + rrd_graph
+			"LINE2:load5%s:%s" % (
+				ORANGE, LABEL % _("5 Minutes"),
+			),
+			"GPRINT:load5_cur:%s" % FLOAT,
+			"GPRINT:load5_avg:%s" % FLOAT,
+			"GPRINT:load5_min:%s" % FLOAT,
+			"GPRINT:load5_max:%s\\j" % FLOAT,
+
+			"LINE2:load1%s:%s" % (
+				RED, LABEL % _("1 Minute"),
+			),
+			"GPRINT:load1_cur:%s" % FLOAT,
+			"GPRINT:load1_avg:%s" % FLOAT,
+			"GPRINT:load1_min:%s" % FLOAT,
+			"GPRINT:load1_max:%s\\j" % FLOAT,
+
+			# Headline
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
+		]
 
 		return rrd_graph
 
@@ -50,11 +73,13 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
+
 		return _("Load Average")
 
 	@property
 	def graph_vertical_label(self):
 		_ = self.locale.translate
+
 		return _("Load")
 
 	@property
