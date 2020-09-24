@@ -37,27 +37,27 @@ class GraphTemplateMemory(base.GraphTemplate):
 			"AREA:used%s:%-15s" % (lighten(MEMORY_USED, AREA_OPACITY), _("Used memory")),
 			"GPRINT:used_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:used_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:used_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:used_avg:%12s\:" % _("Average") + " %6.2lf",
 
 			"STACK:buffered%s:%-15s" % (lighten(MEMORY_BUFFERED, AREA_OPACITY), _("Buffered data")),
 			"GPRINT:buffered_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:buffered_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:buffered_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:buffered_avg:%12s\:" % _("Average") + " %6.2lf",
 
 			"STACK:cached%s:%-15s" % (lighten(MEMORY_CACHED, AREA_OPACITY), _("Cached data")),
 			"GPRINT:cached_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:cached_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:cached_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:cached_avg:%12s\:" % _("Average") + " %6.2lf",
 
 #			"STACK:free#7799ff:%-15s" % _("Free memory"),
 #			"GPRINT:free_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 #			"GPRINT:free_min:%12s\:" % _("Minimum") + " %6.2lf",
-#			"GPRINT:free_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+#			"GPRINT:free_avg:%12s\:" % _("Average") + " %6.2lf",
 
 			"LINE3:swap%s:%-15s" % (MEMORY_SWAP, _("Used Swap space")),
 			"GPRINT:swap_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:swap_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:swap_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:swap_avg:%12s\:" % _("Average") + " %6.2lf",
 
 			# Draw the outlines of the areas
 			"LINE1:used%s" % MEMORY_USED,

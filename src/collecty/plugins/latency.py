@@ -93,14 +93,14 @@ class GraphTemplateLatency(base.GraphTemplate):
 			"LINE2:latency4%s:%s" % (COLOUR_IPV4, _("Latency (IPv4)")),
 			"GPRINT:latency4_max:%12s\:" % _("Maximum") + " %6.2lf",
 			"GPRINT:latency4_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:latency4_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:latency4_avg:%12s\:" % _("Average") + " %6.2lf",
 
 			"AREA:spacer6",
 			"AREA:stddevarea6%s:STACK" % lighten(COLOUR_IPV6, STDDEV_OPACITY),
 			"LINE2:latency6%s:%s" % (COLOUR_IPV6, _("Latency (IPv6)")),
 			"GPRINT:latency6_max:%12s\:" % _("Maximum") + " %6.2lf",
 			"GPRINT:latency6_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:latency6_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:latency6_avg:%12s\:" % _("Average") + " %6.2lf",
 		]
 
 	@property

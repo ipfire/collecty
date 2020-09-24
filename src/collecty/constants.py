@@ -52,6 +52,9 @@ GRAPH_DEFAULT_ARGUMENTS = (
 
 	# Brand all generated graphs.
 	"--watermark", _("Created by collecty"),
+
+	# Justify all text
+	"TEXTALIGN:justified",
 )
 
 INTERVALS = {

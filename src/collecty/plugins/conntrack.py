@@ -348,7 +348,7 @@ class ConntrackProtocolWithStatesGraphTemplate(base.GraphTemplate):
 				"GPRINT:%(state)s_cur:%(legend_cur)s" % i,
 				"GPRINT:%(state)s_avg:%(legend_avg)s" % i,
 				"GPRINT:%(state)s_min:%(legend_min)s" % i,
-				"GPRINT:%(state)s_max:%(legend_max)s\\n" % i,
+				"GPRINT:%(state)s_max:%(legend_max)s" % i,
 			]
 
 		return args

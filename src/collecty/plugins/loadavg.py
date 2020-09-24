@@ -40,7 +40,7 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 				"LINE2:%s%s:%-24s" % (id, colour, _("Load Average %s") % when),
 				"GPRINT:%s_max:%12s\: %%6.2lf" % (id, _("Maximum")),
 				"GPRINT:%s_min:%12s\: %%6.2lf" % (id, _("Minimum")),
-				"GPRINT:%s_avg:%12s\: %%6.2lf\l" % (id, _("Average")),
+				"GPRINT:%s_avg:%12s\: %%6.2lf" % (id, _("Average")),
 			] + rrd_graph
 
 		return rrd_graph

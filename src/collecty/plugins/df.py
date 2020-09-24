@@ -49,14 +49,14 @@ class GraphTemplateDiskUsage(base.GraphTemplate):
 			"GPRINT:percentage_used_now: (%6.2lf%%)",
 			"GPRINT:used_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:used_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
+			"GPRINT:used_max:%12s\:" % _("Maximum") + " %9.2lf%s",
 
 			# Stacked area of unused space
 			"AREA:free%s:%s:STACK" % (lighten(LIGHT_GREEN, .66), _("Free")),
 			"GPRINT:percentage_left_now: (%6.2lf%%)",
 			"GPRINT:free_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:free_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:free_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
+			"GPRINT:free_max:%12s\:" % _("Maximum") + " %9.2lf%s",
 
 			# Add contour lines for the areas
 			"LINE:used%s" % LIGHT_RED,
@@ -94,14 +94,14 @@ class GraphTemplateInodeUsage(base.GraphTemplate):
 			"GPRINT:percentage_used_now: (%6.2lf%%)",
 			"GPRINT:inodes_used_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:inodes_used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:inodes_used_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
+			"GPRINT:inodes_used_max:%12s\:" % _("Maximum") + " %9.2lf%s",
 
 			# Stacked area of unused inodes
 			"AREA:inodes_free%s:%s:STACK" % (lighten(LIGHT_GREEN, .66), _("Free")),
 			"GPRINT:percentage_left_now: (%6.2lf%%)",
 			"GPRINT:inodes_free_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:inodes_free_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:inodes_free_max:%12s\:" % _("Maximum") + " %9.2lf%s\\n",
+			"GPRINT:inodes_free_max:%12s\:" % _("Maximum") + " %9.2lf%s",
 
 			# Add contour lines for the areas
 			"LINE:inodes_used%s" % LIGHT_RED,

@@ -54,9 +54,9 @@ class GraphTemplateSensorsTemperature(base.GraphTemplate):
 
 			# Draw the legend
 			"GPRINT:value_c_cur:%10.2lf °C\l",
-			"GPRINT:value_c_avg:  %-15s %%6.2lf °C\l" % _("Average"),
-			"GPRINT:value_c_max:  %-15s %%6.2lf °C\l" % _("Maximum"),
-			"GPRINT:value_c_min:  %-15s %%6.2lf °C\l" % _("Minimum"),
+			"GPRINT:value_c_avg:  %-15s %%6.2lf °C" % _("Average"),
+			"GPRINT:value_c_max:  %-15s %%6.2lf °C" % _("Maximum"),
+			"GPRINT:value_c_min:  %-15s %%6.2lf °C" % _("Minimum"),
 
 			# Empty line
 			"COMMENT: \\n",
@@ -144,11 +144,11 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 			"CDEF:all_value_c_normal=all_value_c,all_high_c,GT,UNKN,all_value_c,IF",
 
 			"LINE2:all_value_c_high#FF0000",
-			"LINE2:all_value_c_normal#000000:%-15s\l" % _("Temperature"),
+			"LINE2:all_value_c_normal#000000:%-15s" % _("Temperature"),
 
-			"GPRINT:all_value_c_avg:    %-15s %%6.2lf °C\l" % _("Average"),
-			"GPRINT:all_value_c_max:    %-15s %%6.2lf °C\l" % _("Maximum"),
-			"GPRINT:all_value_c_min:    %-15s %%6.2lf °C\l" % _("Minimum"),
+			"GPRINT:all_value_c_avg:    %-15s %%6.2lf °C" % _("Average"),
+			"GPRINT:all_value_c_max:    %-15s %%6.2lf °C" % _("Maximum"),
+			"GPRINT:all_value_c_min:    %-15s %%6.2lf °C" % _("Minimum"),
 		]
 
 		for id, core, colour in zip(ids, self.objects, self.core_colours):

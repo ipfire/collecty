@@ -37,7 +37,7 @@ class GraphTemplateDiskBadSectors(base.GraphTemplate):
 		return [
 			"AREA:bad_sectors%s:%s" % (COLOUR_CRITICAL,_("Bad Sectors")),
 			"GPRINT:bad_sectors_cur:%12s\:" % _("Current") + " %9.2lf",
-			"GPRINT:bad_sectors_max:%12s\:" % _("Maximum") + " %9.2lf\\n",
+			"GPRINT:bad_sectors_max:%12s\:" % _("Maximum") + " %9.2lf",
 		]
 
 	@property
@@ -66,13 +66,13 @@ class GraphTemplateDiskBytes(base.GraphTemplate):
 			"GPRINT:read_bytes_cur:%12s\:" % _("Current") + " %9.2lf",
 			"GPRINT:read_bytes_max:%12s\:" % _("Maximum") + " %9.2lf",
 			"GPRINT:read_bytes_min:%12s\:" % _("Minimum") + " %9.2lf",
-			"GPRINT:read_bytes_avg:%12s\:" % _("Average") + " %9.2lf\\n",
+			"GPRINT:read_bytes_avg:%12s\:" % _("Average") + " %9.2lf",
 
 			"LINE1:write_bytes%s:%-15s" % (COLOUR_WRITE, _("Written")),
 			"GPRINT:write_bytes_cur:%12s\:" % _("Current") + " %9.2lf",
 			"GPRINT:write_bytes_max:%12s\:" % _("Maximum") + " %9.2lf",
 			"GPRINT:write_bytes_min:%12s\:" % _("Minimum") + " %9.2lf",
-			"GPRINT:write_bytes_avg:%12s\:" % _("Average") + " %9.2lf\\n",
+			"GPRINT:write_bytes_avg:%12s\:" % _("Average") + " %9.2lf",
 		]
 
 		return rrd_graph
@@ -102,13 +102,13 @@ class GraphTemplateDiskIoOps(base.GraphTemplate):
 			"GPRINT:read_ios_cur:%12s\:" % _("Current") + " %6.2lf",
 			"GPRINT:read_ios_max:%12s\:" % _("Maximum") + " %6.2lf",
 			"GPRINT:read_ios_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:read_ios_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:read_ios_avg:%12s\:" % _("Average") + " %6.2lf",
 
 			"LINE1:write_ios%s:%-15s" % (COLOUR_WRITE, _("Written")),
 			"GPRINT:write_ios_cur:%12s\:" % _("Current") + " %6.2lf",
 			"GPRINT:write_ios_max:%12s\:" % _("Maximum") + " %6.2lf",
 			"GPRINT:write_ios_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:write_ios_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:write_ios_avg:%12s\:" % _("Average") + " %6.2lf",
 		]
 
 		return rrd_graph
@@ -144,7 +144,7 @@ class GraphTemplateDiskTemperature(base.GraphTemplate):
 			"GPRINT:temp_cur:%12s\:" % _("Current") + " %3.2lf",
 			"GPRINT:temp_max:%12s\:" % _("Maximum") + " %3.2lf",
 			"GPRINT:temp_min:%12s\:" % _("Minimum") + " %3.2lf",
-			"GPRINT:temp_avg:%12s\:" % _("Average") + " %3.2lf\\n",
+			"GPRINT:temp_avg:%12s\:" % _("Average") + " %3.2lf",
 		]
 
 		return rrd_graph

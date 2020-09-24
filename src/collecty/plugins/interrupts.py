@@ -37,9 +37,9 @@ class GraphTemplateInterrupts(base.GraphTemplate):
 			"AREA:intr%s:%-15s" % (
 				lighten(PRIMARY, AREA_OPACITY), _("Interrupts"),
 			),
-			"GPRINT:intr_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:intr_min:%12s\:" % _("Minimum") + " %6.2lf" ,
-			"GPRINT:intr_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:intr_max:%12s\:" % _("Maximum") + " %6.2lf",
+			"GPRINT:intr_min:%12s\:" % _("Minimum") + " %6.2lf",
+			"GPRINT:intr_avg:%12s\:" % _("Average") + " %6.2lf",
 			"LINE1:intr%s" % PRIMARY,
 		]
 

@@ -39,7 +39,7 @@ class GraphTemplateContextSwitches(base.GraphTemplate):
 			),
 			"GPRINT:ctxt_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 			"GPRINT:ctxt_min:%12s\:" % _("Minimum") + " %6.2lf" ,
-			"GPRINT:ctxt_avg:%12s\:" % _("Average") + " %6.2lf\\n",
+			"GPRINT:ctxt_avg:%12s\:" % _("Average") + " %6.2lf",
 			"LINE1:ctxt%s" % PRIMARY,
 		]
 

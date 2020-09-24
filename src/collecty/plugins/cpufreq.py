@@ -56,7 +56,7 @@ class GraphTemplateCPUFreq(base.GraphTemplate):
 		for processor, colour in zip(self.objects, self.processor_colours):
 			rrd_graph += processor.make_rrd_defs(processor.id) + [
 				"LINE2:%s_current%s:%-10s" % (processor.id, colour, processor.name),
-				"GPRINT:%s_current_avg:%%6.2lf %%sHz\l" % processor.id,
+				"GPRINT:%s_current_avg:%%6.2lf %%sHz" % processor.id,
 			]
 
 		return rrd_graph

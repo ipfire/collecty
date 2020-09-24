@@ -52,24 +52,24 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 			"AREA:bits_rx%s:%-15s" % (lighten(COLOUR_RX, AREA_OPACITY), _("Received")),
 			"GPRINT:bits_rx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_rx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
-			"GPRINT:bits_rx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
+			"GPRINT:bits_rx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps"),
 
 			# Draw the transmitted area.
 			"AREA:bits_tx%s:%-15s" % (lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted")),
 			"GPRINT:bits_tx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
 			"GPRINT:bits_tx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
-			"GPRINT:bits_tx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps") + "\\n",
+			"GPRINT:bits_tx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps"),
 
 			# Draw outlines.
 			"LINE1:bits_rx%s" % COLOUR_RX,
 			"LINE1:bits_tx%s" % COLOUR_TX,
 
 			# Draw the 95% lines.
-			"COMMENT:--- %s ---\\n" % _("95th percentile"),
+			"COMMENT:--- %s ---" % _("95th percentile"),
 			"LINE2:bits_rx_95p%s:%-15s" % (COLOUR_RX, _("Received")),
-			"GPRINT:bits_rx_95p:%s" % _("%8.2lf %sbps") + "\\n",
+			"GPRINT:bits_rx_95p:%s" % _("%8.2lf %sbps"),
 			"LINE2:bits_tx_95p%s:%-15s" % (COLOUR_TX, _("Transmitted")),
-			"GPRINT:bits_tx_95p:%s" % _("%8.2lf %sbps") + "\\n",
+			"GPRINT:bits_tx_95p:%s" % _("%8.2lf %sbps"),
 		]
 
 	@property
@@ -97,7 +97,7 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 			),
 			"GPRINT:packets_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:packets_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:packets_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"GPRINT:packets_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
 
 			# Draw the transmitted area.
 			"AREA:packets_tx%s:%-15s" % (
@@ -105,7 +105,7 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 			),
 			"GPRINT:packets_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:packets_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:packets_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"GPRINT:packets_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
 
 			# Draw outlines of the areas on top.
 			"LINE1:packets_rx%s" % COLOUR_RX,
@@ -141,7 +141,7 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 			),
 			"GPRINT:errors_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:errors_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:errors_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"GPRINT:errors_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
 			"LINE1:errors_rx%s" % COLOUR_RX,
 
 			# Draw the transmit errors.
@@ -150,7 +150,7 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 			),
 			"GPRINT:errors_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:errors_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:errors_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"GPRINT:errors_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
 			"LINE1:errors_tx_inv%s" % COLOUR_TX,
 
 			# Draw the receive drops.
@@ -159,7 +159,7 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 			),
 			"GPRINT:dropped_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:dropped_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"GPRINT:dropped_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
 			"LINE1:dropped_rx#228B22",
 
 			# Draw the transmit drops.
@@ -168,7 +168,7 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 			),
 			"GPRINT:dropped_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
 			"GPRINT:dropped_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:dropped_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps") + "\\n",
+			"GPRINT:dropped_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
 			"LINE1:dropped_tx%s" % TEAL,
 
 			# Draw the collisions as a line.
