@@ -26,6 +26,7 @@ from .. import _collecty
 from . import base
 
 from ..colours import *
+from ..constants import *
 
 class GraphTemplateDiskBadSectors(base.GraphTemplate):
 	name = "disk-bad-sectors"
@@ -35,19 +36,31 @@ class GraphTemplateDiskBadSectors(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"AREA:bad_sectors%s:%s" % (COLOUR_CRITICAL,_("Bad Sectors")),
-			"GPRINT:bad_sectors_cur:%12s\:" % _("Current") + " %9.2lf",
-			"GPRINT:bad_sectors_max:%12s\:" % _("Maximum") + " %9.2lf",
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
+
+			"AREA:bad_sectors%s:%s" % (
+				transparency(COLOUR_CRITICAL, AREA_OPACITY),
+				LABEL % _("Bad Sectors"),
+			),
+			"GPRINT:bad_sectors_cur:%s" % INTEGER,
+			"GPRINT:bad_sectors_max:%s\\j" % INTEGER,
+
+			# Contour line
+			"LINE:bad_sectors%s" % COLOUR_CRITICAL,
 		]
 
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
+
 		return _("Bad Sectors of %s") % self.object.device_string
 
 	@property
 	def graph_vertical_label(self):
 		_ = self.locale.translate
+
 		return _("Pending/Relocated Sectors")
 
 
