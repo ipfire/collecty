@@ -62,7 +62,7 @@ class GraphTemplateMemory(base.GraphTemplate):
 			"GPRINT:mem_used_bytes_min:%s" % LARGE_FLOAT,
 			"GPRINT:mem_used_bytes_max:%s\\j" % LARGE_FLOAT,
 
-			"STACK:mem_buffered_bytes%s:%s" % (
+			"AREA:mem_buffered_bytes%s:%s:STACK" % (
 				transparency(MEMORY_BUFFERED, AREA_OPACITY),
 				LABEL % _("Buffered Data"),
 			),
@@ -71,7 +71,7 @@ class GraphTemplateMemory(base.GraphTemplate):
 			"GPRINT:mem_buffered_bytes_min:%s" % LARGE_FLOAT,
 			"GPRINT:mem_buffered_bytes_max:%s\\j" % LARGE_FLOAT,
 
-			"STACK:mem_cached_bytes%s:%s" % (
+			"AREA:mem_cached_bytes%s:%s:STACK" % (
 				transparency(MEMORY_CACHED, AREA_OPACITY),
 				LABEL % _("Cached Data")),
 			"GPRINT:mem_cached_bytes_cur:%s" % LARGE_FLOAT,
@@ -79,7 +79,7 @@ class GraphTemplateMemory(base.GraphTemplate):
 			"GPRINT:mem_cached_bytes_min:%s" % LARGE_FLOAT,
 			"GPRINT:mem_cached_bytes_max:%s\\j" % LARGE_FLOAT,
 
-			"STACK:mem_free_bytes%s:%s" % (
+			"AREA:mem_free_bytes%s:%s:STACK" % (
 				transparency(MEMORY_FREE, AREA_OPACITY),
 				LABEL % _("Free Memory"),
 			),
