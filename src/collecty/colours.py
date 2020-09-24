@@ -99,7 +99,7 @@ PRIMARY      = INDIGO
 ACCENT       = PINK
 
 # Lighten the areas by this factor
-AREA_OPACITY   = 0.25
+AREA_OPACITY   = 0.75
 STDDEV_OPACITY = 0.33
 
 # Receive and transmit
