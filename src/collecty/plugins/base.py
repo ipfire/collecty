@@ -510,6 +510,31 @@ class Object(object):
 
 		return ret
 
+	def read_proc_meminfo(self):
+		ret = {}
+
+		with open("/proc/meminfo") as f:
+			for line in f:
+				# Split the key from the rest of the line
+				key, line = line.split(":", 1)
+
+				# Remove any whitespace
+				line = line.strip()
+
+				# Remove any trailing kB
+				if line.endswith(" kB"):
+					line = line[:-3]
+
+				# Try to convert to integer
+				try:
+					line = int(line)
+				except (TypeError, ValueError):
+					continue
+
+				ret[key] = line
+
+		return ret
+
 
 class GraphTemplate(object):
 	# A unique name to identify this graph template.

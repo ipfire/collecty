@@ -27,7 +27,6 @@ from ..constants import *
 class GraphTemplateMemory(base.GraphTemplate):
 	name = "memory"
 
-	upper_limit = 100
 	lower_limit = 0
 
 	@property
@@ -42,47 +41,65 @@ class GraphTemplateMemory(base.GraphTemplate):
 			"COMMENT:%s" % (COLUMN % _("Minimum")),
 			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
 
-			"AREA:used%s:%s" % (
+			# Convert everything into bytes
+			"CDEF:mem_total_bytes=mem_total,1024,*",
+			"CDEF:mem_cached_bytes=mem_cached,1024,*",
+			"CDEF:mem_buffered_bytes=mem_buffered,1024,*",
+			"CDEF:mem_free_bytes=mem_free,1024,*",
+			"CDEF:swap_total_bytes=swap_total,1024,*",
+			"CDEF:swap_free_bytes=swap_free,1024,*",
+
+			# Compute used memory & swap
+			"CDEF:mem_used_bytes=mem_total_bytes,mem_free_bytes,-,mem_cached_bytes,-,mem_buffered_bytes,-",
+			"CDEF:swap_used_bytes=swap_total_bytes,swap_free_bytes,-",
+
+			"AREA:mem_used_bytes%s:%s" % (
 				transparency(MEMORY_USED, AREA_OPACITY),
 				LABEL % _("Used Memory"),
 			),
-			"GPRINT:used_cur:%s" % PERCENTAGE,
-			"GPRINT:used_avg:%s" % PERCENTAGE,
-			"GPRINT:used_min:%s" % PERCENTAGE,
-			"GPRINT:used_max:%s\\j" % PERCENTAGE,
+			"GPRINT:mem_used_bytes_cur:%s" % LARGE_FLOAT,
+			"GPRINT:mem_used_bytes_avg:%s" % LARGE_FLOAT,
+			"GPRINT:mem_used_bytes_min:%s" % LARGE_FLOAT,
+			"GPRINT:mem_used_bytes_max:%s\\j" % LARGE_FLOAT,
 
-			"STACK:buffered%s:%s" % (
+			"STACK:mem_buffered_bytes%s:%s" % (
 				transparency(MEMORY_BUFFERED, AREA_OPACITY),
 				LABEL % _("Buffered Data"),
 			),
-			"GPRINT:buffered_cur:%s" % PERCENTAGE,
-			"GPRINT:buffered_avg:%s" % PERCENTAGE,
-			"GPRINT:buffered_min:%s" % PERCENTAGE,
-			"GPRINT:buffered_max:%s\\j" % PERCENTAGE,
+			"GPRINT:mem_buffered_bytes_cur:%s" % LARGE_FLOAT,
+			"GPRINT:mem_buffered_bytes_avg:%s" % LARGE_FLOAT,
+			"GPRINT:mem_buffered_bytes_min:%s" % LARGE_FLOAT,
+			"GPRINT:mem_buffered_bytes_max:%s\\j" % LARGE_FLOAT,
 
-			"STACK:cached%s:%s" % (
-				lighten(MEMORY_CACHED, AREA_OPACITY),
-				LABEL % _("Cached data")),
-			"GPRINT:cached_cur:%s" % PERCENTAGE,
-			"GPRINT:cached_avg:%s" % PERCENTAGE,
-			"GPRINT:cached_min:%s" % PERCENTAGE,
-			"GPRINT:cached_max:%s\\j" % PERCENTAGE,
+			"STACK:mem_cached_bytes%s:%s" % (
+				transparency(MEMORY_CACHED, AREA_OPACITY),
+				LABEL % _("Cached Data")),
+			"GPRINT:mem_cached_bytes_cur:%s" % LARGE_FLOAT,
+			"GPRINT:mem_cached_bytes_avg:%s" % LARGE_FLOAT,
+			"GPRINT:mem_cached_bytes_min:%s" % LARGE_FLOAT,
+			"GPRINT:mem_cached_bytes_max:%s\\j" % LARGE_FLOAT,
 
-#			"STACK:free#7799ff:%-15s" % _("Free memory"),
-#			"GPRINT:free_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-#			"GPRINT:free_min:%12s\:" % _("Minimum") + " %6.2lf",
-#			"GPRINT:free_avg:%12s\:" % _("Average") + " %6.2lf",
+			"STACK:mem_free_bytes%s:%s" % (
+				transparency(MEMORY_FREE, AREA_OPACITY),
+				LABEL % _("Free Memory"),
+			),
+			"GPRINT:mem_free_bytes_cur:%s" % LARGE_FLOAT,
+			"GPRINT:mem_free_bytes_avg:%s" % LARGE_FLOAT,
+			"GPRINT:mem_free_bytes_min:%s" % LARGE_FLOAT,
+			"GPRINT:mem_free_bytes_max:%s\\j" % LARGE_FLOAT,
 
-			"LINE3:swap%s:%-15s" % (MEMORY_SWAP, LABEL % _("Used Swap Space")),
-			"GPRINT:swap_cur:%s" % PERCENTAGE,
-			"GPRINT:swap_avg:%s" % PERCENTAGE,
-			"GPRINT:swap_min:%s" % PERCENTAGE,
-			"GPRINT:swap_max:%s\\j" % PERCENTAGE,
+			EMPTY_LINE,
+
+			"LINE:swap_used_bytes%s:%-15s" % (MEMORY_SWAP, LABEL % _("Used Swap Space")),
+			"GPRINT:swap_used_bytes_cur:%s" % LARGE_FLOAT,
+			"GPRINT:swap_used_bytes_avg:%s" % LARGE_FLOAT,
+			"GPRINT:swap_used_bytes_min:%s" % LARGE_FLOAT,
+			"GPRINT:swap_used_bytes_max:%s\\j" % LARGE_FLOAT,
 
 			# Draw the outlines of the areas
-			"LINE1:used%s" % MEMORY_USED,
-			"LINE1:buffered%s::STACK" % MEMORY_BUFFERED,
-			"LINE1:cached%s::STACK" % MEMORY_CACHED,
+			"LINE1:mem_used_bytes%s" % MEMORY_USED,
+			"LINE1:mem_buffered_bytes%s::STACK" % MEMORY_BUFFERED,
+			"LINE1:mem_cached_bytes%s::STACK" % MEMORY_CACHED,
 		]
 
 	@property
@@ -95,16 +112,17 @@ class GraphTemplateMemory(base.GraphTemplate):
 	def graph_vertical_label(self):
 		_ = self.locale.translate
 
-		return _("Percent")
+		return _("Bytes")
 
 
 class MemoryObject(base.Object):
 	rrd_schema = [
-		"DS:used:GAUGE:0:100",
-		"DS:cached:GAUGE:0:100",
-		"DS:buffered:GAUGE:0:100",
-		"DS:free:GAUGE:0:100",
-		"DS:swap:GAUGE:0:100",
+		"DS:mem_total:GAUGE:0:U",
+		"DS:mem_cached:GAUGE:0:U",
+		"DS:mem_buffered:GAUGE:0:U",
+		"DS:mem_free:GAUGE:0:U",
+		"DS:swap_total:GAUGE:0:U",
+		"DS:swap_free:GAUGE:0:U",
 	]
 
 	@property
@@ -112,34 +130,16 @@ class MemoryObject(base.Object):
 		return "default"
 
 	def collect(self):
-		with open("/proc/meminfo") as f:
-			for line in f:
-				if line.startswith("MemTotal:"):
-					total = float(line.split()[1])
-				if line.startswith("MemFree:"):
-					free = float(line.split()[1])
-				elif line.startswith("Buffers:"):
-					buffered = float(line.split()[1])
-				elif line.startswith("Cached:"):
-					cached = float(line.split()[1])
-				elif line.startswith("SwapTotal:"):
-					swapt = float(line.split()[1])
-				elif line.startswith("SwapFree:"):
-					swapf = float(line.split()[1])
+		meminfo = self.read_proc_meminfo()
 
-			ret = [
-				"%s" % ((total - (free + buffered + cached)) * 100 / total),
-				"%s" % (cached * 100 / total),
-				"%s" % (buffered * 100 / total),
-				"%s" % (free * 100 / total),
-			]
-
-			if swapt:
-				ret.append("%s" % ((swapt - swapf) * 100 / swapt))
-			else:
-				ret.append("0")
-
-			return ret
+		return (
+			meminfo.get("MemTotal"),
+			meminfo.get("Cached"),
+			meminfo.get("Buffers"),
+			meminfo.get("MemFree"),
+			meminfo.get("SwapTotal"),
+			meminfo.get("SwapFree"),
+		)
 
 
 class MemoryPlugin(base.Plugin):
