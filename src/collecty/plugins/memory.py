@@ -22,6 +22,7 @@
 from . import base
 
 from ..colours import *
+from ..constants import *
 
 class GraphTemplateMemory(base.GraphTemplate):
 	name = "memory"
@@ -34,30 +35,49 @@ class GraphTemplateMemory(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			"AREA:used%s:%-15s" % (lighten(MEMORY_USED, AREA_OPACITY), _("Used memory")),
-			"GPRINT:used_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:used_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:used_avg:%12s\:" % _("Average") + " %6.2lf",
+			# Headline
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
 
-			"STACK:buffered%s:%-15s" % (lighten(MEMORY_BUFFERED, AREA_OPACITY), _("Buffered data")),
-			"GPRINT:buffered_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:buffered_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:buffered_avg:%12s\:" % _("Average") + " %6.2lf",
+			"AREA:used%s:%s" % (
+				transparency(MEMORY_USED, AREA_OPACITY),
+				LABEL % _("Used Memory"),
+			),
+			"GPRINT:used_cur:%s" % PERCENTAGE,
+			"GPRINT:used_avg:%s" % PERCENTAGE,
+			"GPRINT:used_min:%s" % PERCENTAGE,
+			"GPRINT:used_max:%s\\j" % PERCENTAGE,
 
-			"STACK:cached%s:%-15s" % (lighten(MEMORY_CACHED, AREA_OPACITY), _("Cached data")),
-			"GPRINT:cached_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:cached_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:cached_avg:%12s\:" % _("Average") + " %6.2lf",
+			"STACK:buffered%s:%s" % (
+				transparency(MEMORY_BUFFERED, AREA_OPACITY),
+				LABEL % _("Buffered Data"),
+			),
+			"GPRINT:buffered_cur:%s" % PERCENTAGE,
+			"GPRINT:buffered_avg:%s" % PERCENTAGE,
+			"GPRINT:buffered_min:%s" % PERCENTAGE,
+			"GPRINT:buffered_max:%s\\j" % PERCENTAGE,
+
+			"STACK:cached%s:%s" % (
+				lighten(MEMORY_CACHED, AREA_OPACITY),
+				LABEL % _("Cached data")),
+			"GPRINT:cached_cur:%s" % PERCENTAGE,
+			"GPRINT:cached_avg:%s" % PERCENTAGE,
+			"GPRINT:cached_min:%s" % PERCENTAGE,
+			"GPRINT:cached_max:%s\\j" % PERCENTAGE,
 
 #			"STACK:free#7799ff:%-15s" % _("Free memory"),
 #			"GPRINT:free_max:%12s\:" % _("Maximum") + " %6.2lf" ,
 #			"GPRINT:free_min:%12s\:" % _("Minimum") + " %6.2lf",
 #			"GPRINT:free_avg:%12s\:" % _("Average") + " %6.2lf",
 
-			"LINE3:swap%s:%-15s" % (MEMORY_SWAP, _("Used Swap space")),
-			"GPRINT:swap_max:%12s\:" % _("Maximum") + " %6.2lf" ,
-			"GPRINT:swap_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:swap_avg:%12s\:" % _("Average") + " %6.2lf",
+			"LINE3:swap%s:%-15s" % (MEMORY_SWAP, LABEL % _("Used Swap Space")),
+			"GPRINT:swap_cur:%s" % PERCENTAGE,
+			"GPRINT:swap_avg:%s" % PERCENTAGE,
+			"GPRINT:swap_min:%s" % PERCENTAGE,
+			"GPRINT:swap_max:%s\\j" % PERCENTAGE,
 
 			# Draw the outlines of the areas
 			"LINE1:used%s" % MEMORY_USED,
@@ -68,11 +88,13 @@ class GraphTemplateMemory(base.GraphTemplate):
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
+
 		return _("Memory Usage")
 
 	@property
 	def graph_vertical_label(self):
 		_ = self.locale.translate
+
 		return _("Percent")
 
 
