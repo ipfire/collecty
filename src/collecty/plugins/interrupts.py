@@ -25,6 +25,7 @@ import re
 from . import base
 
 from ..colours import *
+from ..constants import *
 
 class GraphTemplateInterrupts(base.GraphTemplate):
 	name = "interrupts"
@@ -34,12 +35,21 @@ class GraphTemplateInterrupts(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
+			# Headline
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
+
 			"AREA:intr%s:%-15s" % (
-				lighten(PRIMARY, AREA_OPACITY), _("Interrupts"),
+				transparency(PRIMARY, AREA_OPACITY), LABEL % _("Interrupts"),
 			),
-			"GPRINT:intr_max:%12s\:" % _("Maximum") + " %6.2lf",
-			"GPRINT:intr_min:%12s\:" % _("Minimum") + " %6.2lf",
-			"GPRINT:intr_avg:%12s\:" % _("Average") + " %6.2lf",
+			"GPRINT:intr_cur:%s" % LARGE_INTEGER,
+			"GPRINT:intr_avg:%s" % LARGE_INTEGER,
+			"GPRINT:intr_min:%s" % LARGE_INTEGER,
+			"GPRINT:intr_max:%s\\j" % LARGE_INTEGER,
+
 			"LINE1:intr%s" % PRIMARY,
 		]
 
