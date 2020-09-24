@@ -36,27 +36,31 @@ class GraphTemplateDiskUsage(base.GraphTemplate):
 		_ = self.locale.translate
 
 		return [
-			# Calculate the percentage of the currently used
-			# space since this is helps the user very much to
-			# judge
-			"CDEF:percentage_used=100,used,*,used,free,+,/",
-			"VDEF:percentage_used_now=percentage_used,LAST",
-			"CDEF:percentage_left=100,percentage_used,-",
-			"VDEF:percentage_left_now=percentage_left,LAST",
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
 
 			# Area for the used space
-			"AREA:used%s:%s" % (transparency(LIGHT_RED, AREA_OPACITY), _("Used")),
-			"GPRINT:percentage_used_now: (%6.2lf%%)",
-			"GPRINT:used_cur:%12s\:" % _("Current") + " %9.2lf%s",
-			"GPRINT:used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:used_max:%12s\:" % _("Maximum") + " %9.2lf%s",
+			"AREA:used%s:%s" % (
+				transparency(LIGHT_RED, AREA_OPACITY),
+				LABEL % _("Used"),
+			),
+			"GPRINT:used_cur:%s" % LARGE_FLOAT,
+			"GPRINT:used_avg:%s" % LARGE_FLOAT,
+			"GPRINT:used_min:%s" % LARGE_FLOAT,
+			"GPRINT:used_max:%s\\j" % LARGE_FLOAT,
 
 			# Stacked area of unused space
-			"AREA:free%s:%s:STACK" % (transparency(LIGHT_GREEN, AREA_OPACITY), _("Free")),
-			"GPRINT:percentage_left_now: (%6.2lf%%)",
-			"GPRINT:free_cur:%12s\:" % _("Current") + " %9.2lf%s",
-			"GPRINT:free_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:free_max:%12s\:" % _("Maximum") + " %9.2lf%s",
+			"AREA:free%s:%s:STACK" % (
+				transparency(LIGHT_GREEN, AREA_OPACITY),
+				LABEL % _("Free"),
+			),
+			"GPRINT:free_cur:%s" % LARGE_FLOAT,
+			"GPRINT:free_avg:%s" % LARGE_FLOAT,
+			"GPRINT:free_min:%s" % LARGE_FLOAT,
+			"GPRINT:free_max:%s\\j" % LARGE_FLOAT,
 
 			# Add contour lines for the areas
 			"LINE:used%s" % LIGHT_RED,
@@ -83,25 +87,31 @@ class GraphTemplateInodeUsage(base.GraphTemplate):
 		_ = self.locale.translate
 
 		rrd_graph = [
-			# Calculate the percentage of the currently used
-			# inodes since this is helps the user very much to
-			# judge
-			"CDEF:percentage_used=100,inodes_used,*,inodes_used,inodes_free,+,/",
-			"CDEF:percentage_left=100,percentage_used,-",
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
 
 			# Area for the used inodes
-			"AREA:inodes_used%s:%s" % (lighten(LIGHT_RED, .66), _("Used")),
-			"GPRINT:percentage_used_now: (%6.2lf%%)",
-			"GPRINT:inodes_used_cur:%12s\:" % _("Current") + " %9.2lf%s",
-			"GPRINT:inodes_used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:inodes_used_max:%12s\:" % _("Maximum") + " %9.2lf%s",
+			"AREA:inodes_used%s:%s" % (
+				transparency(LIGHT_RED, AREA_OPACITY),
+				LABEL % _("Used"),
+			),
+			"GPRINT:inodes_used_cur:%s" % LARGE_FLOAT,
+			"GPRINT:inodes_used_avg:%s" % LARGE_FLOAT,
+			"GPRINT:inodes_used_min:%s" % LARGE_FLOAT,
+			"GPRINT:inodes_used_max:%s\\j" % LARGE_FLOAT,
 
 			# Stacked area of unused inodes
-			"AREA:inodes_free%s:%s:STACK" % (lighten(LIGHT_GREEN, .66), _("Free")),
-			"GPRINT:percentage_left_now: (%6.2lf%%)",
-			"GPRINT:inodes_free_cur:%12s\:" % _("Current") + " %9.2lf%s",
-			"GPRINT:inodes_free_min:%12s\:" % _("Minimum") + " %9.2lf%s",
-			"GPRINT:inodes_free_max:%12s\:" % _("Maximum") + " %9.2lf%s",
+			"AREA:inodes_free%s:%s:STACK" % (
+				transparency(LIGHT_GREEN, AREA_OPACITY),
+				LABEL % _("Free"),
+			),
+			"GPRINT:inodes_free_cur:%s" % LARGE_FLOAT,
+			"GPRINT:inodes_free_avg:%s" % LARGE_FLOAT,
+			"GPRINT:inodes_free_min:%s" % LARGE_FLOAT,
+			"GPRINT:inodes_free_max:%s\\j" % LARGE_FLOAT,
 
 			# Add contour lines for the areas
 			"LINE:inodes_used%s" % LIGHT_RED,
