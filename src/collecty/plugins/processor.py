@@ -57,63 +57,90 @@ class GraphTemplateProcessor(base.GraphTemplate):
 			EMPTY_LINE,
 
 			"CDEF:user_p=100,user,*,total,/",
-			"AREA:user_p%s:%s" % (CPU_USER, LABEL % _("User")),
+			"AREA:user_p%s:%s" % (
+				transparency(CPU_USER, AREA_OPACITY),
+				LABEL % _("User"),
+			),
 			"GPRINT:user_p_cur:%s" % PERCENTAGE,
 			"GPRINT:user_p_avg:%s" % PERCENTAGE,
 			"GPRINT:user_p_min:%s" % PERCENTAGE,
 			"GPRINT:user_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:nice_p=100,nice,*,total,/",
-			"STACK:nice_p%s:%s" % (CPU_NICE, LABEL % _("Nice")),
+			"STACK:nice_p%s:%s" % (
+				transparency(CPU_NICE, AREA_OPACITY),
+				LABEL % _("Nice"),
+			),
 			"GPRINT:nice_p_cur:%s" % PERCENTAGE,
 			"GPRINT:nice_p_avg:%s" % PERCENTAGE,
 			"GPRINT:nice_p_min:%s" % PERCENTAGE,
 			"GPRINT:nice_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:sys_p=100,sys,*,total,/",
-			"STACK:sys_p%s:%s" % (CPU_SYS, LABEL % _("System")),
+			"STACK:sys_p%s:%s" % (
+				transparency(CPU_SYS, AREA_OPACITY),
+				LABEL % _("System"),
+			),
 			"GPRINT:sys_p_cur:%s" % PERCENTAGE,
 			"GPRINT:sys_p_avg:%s" % PERCENTAGE,
 			"GPRINT:sys_p_min:%s" % PERCENTAGE,
 			"GPRINT:sys_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:wait_p=100,wait,*,total,/",
-			"STACK:wait_p%s:%s" % (CPU_WAIT, LABEL % _("Wait")),
+			"STACK:wait_p%s:%s" % (
+				transparency(CPU_WAIT, AREA_OPACITY),
+				LABEL % _("Wait"),
+			),
 			"GPRINT:wait_p_cur:%s" % PERCENTAGE,
 			"GPRINT:wait_p_avg:%s" % PERCENTAGE,
 			"GPRINT:wait_p_min:%s" % PERCENTAGE,
 			"GPRINT:wait_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:irq_p=100,irq,*,total,/",
-			"STACK:irq_p%s:%s" % (CPU_IRQ, LABEL % _("Interrupt")),
+			"STACK:irq_p%s:%s" % (
+				transparency(CPU_IRQ, AREA_OPACITY),
+				LABEL % _("Interrupt"),
+			),
 			"GPRINT:irq_p_cur:%s" % PERCENTAGE,
 			"GPRINT:irq_p_avg:%s" % PERCENTAGE,
 			"GPRINT:irq_p_min:%s" % PERCENTAGE,
 			"GPRINT:irq_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:sirq_p=100,sirq,*,total,/",
-			"STACK:sirq_p%s:%s" % (CPU_SIRQ, LABEL % _("Soft Interrupt")),
+			"STACK:sirq_p%s:%s" % (
+				transparency(CPU_SIRQ, AREA_OPACITY),
+				LABEL % _("Soft Interrupt"),
+			),
 			"GPRINT:sirq_p_cur:%s" % PERCENTAGE,
 			"GPRINT:sirq_p_avg:%s" % PERCENTAGE,
 			"GPRINT:sirq_p_min:%s" % PERCENTAGE,
 			"GPRINT:sirq_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:steal_p=100,steal,*,total,/",
-			"STACK:steal_p%s:%s" % (CPU_STEAL, LABEL % _("Steal")),
+			"STACK:steal_p%s:%s" % (
+				transparency(CPU_STEAL, AREA_OPACITY),
+				LABEL % _("Steal"),
+			),
 			"GPRINT:steal_p_cur:%s" % PERCENTAGE,
 			"GPRINT:steal_p_avg:%s" % PERCENTAGE,
 			"GPRINT:steal_p_min:%s" % PERCENTAGE,
 			"GPRINT:steal_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:guest_p=100,guest,*,total,/",
-			"STACK:guest_p%s:%s" % (CPU_GUEST, LABEL % _("Guest")),
+			"STACK:guest_p%s:%s" % (
+				transparency(CPU_GUEST, AREA_OPACITY),
+				LABEL % _("Guest"),
+			),
 			"GPRINT:guest_p_cur:%s" % PERCENTAGE,
 			"GPRINT:guest_p_avg:%s" % PERCENTAGE,
 			"GPRINT:guest_p_min:%s" % PERCENTAGE,
 			"GPRINT:guest_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:guest_nice_p=100,guest_nice,*,total,/",
-			"STACK:guest_nice_p%s:%s" % (CPU_GUEST_NICE, LABEL % _("Guest Nice")),
+			"STACK:guest_nice_p%s:%s" % (
+				transparency(CPU_GUEST_NICE, AREA_OPACITY),
+				LABEL % _("Guest Nice"),
+			),
 			"GPRINT:guest_nice_p_cur:%s" % PERCENTAGE,
 			"GPRINT:guest_nice_p_avg:%s" % PERCENTAGE,
 			"GPRINT:guest_nice_p_min:%s" % PERCENTAGE,
@@ -121,6 +148,17 @@ class GraphTemplateProcessor(base.GraphTemplate):
 
 			"CDEF:idle_p=100,idle,*,total,/",
 			"STACK:idle_p%s" % CPU_IDLE,
+
+			# Draw contour lines
+			"LINE:user_p%s" % CPU_USER,
+			"LINE:nice_p%s::STACK" % CPU_NICE,
+			"LINE:sys_p%s::STACK" % CPU_SYS,
+			"LINE:wait_p%s::STACK" % CPU_WAIT,
+			"LINE:irq_p%s::STACK" % CPU_IRQ,
+			"LINE:sirq_p%s::STACK" % CPU_SIRQ,
+			"LINE:steal_p%s::STACK" % CPU_STEAL,
+			"LINE:guest_p%s::STACK" % CPU_GUEST,
+			"LINE:guest_nice_p%s::STACK" % CPU_GUEST_NICE,
 	]
 
 	upper_limit = 100
