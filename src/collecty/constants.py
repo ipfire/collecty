@@ -67,8 +67,8 @@ GRAPH_DEFAULT_WIDTH = 768
 GRAPH_DEFAULT_HEIGHT = 480
 
 # Default column widths
-LABEL         = "%-24s"
-EMPTY_LABEL   = "%26s" % ""
+LABEL         = "%-30s"
+EMPTY_LABEL   = "%32s" % ""
 
 COLUMN        = "%16s"
 PERCENTAGE    = "%13.2lf%%"
