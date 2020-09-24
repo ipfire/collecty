@@ -76,8 +76,11 @@ INTEGER       = "%16.0lf"
 LARGE_INTEGER = "%14.0lf %s"
 FLOAT         = "%14.2lf"
 LARGE_FLOAT   = "%12.2lf %s"
+BPS           = "%9.2lf %sbps"
+PPS           = "%9.2lf %spps"
 
-EMPTY_LINE = "COMMENT: \\n"
+EMPTY_LINE    = "COMMENT: \\n"
+HEADLINE      = "COMMENT:---- %s ----\\c"
 
 THUMBNAIL_DEFAULT_WIDTH = 80
 THUMBNAIL_DEFAULT_HEIGHT = 20

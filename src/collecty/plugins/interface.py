@@ -25,6 +25,7 @@ from .. import util
 from . import base
 
 from ..colours import *
+from ..constants import *
 
 class GraphTemplateInterfaceBase(base.GraphTemplate):
 	@property
@@ -40,6 +41,13 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 		_ = self.locale.translate
 
 		return [
+			# Headline
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
+
 			# Convert everything into bits.
 			"CDEF:bits_rx=bytes_rx,8,*",
 			"CDEF:bits_tx=bytes_tx,8,*",
@@ -49,37 +57,49 @@ class GraphTemplateInterfaceBits(GraphTemplateInterfaceBase):
 			"VDEF:bits_tx_95p=bits_tx,95,PERCENT",
 
 			# Draw the received area.
-			"AREA:bits_rx%s:%-15s" % (lighten(COLOUR_RX, AREA_OPACITY), _("Received")),
-			"GPRINT:bits_rx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
-			"GPRINT:bits_rx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
-			"GPRINT:bits_rx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps"),
+			"AREA:bits_rx%s:%s" % (
+				transparency(COLOUR_RX, AREA_OPACITY),
+				LABEL % _("Received"),
+			),
+			"GPRINT:bits_rx_cur:%s" % BPS,
+			"GPRINT:bits_rx_avg:%s" % BPS,
+			"GPRINT:bits_rx_min:%s" % BPS,
+			"GPRINT:bits_rx_max:%s\\j" % BPS,
 
 			# Draw the transmitted area.
-			"AREA:bits_tx%s:%-15s" % (lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted")),
-			"GPRINT:bits_tx_max:%12s\: " % _("Maximum") + _("%8.2lf %sbps"),
-			"GPRINT:bits_tx_min:%12s\: " % _("Minimum") + _("%8.2lf %sbps"),
-			"GPRINT:bits_tx_avg:%12s\: " % _("Average") + _("%8.2lf %sbps"),
+			"AREA:bits_tx%s:%-15s" % (
+				transparency(COLOUR_TX, AREA_OPACITY),
+				LABEL % _("Transmitted"),
+			),
+			"GPRINT:bits_tx_cur:%s" % BPS,
+			"GPRINT:bits_tx_avg:%s" % BPS,
+			"GPRINT:bits_tx_min:%s" % BPS,
+			"GPRINT:bits_tx_max:%s\\j" % BPS,
 
 			# Draw outlines.
 			"LINE1:bits_rx%s" % COLOUR_RX,
 			"LINE1:bits_tx%s" % COLOUR_TX,
 
+			EMPTY_LINE,
+
 			# Draw the 95% lines.
-			"COMMENT:--- %s ---" % _("95th percentile"),
-			"LINE2:bits_rx_95p%s:%-15s" % (COLOUR_RX, _("Received")),
-			"GPRINT:bits_rx_95p:%s" % _("%8.2lf %sbps"),
-			"LINE2:bits_tx_95p%s:%-15s" % (COLOUR_TX, _("Transmitted")),
-			"GPRINT:bits_tx_95p:%s" % _("%8.2lf %sbps"),
+			"COMMENT:%s" % _("95th Percentile"),
+			"LINE:bits_rx_95p%s:%s:dashes" % (COLOUR_RX, LABEL % _("Received")),
+			"GPRINT:bits_rx_95p:%s\\r" % BPS,
+			"LINE:bits_tx_95p%s:%s:dashes" % (COLOUR_TX, LABEL % _("Transmitted")),
+			"GPRINT:bits_tx_95p:%s\\r" % BPS,
 		]
 
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
-		return _("Bandwidth usage on %s") % self.interface
+
+		return _("Bandwidth Usage on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
 		_ = self.locale.translate
+
 		return _("Bit/s")
 
 
@@ -91,21 +111,32 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 		_ = self.locale.translate
 
 		return [
+			# Headline
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
+
 			# Draw the received area.
-			"AREA:packets_rx%s:%-15s" % (
-				lighten(COLOUR_RX, AREA_OPACITY), _("Received"),
+			"AREA:packets_rx%s:%s" % (
+				transparency(COLOUR_RX, AREA_OPACITY),
+				LABEL % _("Received"),
 			),
-			"GPRINT:packets_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-			"GPRINT:packets_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:packets_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
+			"GPRINT:packets_rx_cur:%s" % PPS,
+			"GPRINT:packets_rx_avg:%s" % PPS,
+			"GPRINT:packets_rx_min:%s" % PPS,
+			"GPRINT:packets_rx_max:%s\\j" % PPS,
 
 			# Draw the transmitted area.
-			"AREA:packets_tx%s:%-15s" % (
-				lighten(COLOUR_TX, AREA_OPACITY), _("Transmitted"),
+			"AREA:packets_tx%s:%s" % (
+				transparency(COLOUR_TX, AREA_OPACITY),
+				LABEL % _("Transmitted"),
 			),
-			"GPRINT:packets_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-			"GPRINT:packets_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:packets_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
+			"GPRINT:packets_tx_cur:%s" % PPS,
+			"GPRINT:packets_tx_avg:%s" % PPS,
+			"GPRINT:packets_tx_min:%s" % PPS,
+			"GPRINT:packets_tx_max:%s\\j" % PPS,
 
 			# Draw outlines of the areas on top.
 			"LINE1:packets_rx%s" % COLOUR_RX,
@@ -115,7 +146,8 @@ class GraphTemplateInterfacePackets(GraphTemplateInterfaceBase):
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
-		return _("Transferred packets on %s") % self.interface
+
+		return _("Transferred Packets on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
@@ -131,58 +163,84 @@ class GraphTemplateInterfaceErrors(GraphTemplateInterfaceBase):
 		_ = self.locale.translate
 
 		return [
+			# Headline
+			"COMMENT:%s" % EMPTY_LABEL,
+			"COMMENT:%s" % (COLUMN % _("Current")),
+			"COMMENT:%s" % (COLUMN % _("Average")),
+			"COMMENT:%s" % (COLUMN % _("Minimum")),
+			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
+
 			# Invert the transmitted packets to create upside down graph.
 			"CDEF:errors_tx_inv=errors_tx,-1,*",
 			"CDEF:dropped_tx_inv=dropped_tx,-1,*",
 
 			# Draw the receive errors.
 			"AREA:errors_rx%s:%-15s" % (
-				lighten(COLOUR_RX, AREA_OPACITY), _("Receive errors"),
+				transparency(COLOUR_RX, AREA_OPACITY),
+				LABEL % _("Receive Errors"),
 			),
-			"GPRINT:errors_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-			"GPRINT:errors_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:errors_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
+			"GPRINT:errors_rx_cur:%s" % PPS,
+			"GPRINT:errors_rx_avg:%s" % PPS,
+			"GPRINT:errors_rx_min:%s" % PPS,
+			"GPRINT:errors_rx_max:%s\\j" % PPS,
 			"LINE1:errors_rx%s" % COLOUR_RX,
 
 			# Draw the transmit errors.
 			"AREA:errors_tx_inv%s:%-15s" % (
-				lighten(COLOUR_TX, AREA_OPACITY), _("Transmit errors"),
+				transparency(COLOUR_TX, AREA_OPACITY),
+				LABEL % _("Transmit Errors"),
 			),
-			"GPRINT:errors_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-			"GPRINT:errors_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:errors_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
+			"GPRINT:errors_tx_cur:%s" % PPS,
+			"GPRINT:errors_tx_avg:%s" % PPS,
+			"GPRINT:errors_tx_min:%s" % PPS,
+			"GPRINT:errors_tx_max:%s\\j" % PPS,
 			"LINE1:errors_tx_inv%s" % COLOUR_TX,
 
 			# Draw the receive drops.
 			"LINE2:dropped_rx%s:%-15s" % (
-				lighten(AMBER, AREA_OPACITY), _("Receive drops"),
+				transparency(AMBER, AREA_OPACITY),
+				LABEL % _("Receive Drops"),
 			),
-			"GPRINT:dropped_rx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-			"GPRINT:dropped_rx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:dropped_rx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
+			"GPRINT:dropped_rx_cur:%s" % PPS,
+			"GPRINT:dropped_rx_avg:%s" % PPS,
+			"GPRINT:dropped_rx_min:%s" % PPS,
+			"GPRINT:dropped_rx_max:%s\\j" % PPS,
 			"LINE1:dropped_rx#228B22",
 
 			# Draw the transmit drops.
 			"LINE2:dropped_tx%s:%-15s" % (
-				lighten(TEAL, AREA_OPACITY), _("Transmit drops"),
+				transparency(TEAL, AREA_OPACITY),
+				LABEL % _("Transmit Drops"),
 			),
-			"GPRINT:dropped_tx_max:%12s\: " % _("Maximum") + _("%8.0lf %spps"),
-			"GPRINT:dropped_tx_min:%12s\: " % _("Minimum") + _("%8.0lf %spps"),
-			"GPRINT:dropped_tx_avg:%12s\: " % _("Average") + _("%8.2lf %spps"),
+			"GPRINT:dropped_tx_cur:%s" % PPS,
+			"GPRINT:dropped_tx_avg:%s" % PPS,
+			"GPRINT:dropped_tx_min:%s" % PPS,
+			"GPRINT:dropped_tx_max:%s\\j" % PPS,
 			"LINE1:dropped_tx%s" % TEAL,
 
+			EMPTY_LINE,
+
 			# Draw the collisions as a line.
-			"LINE2:collisions%s:%-15s\l" % (COLOUR_CRITICAL, _("Collisions")),
+			"LINE2:collisions%s:%s" % (
+				COLOUR_CRITICAL,
+				LABEL % _("Collisions"),
+			),
+			"GPRINT:collisions_cur:%s" % PPS,
+			"GPRINT:collisions_avg:%s" % PPS,
+			"GPRINT:collisions_min:%s" % PPS,
+			"GPRINT:collisions_max:%s\\j" % PPS,
 		]
 
 	@property
 	def graph_title(self):
 		_ = self.locale.translate
-		return _("Errors/dropped packets on %s") % self.interface
+
+		return _("Errors/Dropped Packets on %s") % self.interface
 
 	@property
 	def graph_vertical_label(self):
 		_ = self.locale.translate
+
 		return _("Packets/s")
 
 
