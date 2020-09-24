@@ -43,14 +43,14 @@ def _add(colour, amount):
 
 	return "#%s" % ret.hex()
 
-def lighten(colour, scale=0.1):
+def lighten(colour, scale=0.25):
 	"""
 		Takes a hexadecimal colour code
 		and brightens the colour.
 	"""
 	return _add(colour, scale)
 
-def darken(colour, scale=0.1):
+def darken(colour, scale=0.25):
 	"""
 		Takes a hexadecimal colour code
 		and darkens the colour.

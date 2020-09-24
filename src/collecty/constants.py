@@ -78,6 +78,7 @@ FLOAT         = "%14.2lf"
 LARGE_FLOAT   = "%12.2lf %s"
 BPS           = "%9.2lf %sbps"
 PPS           = "%9.2lf %spps"
+MS            = "%11.2lf ms"
 
 EMPTY_LINE    = "COMMENT: \\n"
 HEADLINE      = "COMMENT:---- %s ----\\c"
