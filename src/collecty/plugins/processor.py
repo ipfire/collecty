@@ -24,6 +24,7 @@ import multiprocessing
 from . import base
 
 from ..colours import *
+from ..constants import *
 
 class GraphTemplateProcessor(base.GraphTemplate):
 	name = "processor"
@@ -39,72 +40,88 @@ class GraphTemplateProcessor(base.GraphTemplate):
 			# Add idle to get the total number of cycles
 			"CDEF:total=usage,idle,+",
 
-			"CDEF:user_p=100,user,*,total,/",
-			"AREA:user_p%s:%-15s" % (CPU_USER, _("User")),
-			"GPRINT:user_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:user_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:user_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-
-			"CDEF:nice_p=100,nice,*,total,/",
-			"STACK:nice_p%s:%-15s" % (CPU_NICE, _("Nice")),
-			"GPRINT:nice_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:nice_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:nice_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-
-			"CDEF:sys_p=100,sys,*,total,/",
-			"STACK:sys_p%s:%-15s" % (CPU_SYS, _("System")),
-			"GPRINT:sys_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:sys_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:sys_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-
-			"CDEF:wait_p=100,wait,*,total,/",
-			"STACK:wait_p%s:%-15s" % (CPU_WAIT, _("Wait")),
-			"GPRINT:wait_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:wait_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:wait_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-
-			"CDEF:irq_p=100,irq,*,total,/",
-			"STACK:irq_p%s:%-15s" % (CPU_IRQ, _("Interrupt")),
-			"GPRINT:irq_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:irq_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:irq_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-
-			"CDEF:sirq_p=100,sirq,*,total,/",
-			"STACK:sirq_p%s:%-15s" % (CPU_SIRQ, _("Soft Interrupt")),
-			"GPRINT:sirq_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:sirq_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:sirq_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-
-			"CDEF:steal_p=100,steal,*,total,/",
-			"STACK:steal_p%s:%-15s" % (CPU_STEAL, _("Steal")),
-			"GPRINT:steal_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:steal_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:steal_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-
-			"CDEF:guest_p=100,guest,*,total,/",
-			"STACK:guest_p%s:%-15s" % (CPU_GUEST, _("Guest")),
-			"GPRINT:guest_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:guest_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:guest_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-
-			"CDEF:guest_nice_p=100,guest_nice,*,total,/",
-			"STACK:guest_nice_p%s:%-15s" % (CPU_GUEST_NICE, _("Guest Nice")),
-			"GPRINT:guest_nice_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:guest_nice_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:guest_nice_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
+			# Headline
+			"COMMENT:%s" % (LEGEND % ""),
+			"COMMENT:%s" % (LEGEND % _("Current")),
+			"COMMENT:%s" % (LEGEND % _("Average")),
+			"COMMENT:%s" % (LEGEND % _("Minimum")),
+			"COMMENT:%s\\j" % (LEGEND % _("Maximum")),
 
 			"CDEF:usage_p=100,usage,*,total,/",
-			"COMMENT:  %-15s" % _("Usage"),
-			"GPRINT:usage_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:usage_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:usage_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
+			"COMMENT:  %s" % (LABEL % _("Total")),
+			"GPRINT:usage_p_cur:%s" % PERCENTAGE,
+			"GPRINT:usage_p_avg:%s" % PERCENTAGE,
+			"GPRINT:usage_p_min:%s" % PERCENTAGE,
+			"GPRINT:usage_p_max:%s\\j" % PERCENTAGE,
+
+			EMPTY_LINE,
+
+			"CDEF:user_p=100,user,*,total,/",
+			"AREA:user_p%s:%s" % (CPU_USER, LABEL % _("User")),
+			"GPRINT:user_p_cur:%s" % PERCENTAGE,
+			"GPRINT:user_p_avg:%s" % PERCENTAGE,
+			"GPRINT:user_p_min:%s" % PERCENTAGE,
+			"GPRINT:user_p_max:%s\\j" % PERCENTAGE,
+
+			"CDEF:nice_p=100,nice,*,total,/",
+			"STACK:nice_p%s:%s" % (CPU_NICE, LABEL % _("Nice")),
+			"GPRINT:nice_p_cur:%s" % PERCENTAGE,
+			"GPRINT:nice_p_avg:%s" % PERCENTAGE,
+			"GPRINT:nice_p_min:%s" % PERCENTAGE,
+			"GPRINT:nice_p_max:%s\\j" % PERCENTAGE,
+
+			"CDEF:sys_p=100,sys,*,total,/",
+			"STACK:sys_p%s:%s" % (CPU_SYS, LABEL % _("System")),
+			"GPRINT:sys_p_cur:%s" % PERCENTAGE,
+			"GPRINT:sys_p_avg:%s" % PERCENTAGE,
+			"GPRINT:sys_p_min:%s" % PERCENTAGE,
+			"GPRINT:sys_p_max:%s\\j" % PERCENTAGE,
+
+			"CDEF:wait_p=100,wait,*,total,/",
+			"STACK:wait_p%s:%s" % (CPU_WAIT, LABEL % _("Wait")),
+			"GPRINT:wait_p_cur:%s" % PERCENTAGE,
+			"GPRINT:wait_p_avg:%s" % PERCENTAGE,
+			"GPRINT:wait_p_min:%s" % PERCENTAGE,
+			"GPRINT:wait_p_max:%s\\j" % PERCENTAGE,
+
+			"CDEF:irq_p=100,irq,*,total,/",
+			"STACK:irq_p%s:%s" % (CPU_IRQ, LABEL % _("Interrupt")),
+			"GPRINT:irq_p_cur:%s" % PERCENTAGE,
+			"GPRINT:irq_p_avg:%s" % PERCENTAGE,
+			"GPRINT:irq_p_min:%s" % PERCENTAGE,
+			"GPRINT:irq_p_max:%s\\j" % PERCENTAGE,
+
+			"CDEF:sirq_p=100,sirq,*,total,/",
+			"STACK:sirq_p%s:%s" % (CPU_SIRQ, LABEL % _("Soft Interrupt")),
+			"GPRINT:sirq_p_cur:%s" % PERCENTAGE,
+			"GPRINT:sirq_p_avg:%s" % PERCENTAGE,
+			"GPRINT:sirq_p_min:%s" % PERCENTAGE,
+			"GPRINT:sirq_p_max:%s\\j" % PERCENTAGE,
+
+			"CDEF:steal_p=100,steal,*,total,/",
+			"STACK:steal_p%s:%s" % (CPU_STEAL, LABEL % _("Steal")),
+			"GPRINT:steal_p_cur:%s" % PERCENTAGE,
+			"GPRINT:steal_p_avg:%s" % PERCENTAGE,
+			"GPRINT:steal_p_min:%s" % PERCENTAGE,
+			"GPRINT:steal_p_max:%s\\j" % PERCENTAGE,
+
+			"CDEF:guest_p=100,guest,*,total,/",
+			"STACK:guest_p%s:%s" % (CPU_GUEST, LABEL % _("Guest")),
+			"GPRINT:guest_p_cur:%s" % PERCENTAGE,
+			"GPRINT:guest_p_avg:%s" % PERCENTAGE,
+			"GPRINT:guest_p_min:%s" % PERCENTAGE,
+			"GPRINT:guest_p_max:%s\\j" % PERCENTAGE,
+
+			"CDEF:guest_nice_p=100,guest_nice,*,total,/",
+			"STACK:guest_nice_p%s:%s" % (CPU_GUEST_NICE, LABEL % _("Guest Nice")),
+			"GPRINT:guest_nice_p_cur:%s" % PERCENTAGE,
+			"GPRINT:guest_nice_p_avg:%s" % PERCENTAGE,
+			"GPRINT:guest_nice_p_min:%s" % PERCENTAGE,
+			"GPRINT:guest_nice_p_max:%s\\j" % PERCENTAGE,
 
 			"CDEF:idle_p=100,idle,*,total,/",
-			"STACK:idle_p%s:%-15s" % (CPU_IDLE, _("Idle")),
-			"GPRINT:idle_p_max:%12s\:" % _("Maximum") + " %6.2lf%%",
-			"GPRINT:idle_p_min:%12s\:" % _("Minimum") + " %6.2lf%%",
-			"GPRINT:idle_p_avg:%12s\:" % _("Average") + " %6.2lf%%",
-		]
+			"STACK:idle_p%s" % CPU_IDLE,
+	]
 
 	upper_limit = 100
 	lower_limit = 0

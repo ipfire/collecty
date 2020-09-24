@@ -52,9 +52,6 @@ GRAPH_DEFAULT_ARGUMENTS = (
 
 	# Brand all generated graphs.
 	"--watermark", _("Created by collecty"),
-
-	# Justify all text
-	"TEXTALIGN:justified",
 )
 
 INTERVALS = {
@@ -68,6 +65,13 @@ INTERVALS = {
 
 GRAPH_DEFAULT_WIDTH = 768
 GRAPH_DEFAULT_HEIGHT = 480
+
+# Default column widths
+LEGEND     = "%16s"
+LABEL      = "%-14s"
+PERCENTAGE = "%13.2lf%%"
+
+EMPTY_LINE = "COMMENT: \\n"
 
 THUMBNAIL_DEFAULT_WIDTH = 80
 THUMBNAIL_DEFAULT_HEIGHT = 20
