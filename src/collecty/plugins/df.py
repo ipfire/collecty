@@ -45,14 +45,14 @@ class GraphTemplateDiskUsage(base.GraphTemplate):
 			"VDEF:percentage_left_now=percentage_left,LAST",
 
 			# Area for the used space
-			"AREA:used%s:%s" % (lighten(LIGHT_RED, .66), _("Used")),
+			"AREA:used%s:%s" % (transparency(LIGHT_RED, AREA_OPACITY), _("Used")),
 			"GPRINT:percentage_used_now: (%6.2lf%%)",
 			"GPRINT:used_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:used_min:%12s\:" % _("Minimum") + " %9.2lf%s",
 			"GPRINT:used_max:%12s\:" % _("Maximum") + " %9.2lf%s",
 
 			# Stacked area of unused space
-			"AREA:free%s:%s:STACK" % (lighten(LIGHT_GREEN, .66), _("Free")),
+			"AREA:free%s:%s:STACK" % (transparency(LIGHT_GREEN, AREA_OPACITY), _("Free")),
 			"GPRINT:percentage_left_now: (%6.2lf%%)",
 			"GPRINT:free_cur:%12s\:" % _("Current") + " %9.2lf%s",
 			"GPRINT:free_min:%12s\:" % _("Minimum") + " %9.2lf%s",

@@ -41,7 +41,7 @@ class GraphTemplateContextSwitches(base.GraphTemplate):
 			"COMMENT:%s\\j" % (COLUMN % _("Maximum")),
 
 			"AREA:ctxt%s:%s" % (
-				lighten(PRIMARY, AREA_OPACITY),
+				transparency(PRIMARY, AREA_OPACITY),
 				LABEL % _("Context Switches"),
 			),
 			"GPRINT:ctxt_cur:%s" % INTEGER,
