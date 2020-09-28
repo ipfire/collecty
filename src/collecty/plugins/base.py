@@ -238,9 +238,6 @@ class Object(object):
 	def __init__(self, plugin, *args, **kwargs):
 		self.plugin = plugin
 
-		# Indicates if this object has collected its data
-		self.collected = False
-
 		# Initialise this object
 		self.init(*args, **kwargs)
 
