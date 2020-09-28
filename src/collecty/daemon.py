@@ -37,7 +37,7 @@ from .i18n import _
 
 log = logging.getLogger("collecty")
 
-class Collecty(object):
+class Daemon(object):
 	# The default interval, when all data is written to disk.
 	COMMIT_INTERVAL = 300
 

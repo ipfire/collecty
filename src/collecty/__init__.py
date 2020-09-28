@@ -23,4 +23,3 @@
 from . import logger
 
 from .client import CollectyClient
-from .daemon import Collecty

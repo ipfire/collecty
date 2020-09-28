@@ -22,7 +22,7 @@
 import optparse
 import sys
 
-import collecty
+import collecty.daemon
 
 # Parse command line options.
 op = optparse.OptionParser(usage="usage: %prog [options]")
@@ -36,7 +36,7 @@ settings = {
 }
 
 # Initialize the application.
-c = collecty.Collecty(**settings)
+c = collecty.daemon.Daemon(**settings)
 
 # Run.
 c.run()
