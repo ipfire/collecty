@@ -29,10 +29,7 @@ import sys
 from .constants import *
 from .i18n import _
 
-import logging
-log = logging.getLogger("collectly.client")
-
-class CollectyClient(object):
+class Collecty(object):
 	def __init__(self):
 		self.bus = dbus.SystemBus()
 
