@@ -19,7 +19,6 @@
 #                                                                             #
 ###############################################################################
 
-import datetime
 import logging
 import os
 import re
@@ -148,8 +147,6 @@ class Plugin(object, metaclass=PluginRegistration):
 
 		# Run through all objects of this plugin and call the collect method.
 		for object in self.objects:
-			now = datetime.datetime.utcnow()
-
 			# Run collection
 			try:
 				result = object.collect()
@@ -163,14 +160,11 @@ class Plugin(object, metaclass=PluginRegistration):
 				self.log.warning(_("Received empty result: %s") % object)
 				continue
 
-			# Format the result for RRDtool
-			result = self._format_result(result)
-
-			self.log.debug(_("Collected %s: %s") % (object, result))
-
 			# Add the object to the write queue so that the data is written
 			# to the databases later.
-			self.collecty.write_queue.add(object, now, result)
+			result = self.collecty.write_queue.submit(object, result)
+
+			self.log.debug(_("Collected %s: %s") % (object, result))
 
 		# Returns the time this function took to complete.
 		delay = time.time() - time_start
@@ -180,22 +174,6 @@ class Plugin(object, metaclass=PluginRegistration):
 			self.log.warning(_("A worker thread was stalled for %.4fs") % delay)
 		else:
 			self.log.debug(_("Collection finished in %.2fms") % (delay * 1000))
-
-	@staticmethod
-	def _format_result(result):
-		if not isinstance(result, tuple) and not isinstance(result, list):
-			return result
-
-		# Replace all Nones by UNKNOWN
-		s = []
-
-		for e in result:
-			if e is None:
-				e = "U"
-
-			s.append("%s" % e)
-
-		return ":".join(s)
 
 	def get_object(self, id):
 		for object in self.objects:
@@ -452,16 +430,6 @@ class Object(object):
 
 		x, y, vals = rrdtool.graph("/dev/null", *args)
 		return dict(zip(self.rrd_schema_names, vals))
-
-	def execute(self):
-		if self.collected:
-			raise RuntimeError("This object has already collected its data")
-
-		self.collected = True
-		self.now = datetime.datetime.utcnow()
-
-		# Call the collect
-		result = self.collect()
 
 	def commit(self):
 		"""

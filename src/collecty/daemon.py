@@ -247,11 +247,16 @@ class WriteQueue(object):
 
 		self.log.debug(_("Initialised write queue"))
 
-	def add(self, object, time, data):
-		result = QueueObject(object.file, time, data)
+	def submit(self, object, data):
+		"""
+			Submit a new data point for object
+		"""
+		data = QueueObject(object.file, data)
 
 		with self._lock:
-			self._queue.put(result)
+			self._queue.put(data)
+
+		return data
 
 	def commit(self):
 		"""
@@ -332,13 +337,34 @@ class WriteQueue(object):
 
 
 class QueueObject(object):
-	def __init__(self, file, time, data):
+	def __init__(self, file, data):
 		self.file = file
-		self.time = time
-		self.data = data
+		self.data = self._format_data(data)
+
+		# Save current timestamp
+		self.time = time.time()
 
 	def __str__(self):
-		return "%s:%s" % (self.time.strftime("%s"), self.data)
+		return "%.0f:%s" % (self.time, self.data)
 
 	def __lt__(self, other):
-		return self.time < other.time
+		if isinstance(other, self.__class__):
+			return self.time < other.time
+
+		return NotImplemented
+
+	@staticmethod
+	def _format_data(data):
+		if not isinstance(data, tuple) and not isinstance(data, list):
+			return data
+
+		# Replace all Nones by UNKNOWN
+		s = []
+
+		for e in data:
+			if e is None:
+				e = "U"
+
+			s.append("%s" % e)
+
+		return ":".join(s)
