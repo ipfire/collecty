@@ -67,8 +67,8 @@ dist_doc_DATA = \
 # ------------------------------------------------------------------------------
 
 dist_bin_SCRIPTS = \
-	src/collectyd \
-	src/collecty-client
+	src/scripts/collecty \
+	src/scripts/collectyd
 
 collecty_PYTHON = \
 	src/collecty/__init__.py \
