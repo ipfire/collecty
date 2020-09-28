@@ -28,6 +28,8 @@ from .i18n import TEXTDOMAIN
 
 log = logging.getLogger("collecty.locale")
 
+DEFAULT_LOCALE = "en_US.utf-8"
+
 class Locale(object):
 	def __init__(self, lang):
 		self.lang = lang

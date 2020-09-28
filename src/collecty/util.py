@@ -42,8 +42,17 @@ def get_network_interfaces():
 		yield interface
 
 def make_interval(interval):
+	intervals = {
+		None   : "-3h",
+		"hour" : "-1h",
+		"day"  : "-25h",
+		"month": "-30d",
+		"week" : "-360h",
+		"year" : "-365d",
+	}
+
 	try:
-		return INTERVALS[interval]
+		return intervals[interval]
 	except KeyError:
 		return "end-%s" % interval
 

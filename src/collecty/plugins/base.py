@@ -41,15 +41,16 @@ class Environment(object):
 	def __init__(self, timezone, locale):
 		# Build the new environment
 		self.new_environment = {
-			"TZ" : timezone or DEFAULT_TIMEZONE,
+			"TZ" : timezone or "UTC",
 		}
 
 		for k in ("LANG", "LC_ALL"):
-			self.new_environment[k] = locale or DEFAULT_LOCALE
+			self.new_environment[k] = locale or "en_US.utf-8"
 
 	def __enter__(self):
 		# Save the current environment
 		self.old_environment = {}
+
 		for k in self.new_environment:
 			self.old_environment[k] = os.environ.get(k, None)
 
@@ -528,10 +529,6 @@ class GraphTemplate(object):
 	# Extra arguments passed to rrdgraph.
 	rrd_graph_args = []
 
-	# Default dimensions for this graph
-	height = GRAPH_DEFAULT_HEIGHT
-	width  = GRAPH_DEFAULT_WIDTH
-
 	def __init__(self, plugin, object_id, locale=None, timezone=None):
 		self.plugin = plugin
 
@@ -567,17 +564,34 @@ class GraphTemplate(object):
 
 	def _make_command_line(self, interval, format=DEFAULT_IMAGE_FORMAT,
 			width=None, height=None, with_title=True, thumbnail=False):
-		args = [e for e in GRAPH_DEFAULT_ARGUMENTS]
+		args = [
+			# Change the background colour
+			"--color", "BACK#FFFFFFFF",
+
+			# Disable the border around the image
+			"--border", "0",
+
+			# Let's width and height define the size of the entire image
+			"--full-size-mode",
+
+			# Gives the curves a more organic look
+			"--slope-mode",
+
+			# Show nicer labels
+			"--dynamic-labels",
+
+			# Brand all generated graphs
+			"--watermark", _("Created by collecty"),
+		]
 
 		# Set the default dimensions
-		default_height, default_width = GRAPH_DEFAULT_HEIGHT, GRAPH_DEFAULT_WIDTH
+		default_height, default_width = 960, 480
 
 		# A thumbnail doesn't have a legend and other labels
 		if thumbnail:
 			args.append("--only-graph")
 
-			default_height = THUMBNAIL_DEFAULT_HEIGHT
-			default_width = THUMBNAIL_DEFAULT_WIDTH
+			default_height, default_width = 80, 20
 
 		args += [
 			"--imgformat", format,

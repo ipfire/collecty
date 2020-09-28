@@ -19,50 +19,12 @@
 #                                                                             #
 ###############################################################################
 
-from .i18n import _
-
 from .__version__ import *
 
 DATABASE_DIR = "/var/lib/collecty"
 
 DEFAULT_IMAGE_FORMAT = "SVG"
-DEFAULT_LOCALE = "en_GB.utf8"
-DEFAULT_TIMEZONE = "UTC"
-
 SUPPORTED_IMAGE_FORMATS = ("SVG", "PNG", "PDF")
-
-GRAPH_DEFAULT_ARGUMENTS = (
-	# Change the background colour
-	"--color", "BACK#FFFFFFFF",
-
-	# Disable the border around the image.
-	"--border", "0",
-
-	# Let's width and height define the size of
-	# the entire image.
-	"--full-size-mode",
-
-	# Gives the curves a more organic look.
-	"--slope-mode",
-
-	# Show nicer labels.
-	"--dynamic-labels",
-
-	# Brand all generated graphs.
-	"--watermark", _("Created by collecty"),
-)
-
-INTERVALS = {
-	None   : "-3h",
-	"hour" : "-1h",
-	"day"  : "-25h",
-	"month": "-30d",
-	"week" : "-360h",
-	"year" : "-365d",
-}
-
-GRAPH_DEFAULT_WIDTH = 960
-GRAPH_DEFAULT_HEIGHT = 480
 
 # Default column widths
 LABEL         = "%-30s"
@@ -81,5 +43,3 @@ MS            = "%11.2lf ms"
 EMPTY_LINE    = "COMMENT: \\n"
 HEADLINE      = "COMMENT:---- %s ----\\c"
 
-THUMBNAIL_DEFAULT_WIDTH = 80
-THUMBNAIL_DEFAULT_HEIGHT = 20
