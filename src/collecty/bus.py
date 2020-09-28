@@ -28,7 +28,6 @@ import logging
 import threading
 
 from .i18n import _
-from .constants import *
 
 log = logging.getLogger("collecty.bus")
 
