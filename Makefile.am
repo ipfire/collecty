@@ -45,8 +45,12 @@ noinst_DATA =
 @INTLTOOL_POLICY_RULE@
 
 .PHONY: update-po
-update-po:
+update-po: po/POTFILES.in
 	$(MAKE) -C po update-po
+
+po/POTFILES.in: Makefile
+	find $(abs_srcdir)/src | \
+		grep -E "\.(in|py)$$" | sed -e "s@$(abs_srcdir)/@@g" | sort > $@
 
 DISTCHECK_CONFIGURE_FLAGS = \
 	--with-dbuspolicydir=$$dc_install_base/$(dbuspolicydir) \

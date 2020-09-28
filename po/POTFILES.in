@@ -1,17 +1,18 @@
 src/collecty/bus.py
 src/collecty/client.py
+src/collecty/colours.py
 src/collecty/constants.py
 src/collecty/daemon.py
 src/collecty/errors.py
 src/collecty/i18n.py
 src/collecty/__init__.py
+src/collecty/logger.py
 src/collecty/plugins/base.py
 src/collecty/plugins/conntrack.py
 src/collecty/plugins/contextswitches.py
 src/collecty/plugins/cpufreq.py
 src/collecty/plugins/df.py
 src/collecty/plugins/disk.py
-src/collecty/plugins/entropy.py
 src/collecty/plugins/__init__.py
 src/collecty/plugins/interface.py
 src/collecty/plugins/interrupts.py
@@ -21,3 +22,7 @@ src/collecty/plugins/loadavg.py
 src/collecty/plugins/memory.py
 src/collecty/plugins/processor.py
 src/collecty/plugins/sensors.py
+src/collecty/util.py
+src/collecty/__version__.py
+src/collecty/__version__.py.in
+src/systemd/collecty.service.in

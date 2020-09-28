@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IPFire Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-24 02:37+0000\n"
+"POT-Creation-Date: 2020-09-28 17:07+0000\n"
 "PO-Revision-Date: 2015-10-26 17:22+0000\n"
 "Last-Translator: Michael Tremer <michael.tremer@ipfire.org>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/mstremer/ipfire/language/"
@@ -20,751 +20,442 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/collecty/bus.py:54
 msgid "Bus thread has started"
 msgstr ""
 
-#: ../src/collecty/bus.py:62
 msgid "Bus thread has ended"
 msgstr ""
 
-#: ../src/collecty/bus.py:65
 msgid "Stopping bus thread"
 msgstr ""
 
-#: ../src/collecty/client.py:52
-#, python-format
-msgid "Last update: %s"
+msgid "Collecty successfully initialized"
 msgstr ""
 
-#: ../src/collecty/client.py:117
-#, python-format
-msgid "Title      : %(title)s (%(template)s - %(object_id)s)"
-msgstr ""
-
-#: ../src/collecty/client.py:118
-#, python-format
-msgid "Image size : %(image_width)sx%(image_height)spx"
-msgstr ""
-
-#: ../src/collecty/client.py:139
-#, python-format
-msgid "collecty %s running on Python %s"
-msgstr ""
-
-#: ../src/collecty/client.py:143
-#, python-format
-msgid "daemon %s"
-msgstr ""
-
-#: ../src/collecty/client.py:151
-msgid "Generate a graph image"
-msgstr ""
-
-#: ../src/collecty/client.py:154
-msgid "filename"
-msgstr ""
-
-#: ../src/collecty/client.py:155
-msgid "image format"
-msgstr ""
-
-#: ../src/collecty/client.py:156
-msgid "interval"
-msgstr ""
-
-#: ../src/collecty/client.py:158 ../src/collecty/client.py:178
-msgid "Object identifier"
-msgstr ""
-
-#: ../src/collecty/client.py:160 ../src/collecty/client.py:176
-msgid "The graph template identifier"
-msgstr ""
-
-#: ../src/collecty/client.py:162
-msgid "Generate the graph with timestamps plotted for the given timezone"
-msgstr ""
-
-#: ../src/collecty/client.py:164
-msgid "Generate the graph with this locale"
-msgstr ""
-
-#: ../src/collecty/client.py:168
-msgid "Height of the generated image"
-msgstr ""
-
-#: ../src/collecty/client.py:170
-msgid "Width of the generated image"
-msgstr ""
-
-#: ../src/collecty/client.py:174
-msgid "Fetch the last dataset in the database"
-msgstr ""
-
-#: ../src/collecty/client.py:183
-msgid "Lists all graph templates"
-msgstr ""
-
-#. version
-#: ../src/collecty/client.py:187
-msgid "Show version"
-msgstr ""
-
-#. Brand all generated graphs.
-#: ../src/collecty/constants.py:54
-msgid "Created by collecty"
-msgstr "Створено колекцыэю"
-
-#: ../src/collecty/daemon.py:81
-#, python-format
-msgid "Collecty successfully initialized with %s plugins"
-msgstr ""
-
-#: ../src/collecty/daemon.py:84
-#, python-format
-msgid "Supported locales: %s"
-msgstr ""
-
-#: ../src/collecty/daemon.py:92
 #, python-format
 msgid "Plugin %s could not be initialised"
 msgstr ""
 
-#: ../src/collecty/daemon.py:109
-msgid "No plugins have been initialised"
-msgstr ""
-
-#: ../src/collecty/daemon.py:139
-#, python-format
-msgid "Worker queue is filling up with %s events"
-msgstr ""
-
-#: ../src/collecty/daemon.py:155
 msgid "Main thread exited"
 msgstr ""
 
-#: ../src/collecty/daemon.py:161
 msgid "Received shutdown signal"
 msgstr "Отримано сигнал завершення роботи."
 
-#: ../src/collecty/daemon.py:170
 #, python-format
 msgid "Registering signal %d"
 msgstr "Зареєстровано сигнал %d"
 
-#: ../src/collecty/daemon.py:175
 #, python-format
 msgid "Caught signal %d"
 msgstr "Отримано сигнал %d"
 
-#: ../src/collecty/daemon.py:266
 #, python-format
-msgid "Worker thread %s has been initialised"
+msgid "Backing up to %s..."
 msgstr ""
 
-#: ../src/collecty/daemon.py:276
 #, python-format
-msgid "Worker thread %s has been started"
+msgid "Adding %s to backup..."
 msgstr ""
 
-#: ../src/collecty/daemon.py:290
-#, python-format
-msgid "Worker thread %s has been terminated"
+msgid "Backup finished"
 msgstr ""
 
-#: ../src/collecty/daemon.py:309
 msgid "Initialised write queue"
 msgstr ""
 
-#: ../src/collecty/daemon.py:312
-msgid "Write queue process started"
+msgid "Committing data to disk..."
 msgstr ""
 
-#: ../src/collecty/daemon.py:324
-msgid "Write queue process stopped"
-msgstr ""
-
-#: ../src/collecty/daemon.py:343
 msgid "No data to commit"
 msgstr ""
 
-#: ../src/collecty/daemon.py:348
-msgid "Submitting data to the databases..."
-msgstr ""
-
-#: ../src/collecty/daemon.py:366
 #, python-format
 msgid "Emptied write queue in %.2fs"
 msgstr ""
 
-#: ../src/collecty/daemon.py:369
 #, python-format
 msgid "Committing %(counter)s entries to %(filename)s"
 msgstr ""
 
-#: ../src/collecty/daemon.py:381
 #, python-format
 msgid "Could not update RRD database %s: %s"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:115
 #, python-format
 msgid "Plugin is not properly configured: %s"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:156
 #, python-format
 msgid "Successfully initialized %s"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:188
 #, python-format
 msgid "Unhandled exception in %s.collect()"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:192
 #, python-format
 msgid "Received empty result: %s"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:195
 #, python-format
 msgid "Collected %s: %s"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:206
 #, python-format
 msgid "A worker thread was stalled for %.4fs"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:253
+#, python-format
+msgid "Collection finished in %.2fms"
+msgstr ""
+
 #, python-format
 msgid "Generated graph %s in %.1fms"
 msgstr ""
 
-#: ../src/collecty/plugins/base.py:362
 #, python-format
 msgid "Created RRD file %s."
 msgstr "Створений RDD файл %s."
 
-#: ../src/collecty/plugins/base.py:583
+#. Brand all generated graphs
+msgid "Created by collecty"
+msgstr "Створено колекцыэю"
+
 #, python-format
 msgid "Generating graph %s"
 msgstr ""
 
-#: ../src/collecty/plugins/conntrack.py:144
-msgid "IPv6"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:145
-msgid "IPv4"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:146
-#: ../src/collecty/plugins/conntrack.py:229
-msgid "Other"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:152
-msgid "Connections by Layer 3 Protocols"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:157
-#: ../src/collecty/plugins/conntrack.py:352
-msgid "Number of open connections"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:176
-#: ../src/collecty/plugins/conntrack.py:375 ../src/collecty/plugins/disk.py:80
-#: ../src/collecty/plugins/disk.py:90 ../src/collecty/plugins/disk.py:127
-#: ../src/collecty/plugins/disk.py:137 ../src/collecty/plugins/disk.py:174
-#: ../src/collecty/plugins/entropy.py:46
-#: ../src/collecty/plugins/interface.py:68
-#: ../src/collecty/plugins/interface.py:77
-#: ../src/collecty/plugins/interface.py:120
-#: ../src/collecty/plugins/interface.py:129
-#: ../src/collecty/plugins/interface.py:172
-#: ../src/collecty/plugins/interface.py:182
-#: ../src/collecty/plugins/interface.py:192
-#: ../src/collecty/plugins/interface.py:202
-#: ../src/collecty/plugins/latency.py:89 ../src/collecty/plugins/latency.py:96
-#: ../src/collecty/plugins/loadavg.py:45 ../src/collecty/plugins/loadavg.py:53
-#: ../src/collecty/plugins/loadavg.py:61 ../src/collecty/plugins/memory.py:48
-#: ../src/collecty/plugins/memory.py:56 ../src/collecty/plugins/memory.py:64
-#: ../src/collecty/plugins/memory.py:80 ../src/collecty/plugins/processor.py:49
-#: ../src/collecty/plugins/processor.py:57
-#: ../src/collecty/plugins/processor.py:65
-#: ../src/collecty/plugins/processor.py:73
-#: ../src/collecty/plugins/processor.py:81
-#: ../src/collecty/plugins/processor.py:89
-#: ../src/collecty/plugins/processor.py:97
-#: ../src/collecty/plugins/sensors.py:71 ../src/collecty/plugins/sensors.py:165
-msgid "Minimum"
-msgstr "Мінімум"
-
-#: ../src/collecty/plugins/conntrack.py:177
-#: ../src/collecty/plugins/conntrack.py:376 ../src/collecty/plugins/disk.py:45
-#: ../src/collecty/plugins/disk.py:79 ../src/collecty/plugins/disk.py:89
-#: ../src/collecty/plugins/disk.py:126 ../src/collecty/plugins/disk.py:136
-#: ../src/collecty/plugins/disk.py:173 ../src/collecty/plugins/entropy.py:45
-#: ../src/collecty/plugins/interface.py:67
-#: ../src/collecty/plugins/interface.py:76
-#: ../src/collecty/plugins/interface.py:119
-#: ../src/collecty/plugins/interface.py:128
-#: ../src/collecty/plugins/interface.py:171
-#: ../src/collecty/plugins/interface.py:181
-#: ../src/collecty/plugins/interface.py:191
-#: ../src/collecty/plugins/interface.py:201
-#: ../src/collecty/plugins/latency.py:88 ../src/collecty/plugins/latency.py:95
-#: ../src/collecty/plugins/loadavg.py:44 ../src/collecty/plugins/loadavg.py:52
-#: ../src/collecty/plugins/loadavg.py:60 ../src/collecty/plugins/memory.py:47
-#: ../src/collecty/plugins/memory.py:55 ../src/collecty/plugins/memory.py:63
-#: ../src/collecty/plugins/memory.py:79 ../src/collecty/plugins/processor.py:48
-#: ../src/collecty/plugins/processor.py:56
-#: ../src/collecty/plugins/processor.py:64
-#: ../src/collecty/plugins/processor.py:72
-#: ../src/collecty/plugins/processor.py:80
-#: ../src/collecty/plugins/processor.py:88
-#: ../src/collecty/plugins/processor.py:96
-#: ../src/collecty/plugins/sensors.py:70 ../src/collecty/plugins/sensors.py:164
-msgid "Maximum"
-msgstr "Максимум"
-
-#: ../src/collecty/plugins/conntrack.py:178
-#: ../src/collecty/plugins/conntrack.py:377 ../src/collecty/plugins/disk.py:81
-#: ../src/collecty/plugins/disk.py:91 ../src/collecty/plugins/disk.py:128
-#: ../src/collecty/plugins/disk.py:138 ../src/collecty/plugins/disk.py:175
-#: ../src/collecty/plugins/entropy.py:47
-#: ../src/collecty/plugins/interface.py:69
-#: ../src/collecty/plugins/interface.py:78
-#: ../src/collecty/plugins/interface.py:121
-#: ../src/collecty/plugins/interface.py:130
-#: ../src/collecty/plugins/interface.py:173
-#: ../src/collecty/plugins/interface.py:183
-#: ../src/collecty/plugins/interface.py:193
-#: ../src/collecty/plugins/interface.py:203
-#: ../src/collecty/plugins/latency.py:90 ../src/collecty/plugins/latency.py:97
-#: ../src/collecty/plugins/loadavg.py:46 ../src/collecty/plugins/loadavg.py:54
-#: ../src/collecty/plugins/loadavg.py:62 ../src/collecty/plugins/memory.py:49
-#: ../src/collecty/plugins/memory.py:57 ../src/collecty/plugins/memory.py:65
-#: ../src/collecty/plugins/memory.py:81 ../src/collecty/plugins/processor.py:50
-#: ../src/collecty/plugins/processor.py:58
-#: ../src/collecty/plugins/processor.py:66
-#: ../src/collecty/plugins/processor.py:74
-#: ../src/collecty/plugins/processor.py:82
-#: ../src/collecty/plugins/processor.py:90
-#: ../src/collecty/plugins/processor.py:98
-#: ../src/collecty/plugins/sensors.py:69 ../src/collecty/plugins/sensors.py:163
-msgid "Average"
-msgstr "Приблизно"
-
-#: ../src/collecty/plugins/conntrack.py:179
-#: ../src/collecty/plugins/conntrack.py:378 ../src/collecty/plugins/disk.py:44
-#: ../src/collecty/plugins/disk.py:78 ../src/collecty/plugins/disk.py:88
-#: ../src/collecty/plugins/disk.py:125 ../src/collecty/plugins/disk.py:135
-#: ../src/collecty/plugins/disk.py:172
 msgid "Current"
 msgstr ""
 
-#: ../src/collecty/plugins/conntrack.py:222
-msgid "TCP"
+msgid "Average"
+msgstr "Приблизно"
+
+msgid "Minimum"
+msgstr "Мінімум"
+
+msgid "Maximum"
+msgstr "Максимум"
+
+msgid "Entries"
 msgstr ""
 
-#: ../src/collecty/plugins/conntrack.py:223
-msgid "UDP"
+msgid "Connection Tracking Table"
 msgstr ""
 
-#: ../src/collecty/plugins/conntrack.py:224
-msgid "ICMP"
+msgid "Context Switches"
 msgstr ""
 
-#: ../src/collecty/plugins/conntrack.py:225
-msgid "IGMP"
+msgid "Context Switches/s"
 msgstr ""
 
-#: ../src/collecty/plugins/conntrack.py:226
-msgid "UDP Lite"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:227
-msgid "SCTP"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:228
-msgid "DCCP"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:245
-msgid "Connections by IP Protocols"
-msgstr ""
-
-#: ../src/collecty/plugins/conntrack.py:347
-#, python-format
-msgid "Protocol States of all %s connections"
-msgstr ""
-
-#: ../src/collecty/plugins/cpufreq.py:37
 msgid "Processor Frequencies"
 msgstr ""
 
-#: ../src/collecty/plugins/cpufreq.py:42
 msgid "Frequency"
 msgstr ""
 
-#: ../src/collecty/plugins/cpufreq.py:42
 msgid "Hz"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:40
+msgid "Used"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+#, python-format
+msgid "Disk Usage of %s"
+msgstr ""
+
+msgid "Bytes"
+msgstr ""
+
+#, python-format
+msgid "Inode Usage of %s"
+msgstr ""
+
+msgid "Inodes"
+msgstr ""
+
 msgid "Bad Sectors"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:51
 #, python-format
 msgid "Bad Sectors of %s"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:56
 msgid "Pending/Relocated Sectors"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:73 ../src/collecty/plugins/disk.py:120
 msgid "Read"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:83 ../src/collecty/plugins/disk.py:130
 msgid "Written"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:101
 #, python-format
 msgid "Disk Utilisation of %s"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:106
 msgid "Byte per Second"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:148
 #, python-format
 msgid "Disk IO Operations of %s"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:153
 msgid "Operations per Second"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:167 ../src/collecty/plugins/sensors.py:65
-#: ../src/collecty/plugins/sensors.py:161
-#: ../src/collecty/plugins/sensors.py:202
 msgid "Temperature"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:183
 #, python-format
 msgid "Disk Temperature of %s"
 msgstr ""
 
-#: ../src/collecty/plugins/disk.py:188 ../src/collecty/plugins/sensors.py:92
 msgid "° Celsius"
 msgstr ""
 
-#: ../src/collecty/plugins/entropy.py:41 ../src/collecty/plugins/entropy.py:57
-msgid "Available entropy"
-msgstr "Наявна ентропія"
-
-#: ../src/collecty/plugins/entropy.py:62
-msgid "Bit"
-msgstr ""
-
-#: ../src/collecty/plugins/entropy.py:88
-msgid "Entropy kernel interface does not exist"
-msgstr ""
-
-#. Draw the received area.
-#: ../src/collecty/plugins/interface.py:63
-#: ../src/collecty/plugins/interface.py:86
-#: ../src/collecty/plugins/interface.py:115
 msgid "Received"
 msgstr ""
 
-#: ../src/collecty/plugins/interface.py:67
-#: ../src/collecty/plugins/interface.py:68
-#: ../src/collecty/plugins/interface.py:69
-#: ../src/collecty/plugins/interface.py:76
-#: ../src/collecty/plugins/interface.py:77
-#: ../src/collecty/plugins/interface.py:78
-#: ../src/collecty/plugins/interface.py:87
-#: ../src/collecty/plugins/interface.py:89
-#, python-format
-msgid "%8.2lf %sbps"
-msgstr ""
-
-#. Draw the transmitted area.
-#: ../src/collecty/plugins/interface.py:72
-#: ../src/collecty/plugins/interface.py:88
-#: ../src/collecty/plugins/interface.py:124
 msgid "Transmitted"
 msgstr ""
 
 #. Draw the 95% lines.
-#: ../src/collecty/plugins/interface.py:85
-msgid "95th percentile"
-msgstr ""
+#, fuzzy
+msgid "95th Percentile"
+msgstr "Процент"
 
-#: ../src/collecty/plugins/interface.py:95
 #, python-format
-msgid "Bandwidth usage on %s"
+msgid "Bandwidth Usage on %s"
 msgstr ""
 
-#: ../src/collecty/plugins/interface.py:100
 msgid "Bit/s"
 msgstr ""
 
-#: ../src/collecty/plugins/interface.py:119
-#: ../src/collecty/plugins/interface.py:120
-#: ../src/collecty/plugins/interface.py:128
-#: ../src/collecty/plugins/interface.py:129
-#: ../src/collecty/plugins/interface.py:171
-#: ../src/collecty/plugins/interface.py:172
-#: ../src/collecty/plugins/interface.py:181
-#: ../src/collecty/plugins/interface.py:182
-#: ../src/collecty/plugins/interface.py:191
-#: ../src/collecty/plugins/interface.py:192
-#: ../src/collecty/plugins/interface.py:201
-#: ../src/collecty/plugins/interface.py:202
 #, python-format
-msgid "%8.0lf %spps"
+msgid "Transferred Packets on %s"
 msgstr ""
 
-#: ../src/collecty/plugins/interface.py:121
-#: ../src/collecty/plugins/interface.py:130
-#: ../src/collecty/plugins/interface.py:173
-#: ../src/collecty/plugins/interface.py:183
-#: ../src/collecty/plugins/interface.py:193
-#: ../src/collecty/plugins/interface.py:203
-#, python-format
-msgid "%8.2lf %spps"
-msgstr ""
-
-#: ../src/collecty/plugins/interface.py:140
-#, python-format
-msgid "Transferred packets on %s"
-msgstr ""
-
-#: ../src/collecty/plugins/interface.py:145
-#: ../src/collecty/plugins/interface.py:218
 msgid "Packets/s"
 msgstr ""
 
-#. Draw the receive errors.
-#: ../src/collecty/plugins/interface.py:167
-msgid "Receive errors"
+msgid "Receive Errors"
 msgstr ""
 
-#. Draw the transmit errors.
-#: ../src/collecty/plugins/interface.py:177
-msgid "Transmit errors"
+msgid "Transmit Errors"
 msgstr ""
 
-#. Draw the receive drops.
-#: ../src/collecty/plugins/interface.py:187
-msgid "Receive drops"
+msgid "Receive Drops"
 msgstr ""
 
-#. Draw the transmit drops.
-#: ../src/collecty/plugins/interface.py:197
-msgid "Transmit drops"
+msgid "Transmit Drops"
 msgstr ""
 
-#. Draw the collisions as a line.
-#: ../src/collecty/plugins/interface.py:207
 msgid "Collisions"
 msgstr ""
 
-#: ../src/collecty/plugins/interface.py:213
 #, python-format
-msgid "Errors/dropped packets on %s"
+msgid "Errors/Dropped Packets on %s"
 msgstr ""
 
-#: ../src/collecty/plugins/interface.py:250
 #, python-format
 msgid "Interface %s does not exists. Cannot collect."
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:73
-msgid "Average latency (IPv6)"
+#, fuzzy
+msgid "Interrupts"
+msgstr "Переривання"
+
+#, fuzzy, python-format
+msgid "Interrupt %s"
+msgstr "Переривання"
+
+#, fuzzy
+msgid "Interrupts/s"
+msgstr "Переривання"
+
+msgid "Failed Reassemblies"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:74
-msgid "Average latency (IPv4)"
+msgid "Reassembly Timeouts"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:76
+msgid "Successful Reassemblies"
+msgstr ""
+
+msgid "Failed Fragmentations"
+msgstr ""
+
+msgid "Fragmented Packets"
+msgstr ""
+
+#, python-format
+msgid "IPv6 Fragmentation on %s"
+msgstr ""
+
+msgid "IPv6 Fragmentation"
+msgstr ""
+
+#, python-format
+msgid "IPv4 Fragmentation on %s"
+msgstr ""
+
+msgid "IPv4 Fragmentation"
+msgstr ""
+
+#. Colour background on packet loss
 msgid "Packet Loss"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:77
-#, python-format
-msgid "0-5%%"
+msgid "0-5%"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:78
-#, python-format
-msgid "5-10%%"
+msgid "5-10%"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:79
-#, python-format
-msgid "10-25%%"
+msgid "10-25%"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:80
-#, python-format
-msgid "25-50%%"
+msgid "25-50%"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:81
-#, python-format
-msgid "50-99%%"
+msgid "50-99%"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:87
 msgid "Latency (IPv4)"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:94
 msgid "Latency (IPv6)"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:103
+msgid "Default Gateway"
+msgstr ""
+
 #, python-format
 msgid "Latency to %s"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:108
 msgid "Milliseconds"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:148
 #, python-format
 msgid "Could not add host %(host)s for family %(family)s"
 msgstr ""
 
-#: ../src/collecty/plugins/latency.py:156
 #, python-format
 msgid "Could not run latency check for %(host)s: %(msg)s"
 msgstr ""
 
-#: ../src/collecty/plugins/loadavg.py:40
-msgid "Load average  1m"
-msgstr "Завантаження приблизно за 1хв."
+msgid "15 Minutes"
+msgstr ""
 
-#: ../src/collecty/plugins/loadavg.py:48
-msgid "Load average  5m"
-msgstr "Завантаження приблизно за 5хв."
+msgid "5 Minutes"
+msgstr ""
 
-#: ../src/collecty/plugins/loadavg.py:56
-msgid "Load average 15m"
-msgstr "Завантаження приблизно за 15хв."
+msgid "1 Minute"
+msgstr ""
 
-#: ../src/collecty/plugins/loadavg.py:73
-msgid "Load average"
+#, fuzzy
+msgid "Load Average"
 msgstr "Завантаження біля"
 
-#: ../src/collecty/plugins/loadavg.py:78
 msgid "Load"
 msgstr "Завантаження"
 
-#: ../src/collecty/plugins/memory.py:43
-msgid "Used memory"
+#, fuzzy
+msgid "Used Memory"
 msgstr "Використано пам'яті"
 
-#: ../src/collecty/plugins/memory.py:51
-msgid "Buffered data"
+#, fuzzy
+msgid "Buffered Data"
 msgstr "Даних буферизовано"
 
-#: ../src/collecty/plugins/memory.py:59
-msgid "Cached data"
+#, fuzzy
+msgid "Cached Data"
 msgstr "Даних в кеші"
 
-#. "STACK:free#7799ff:%-15s" % _("Free memory"),
-#. "VDEF:freemin=free,MINIMUM",
-#. "VDEF:freemax=free,MAXIMUM",
-#. "VDEF:freeavg=free,AVERAGE",
-#. "GPRINT:freemax:%12s\:" % _("Maximum") + " %6.2lf" ,
-#. "GPRINT:freemin:%12s\:" % _("Minimum") + " %6.2lf",
-#. "GPRINT:freeavg:%12s\:" % _("Average") + " %6.2lf\\n",
-#: ../src/collecty/plugins/memory.py:75
-msgid "Used Swap space"
+#, fuzzy
+msgid "Free Memory"
+msgstr "Використано пам'яті"
+
+#, fuzzy
+msgid "Used Swap Space"
 msgstr "Використання SWAP"
 
-#: ../src/collecty/plugins/memory.py:87
 msgid "Memory Usage"
 msgstr "Використання пам'яті"
 
-#: ../src/collecty/plugins/memory.py:92
-msgid "Percent"
-msgstr "Процент"
+msgid "Total"
+msgstr ""
 
-#: ../src/collecty/plugins/processor.py:44
 msgid "User"
 msgstr "Користувач"
 
-#: ../src/collecty/plugins/processor.py:52
 msgid "Nice"
 msgstr "Добре"
 
-#: ../src/collecty/plugins/processor.py:60
 msgid "System"
 msgstr "Система"
 
-#: ../src/collecty/plugins/processor.py:68
 msgid "Wait"
 msgstr "Ждіть"
 
-#: ../src/collecty/plugins/processor.py:76
 msgid "Interrupt"
 msgstr "Переривання"
 
-#: ../src/collecty/plugins/processor.py:84
-msgid "Soft interrupt"
+#, fuzzy
+msgid "Soft Interrupt"
 msgstr "Програмне переривання"
 
-#: ../src/collecty/plugins/processor.py:92
-msgid "Idle"
+msgid "Steal"
 msgstr ""
 
-#: ../src/collecty/plugins/processor.py:106
+msgid "Guest"
+msgstr ""
+
+msgid "Guest Nice"
+msgstr ""
+
 #, fuzzy
 msgid "Processor Usage"
 msgstr "Використання пам'яті"
 
-#: ../src/collecty/plugins/processor.py:111
-msgid "Jiffies"
-msgstr ""
+msgid "Percent"
+msgstr "Процент"
 
 #. Draw boundary lines
-#: ../src/collecty/plugins/sensors.py:77
 msgid "Temperature Thresholds"
 msgstr ""
 
-#: ../src/collecty/plugins/sensors.py:78 ../src/collecty/plugins/sensors.py:188
 msgid "Critical"
 msgstr ""
 
-#: ../src/collecty/plugins/sensors.py:80
 msgid "Low"
 msgstr ""
 
-#: ../src/collecty/plugins/sensors.py:87
 #, python-format
 msgid "Temperature (%s)"
 msgstr ""
 
-#: ../src/collecty/plugins/sensors.py:197
 msgid "Processor"
 msgstr ""
+
+#~ msgid "Available entropy"
+#~ msgstr "Наявна ентропія"
+
+#~ msgid "Load average  1m"
+#~ msgstr "Завантаження приблизно за 1хв."
+
+#~ msgid "Load average  5m"
+#~ msgstr "Завантаження приблизно за 5хв."
+
+#~ msgid "Load average 15m"
+#~ msgstr "Завантаження приблизно за 15хв."
 
 #~ msgid "CPU usage"
 #~ msgstr "Використання процесора"
