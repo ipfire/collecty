@@ -2,7 +2,7 @@
 ###############################################################################
 #                                                                             #
 # collecty - A system statistics collection daemon for IPFire                 #
-# Copyright (C) 2012 IPFire development team                                  #
+# Copyright (C) 2020 IPFire development team                                  #
 #                                                                             #
 # This program is free software: you can redistribute it and/or modify        #
 # it under the terms of the GNU General Public License as published by        #
@@ -19,26 +19,32 @@
 #                                                                             #
 ###############################################################################
 
-import optparse
-import sys
-
+import argparse
 import collecty.daemon
 
-# Parse command line options.
-op = optparse.OptionParser(usage="usage: %prog [options]")
-op.add_option("-d", "--debug", action="store_true", default=False,
-		help="Enable debug logging.")
-(options, args) = op.parse_args()
+from collecty.i18n import _
 
-# Initialize the settings for this Collecty instance.
-settings = {
-	"debug" : options.debug,
-}
+def main():
+	parser = argparse.ArgumentParser(
+		description=_("Collecty Daemon"),
+	)
 
-# Initialize the application.
-c = collecty.daemon.Daemon(**settings)
+	# Global configuration flags
+	parser.add_argument("--debug", action="store_true",
+		help=_("Enable debug output"),
+	)
 
-# Run.
-c.run()
+	# Parse CLI arguments
+	args = parser.parse_args()
 
-sys.exit(0)
+	# Initialise the daemon
+	daemon = collecty.daemon.Daemon(debug=args.debug)
+
+	# Run it
+	try:
+		daemon.run()
+	except KeyboardInterrupt:
+		pass
+
+# Call main function
+main()
