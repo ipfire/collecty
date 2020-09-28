@@ -33,7 +33,7 @@ SUPPORTED_IMAGE_FORMATS = ("SVG", "PNG", "PDF")
 
 GRAPH_DEFAULT_ARGUMENTS = (
 	# Change the background colour
-	"--color", "BACK#FFFFFF",
+	"--color", "BACK#FFFFFFFF",
 
 	# Disable the border around the image.
 	"--border", "0",
