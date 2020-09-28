@@ -584,13 +584,13 @@ class GraphTemplate(object):
 		]
 
 		# Set the default dimensions
-		default_height, default_width = 960, 480
+		default_width, default_height = 960, 480
 
 		# A thumbnail doesn't have a legend and other labels
 		if thumbnail:
 			args.append("--only-graph")
 
-			default_height, default_width = 80, 20
+			default_width, default_height = 80, 20
 
 		args += [
 			"--imgformat", format,
