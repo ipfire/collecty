@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: IPFire Project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-28 17:07+0000\n"
-"PO-Revision-Date: 2015-10-26 17:42+0000\n"
+"PO-Revision-Date: 2020-09-28 18:12+0100\n"
 "Last-Translator: Michael Tremer <michael.tremer@ipfire.org>\n"
 "Language-Team: German (http://www.transifex.com/mstremer/ipfire/language/"
 "de/)\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.4.1\n"
 
 msgid "Bus thread has started"
 msgstr ""
@@ -127,7 +128,7 @@ msgid "Generating graph %s"
 msgstr ""
 
 msgid "Current"
-msgstr ""
+msgstr "Aktuell"
 
 msgid "Average"
 msgstr "Durchschnitt"
@@ -139,20 +140,19 @@ msgid "Maximum"
 msgstr "Maximum"
 
 msgid "Entries"
-msgstr ""
+msgstr "Einträge"
 
 msgid "Connection Tracking Table"
-msgstr ""
+msgstr "Verbindungsverfolgungstabelle"
 
 msgid "Context Switches"
-msgstr ""
+msgstr "Kontextwechsel"
 
 msgid "Context Switches/s"
-msgstr ""
+msgstr "Kontextwechsel/s"
 
-#, fuzzy
 msgid "Processor Frequencies"
-msgstr "Prozessor"
+msgstr "Prozessorfrequenzen"
 
 msgid "Frequency"
 msgstr "Frequenz"
@@ -161,31 +161,31 @@ msgid "Hz"
 msgstr "Hz"
 
 msgid "Used"
-msgstr ""
+msgstr "Genutzt"
 
 msgid "Free"
-msgstr ""
+msgstr "Frei"
 
 #, python-format
 msgid "Disk Usage of %s"
-msgstr ""
+msgstr "Festplattenauslastung auf %s"
 
 msgid "Bytes"
-msgstr ""
+msgstr "Bytes"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Inode Usage of %s"
-msgstr "Bandbreitenauslastung auf %s"
+msgstr ""
 
 msgid "Inodes"
-msgstr ""
+msgstr "Inoden"
 
 msgid "Bad Sectors"
-msgstr ""
+msgstr "Defekte Sektoren"
 
 #, python-format
 msgid "Bad Sectors of %s"
-msgstr ""
+msgstr "Defekte Sektoren auf %s"
 
 msgid "Pending/Relocated Sectors"
 msgstr ""
@@ -227,62 +227,55 @@ msgid "Transmitted"
 msgstr "Gesendet"
 
 #. Draw the 95% lines.
-#, fuzzy
 msgid "95th Percentile"
 msgstr "95. Perzentil"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Bandwidth Usage on %s"
 msgstr "Bandbreitenauslastung auf %s"
 
 msgid "Bit/s"
 msgstr "Bit/s"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Transferred Packets on %s"
 msgstr "Übertragene Pakete auf %s"
 
 msgid "Packets/s"
 msgstr "Pakete/s"
 
-#, fuzzy
 msgid "Receive Errors"
 msgstr "Empfangsfehler"
 
-#, fuzzy
 msgid "Transmit Errors"
 msgstr "Sendefehler"
 
-#, fuzzy
 msgid "Receive Drops"
 msgstr "Empfangsfehler"
 
-#, fuzzy
 msgid "Transmit Drops"
 msgstr "Sendefehler"
 
 msgid "Collisions"
 msgstr "Kollisionen"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Errors/Dropped Packets on %s"
-msgstr "Fehler/verworfene Pakete auf %s"
+msgstr "Fehler/Verworfene Pakete auf %s"
 
 #, python-format
 msgid "Interface %s does not exists. Cannot collect."
-msgstr ""
+msgstr "Interface %s existiert nicht. Kann keine Daten erfassen."
 
-#, fuzzy
 msgid "Interrupts"
-msgstr "Interrupt"
+msgstr "Interrupts"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Interrupt %s"
-msgstr "Interrupt"
+msgstr "Interrupt %s"
 
-#, fuzzy
 msgid "Interrupts/s"
-msgstr "Interrupt"
+msgstr "Interrupts/s"
 
 msgid "Failed Reassemblies"
 msgstr ""
@@ -317,25 +310,20 @@ msgstr ""
 msgid "Packet Loss"
 msgstr "Paketverlust"
 
-#, fuzzy
 msgid "0-5%"
-msgstr "0-5%%"
+msgstr "0-5%"
 
-#, fuzzy
 msgid "5-10%"
-msgstr "5-10%%"
+msgstr "5-10%"
 
-#, fuzzy
 msgid "10-25%"
-msgstr "10-25%%"
+msgstr "10-25%"
 
-#, fuzzy
 msgid "25-50%"
-msgstr "25-50%%"
+msgstr "25-50%"
 
-#, fuzzy
 msgid "50-99%"
-msgstr "50-99%%"
+msgstr "50-99%"
 
 msgid "Latency (IPv4)"
 msgstr "Latenz (IPv4)"
@@ -344,7 +332,7 @@ msgid "Latency (IPv6)"
 msgstr "Latenz (IPv6)"
 
 msgid "Default Gateway"
-msgstr ""
+msgstr "Standardgateway"
 
 #, python-format
 msgid "Latency to %s"
@@ -362,38 +350,32 @@ msgid "Could not run latency check for %(host)s: %(msg)s"
 msgstr ""
 
 msgid "15 Minutes"
-msgstr ""
+msgstr "15 Minuten"
 
 msgid "5 Minutes"
-msgstr ""
+msgstr "5 Minuten"
 
 msgid "1 Minute"
-msgstr ""
+msgstr "1 Minute"
 
-#, fuzzy
 msgid "Load Average"
-msgstr "Durchschnittslast"
+msgstr "Load Average"
 
 msgid "Load"
 msgstr "Auslastung"
 
-#, fuzzy
 msgid "Used Memory"
 msgstr "Belegter Speicher"
 
-#, fuzzy
 msgid "Buffered Data"
 msgstr "Zwischengepufferte Daten"
 
-#, fuzzy
 msgid "Cached Data"
 msgstr "Gecachte Daten"
 
-#, fuzzy
 msgid "Free Memory"
-msgstr "Belegter Speicher"
+msgstr "Freier Speicher"
 
-#, fuzzy
 msgid "Used Swap Space"
 msgstr "Benutzte Auslagerung"
 
@@ -401,7 +383,7 @@ msgid "Memory Usage"
 msgstr "Speicher-Auslastung"
 
 msgid "Total"
-msgstr ""
+msgstr "Gesamt"
 
 msgid "User"
 msgstr "Benutzer"
@@ -418,7 +400,6 @@ msgstr "Wait"
 msgid "Interrupt"
 msgstr "Interrupt"
 
-#, fuzzy
 msgid "Soft Interrupt"
 msgstr "Soft-Interrupt"
 
@@ -431,9 +412,8 @@ msgstr ""
 msgid "Guest Nice"
 msgstr ""
 
-#, fuzzy
 msgid "Processor Usage"
-msgstr "Prozessor"
+msgstr "Prozessorauslastung"
 
 msgid "Percent"
 msgstr "Prozent"
