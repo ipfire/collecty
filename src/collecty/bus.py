@@ -32,6 +32,8 @@ from .constants import *
 
 log = logging.getLogger("collecty.bus")
 
+DOMAIN = "org.ipfire.collecty1"
+
 class Bus(threading.Thread):
 	def __init__(self, collecty):
 		threading.Thread.__init__(self)
@@ -72,16 +74,16 @@ class Bus(threading.Thread):
 
 class GraphGenerator(dbus.service.Object):
 	def __init__(self, collecty):
-		bus_name = dbus.service.BusName(BUS_DOMAIN, bus=dbus.SystemBus())
+		bus_name = dbus.service.BusName(DOMAIN, bus=dbus.SystemBus())
 		dbus.service.Object.__init__(self, bus_name, "/%s" % self.__class__.__name__)
 
 		self.collecty = collecty
 
-	@dbus.service.method(BUS_DOMAIN, in_signature="s")
+	@dbus.service.method(DOMAIN, in_signature="s")
 	def Backup(self, filename):
 		self.collecty.backup(filename)
 
-	@dbus.service.method(BUS_DOMAIN, in_signature="sa{sv}", out_signature="a{sv}")
+	@dbus.service.method(DOMAIN, in_signature="sa{sv}", out_signature="a{sv}")
 	def GenerateGraph(self, template_name, kwargs):
 		"""
 			Returns a graph generated from the given template and object.
@@ -94,14 +96,14 @@ class GraphGenerator(dbus.service.Object):
 
 		return graph
 
-	@dbus.service.method(BUS_DOMAIN, in_signature="", out_signature="a{sv}")
+	@dbus.service.method(DOMAIN, in_signature="", out_signature="a{sv}")
 	def GraphInfo(self, template_name, kwargs):
 		"""
 			Returns a dictionary with information about the graph.
 		"""
 		return self.collecty.graph_info(template_name, **kwargs)
 
-	@dbus.service.method(BUS_DOMAIN, in_signature="sa{sv}", out_signature="a{sv}")
+	@dbus.service.method(DOMAIN, in_signature="sa{sv}", out_signature="a{sv}")
 	def LastUpdate(self, template_name, kwargs):
 		"""
 			Returns a graph generated from the given template and object.
@@ -114,13 +116,13 @@ class GraphGenerator(dbus.service.Object):
 
 		return last_update
 
-	@dbus.service.method(BUS_DOMAIN, in_signature="", out_signature="as")
+	@dbus.service.method(DOMAIN, in_signature="", out_signature="as")
 	def ListTemplates(self):
 		"""
 			Returns a list of all available templates
 		"""
 		return [t.name for t in self.collecty.templates]
 
-	@dbus.service.method(BUS_DOMAIN, in_signature="", out_signature="s")
+	@dbus.service.method(DOMAIN, in_signature="", out_signature="s")
 	def Version(self):
 		return COLLECTY_VERSION

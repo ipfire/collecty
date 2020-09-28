@@ -25,8 +25,6 @@ from .__version__ import *
 
 DATABASE_DIR = "/var/lib/collecty"
 
-BUS_DOMAIN = "org.ipfire.collecty1"
-
 DEFAULT_IMAGE_FORMAT = "SVG"
 DEFAULT_LOCALE = "en_GB.utf8"
 DEFAULT_TIMEZONE = "UTC"

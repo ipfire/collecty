@@ -26,14 +26,14 @@ import os
 import platform
 import sys
 
-from .constants import *
+from . import bus
 from .i18n import _
 
 class Collecty(object):
 	def __init__(self):
 		self.bus = dbus.SystemBus()
 
-		self.proxy = self.bus.get_object(BUS_DOMAIN, "/GraphGenerator")
+		self.proxy = self.bus.get_object(bus.DOMAIN, "/GraphGenerator")
 
 	def backup(self, filename):
 		"""
