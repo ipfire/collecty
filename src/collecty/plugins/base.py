@@ -40,9 +40,9 @@ class Environment(object):
 	def __init__(self, timezone="UTC", locale="en_US.utf-8"):
 		# Build the new environment
 		self.new_environment = {
-			"LANG"   : locale,
-			"LC_ALL" : locale,
-			"TZ"     : timezone,
+			"LANGUAGE" : locale,
+			"LC_ALL"   : locale,
+			"TZ"       : timezone,
 		}
 
 	def __enter__(self):
