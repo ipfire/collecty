@@ -61,7 +61,7 @@ INTERVALS = {
 	"year" : "-365d",
 }
 
-GRAPH_DEFAULT_WIDTH = 768
+GRAPH_DEFAULT_WIDTH = 960
 GRAPH_DEFAULT_HEIGHT = 480
 
 # Default column widths
