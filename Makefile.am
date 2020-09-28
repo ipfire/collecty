@@ -67,7 +67,9 @@ dist_doc_DATA = \
 # ------------------------------------------------------------------------------
 
 dist_bin_SCRIPTS = \
-	src/scripts/collecty \
+	src/scripts/collecty
+
+dist_sbin_SCRIPTS = \
 	src/scripts/collectyd
 
 collecty_PYTHON = \
