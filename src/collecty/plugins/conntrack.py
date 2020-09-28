@@ -23,6 +23,7 @@ from . import base
 
 from ..colours import *
 from ..constants import *
+from ..i18n import _
 
 class ConntrackGraphTemplate(base.GraphTemplate):
 	name = "conntrack"
@@ -31,8 +32,6 @@ class ConntrackGraphTemplate(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			"COMMENT:%s" % EMPTY_LABEL,
 			"COMMENT:%s" % (COLUMN % _("Current")),
@@ -58,14 +57,10 @@ class ConntrackGraphTemplate(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
-
 		return _("Connection Tracking Table")
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
-
 		return _("Entries")
 
 

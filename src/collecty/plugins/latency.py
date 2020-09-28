@@ -22,11 +22,11 @@
 import socket
 
 from .. import _collecty
-from ..i18n import _
 from . import base
 
 from ..colours import *
 from ..constants import *
+from ..i18n import _
 
 PING_HOSTS = [
 	# gateway is a special name that is automatically
@@ -44,8 +44,6 @@ class GraphTemplateLatency(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			# Compute the biggest loss and convert into percentage
 			"CDEF:ploss=loss6,loss4,MAX,100,*",
@@ -121,8 +119,6 @@ class GraphTemplateLatency(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
-
 		if self.object.hostname == "gateway":
 			hostname = _("Default Gateway")
 		else:
@@ -132,7 +128,6 @@ class GraphTemplateLatency(base.GraphTemplate):
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Milliseconds")
 
 	@property

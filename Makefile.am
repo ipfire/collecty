@@ -82,7 +82,6 @@ collecty_PYTHON = \
 	src/collecty/daemon.py \
 	src/collecty/errors.py \
 	src/collecty/i18n.py \
-	src/collecty/locales.py \
 	src/collecty/logger.py \
 	src/collecty/util.py
 

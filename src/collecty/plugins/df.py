@@ -26,6 +26,7 @@ from . import base
 
 from ..constants import *
 from ..colours import *
+from ..i18n import _
 
 class GraphTemplateDiskUsage(base.GraphTemplate):
 	name = "disk-usage"
@@ -33,8 +34,6 @@ class GraphTemplateDiskUsage(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			"COMMENT:%s" % EMPTY_LABEL,
 			"COMMENT:%s" % (COLUMN % _("Current")),
@@ -69,12 +68,10 @@ class GraphTemplateDiskUsage(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Disk Usage of %s") % self.object.mountpoint
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Bytes")
 
 
@@ -84,8 +81,6 @@ class GraphTemplateInodeUsage(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		rrd_graph = [
 			"COMMENT:%s" % EMPTY_LABEL,
 			"COMMENT:%s" % (COLUMN % _("Current")),
@@ -126,12 +121,10 @@ class GraphTemplateInodeUsage(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Inode Usage of %s") % self.object.mountpoint
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Inodes")
 
 

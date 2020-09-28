@@ -25,14 +25,13 @@ from . import base
 
 from ..colours import *
 from ..constants import *
+from ..i18n import _
 
 class GraphTemplateLoadAvg(base.GraphTemplate):
 	name = "loadavg"
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		rrd_graph = [
 			"LINE2:load15%s:%s" % (
 				YELLOW, LABEL % _("15 Minutes"),
@@ -72,14 +71,10 @@ class GraphTemplateLoadAvg(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
-
 		return _("Load Average")
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
-
 		return _("Load")
 
 	@property

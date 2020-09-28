@@ -25,14 +25,13 @@ import re
 
 from .. import _collecty
 from . import base
+from ..i18n import _
 
 class GraphTemplateSensorsTemperature(base.GraphTemplate):
 	name = "sensors-temperature"
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			# Convert everything to Celsius
 			"CDEF:value_c=value,273.15,-",
@@ -71,12 +70,10 @@ class GraphTemplateSensorsTemperature(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Temperature (%s)") % self.object.sensor.name
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("° Celsius")
 
 
@@ -107,7 +104,6 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
 		rrd_graph = []
 
 		counter = 0
@@ -170,12 +166,10 @@ class GraphTemplateSensorsProcessorTemperature(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Processor")
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Temperature")
 
 

@@ -27,14 +27,13 @@ from . import base
 
 from ..colours import *
 from ..constants import *
+from ..i18n import _
 
 class GraphTemplateDiskBadSectors(base.GraphTemplate):
 	name = "disk-bad-sectors"
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			"COMMENT:%s" % EMPTY_LABEL,
 			"COMMENT:%s" % (COLUMN % _("Current")),
@@ -53,14 +52,10 @@ class GraphTemplateDiskBadSectors(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
-
 		return _("Bad Sectors of %s") % self.object.device_string
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
-
 		return _("Pending/Relocated Sectors")
 
 
@@ -69,8 +64,6 @@ class GraphTemplateDiskBytes(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		rrd_graph = [
 			"CDEF:read_bytes=read_sectors,512,*",
 			"CDEF:write_bytes=write_sectors,512,*",
@@ -94,12 +87,10 @@ class GraphTemplateDiskBytes(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Disk Utilisation of %s") % self.object.device_string
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Byte per Second")
 
 
@@ -108,8 +99,6 @@ class GraphTemplateDiskIoOps(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		rrd_graph = [
 			"LINE1:read_ios%s:%-15s" % (COLOUR_READ, _("Read")),
 			"GPRINT:read_ios_cur:%12s\:" % _("Current") + " %6.2lf",
@@ -130,12 +119,10 @@ class GraphTemplateDiskIoOps(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Disk IO Operations of %s") % self.object.device_string
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Operations per Second")
 
 
@@ -144,8 +131,6 @@ class GraphTemplateDiskTemperature(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		rrd_graph = [
 			"CDEF:celsius=temperature,273.15,-",
 			"VDEF:temp_cur=celsius,LAST",
@@ -164,12 +149,10 @@ class GraphTemplateDiskTemperature(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Disk Temperature of %s") % self.object.device_string
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("° Celsius")
 
 	@property

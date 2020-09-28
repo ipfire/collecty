@@ -26,7 +26,6 @@ import rrdtool
 import time
 import unicodedata
 
-from .. import locales
 from .. import util
 from ..constants import *
 from ..i18n import _
@@ -38,14 +37,13 @@ class Environment(object):
 		Sets the correct environment for rrdtool to create
 		localised graphs and graphs in the correct timezone.
 	"""
-	def __init__(self, timezone, locale):
+	def __init__(self, timezone="UTC", locale="en_US.utf-8"):
 		# Build the new environment
 		self.new_environment = {
-			"TZ" : timezone or "UTC",
+			"LANG"   : locale,
+			"LC_ALL" : locale,
+			"TZ"     : timezone,
 		}
-
-		for k in ("LANG", "LC_ALL"):
-			self.new_environment[k] = locale or "en_US.utf-8"
 
 	def __enter__(self):
 		# Save the current environment
@@ -199,7 +197,8 @@ class Plugin(object, metaclass=PluginRegistration):
 
 		time_start = time.time()
 
-		graph = template.generate_graph(**kwargs)
+		with Environment(timezone=timezone, locale=locale):
+			graph = template.generate_graph(**kwargs)
 
 		duration = time.time() - time_start
 		self.log.debug(_("Generated graph %s in %.1fms") \
@@ -533,7 +532,7 @@ class GraphTemplate(object):
 		self.plugin = plugin
 
 		# Save localisation parameters
-		self.locale = locales.get(locale)
+		self.locale = locale
 		self.timezone = timezone
 
 		# Get all required RRD objects
@@ -692,8 +691,7 @@ class GraphTemplate(object):
 		for arg in args:
 			self.log.debug("  %s" % arg)
 
-		with Environment(self.timezone, self.locale.lang):
-			graph = rrdtool.graphv("-", *args)
+		graph = rrdtool.graphv("-", *args)
 
 		return {
 			"image"        : graph.get("image"),

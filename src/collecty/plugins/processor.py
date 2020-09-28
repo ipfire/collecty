@@ -25,14 +25,13 @@ from . import base
 
 from ..colours import *
 from ..constants import *
+from ..i18n import _
 
 class GraphTemplateProcessor(base.GraphTemplate):
 	name = "processor"
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			# Add all used CPU cycles
 			"CDEF:usage=user,nice,+,sys,+,wait,+,irq,+,sirq,+,steal,+,guest,+,guest_nice,+",
@@ -166,12 +165,10 @@ class GraphTemplateProcessor(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Processor Usage")
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Percent")
 
 

@@ -26,14 +26,13 @@ from . import base
 
 from ..colours import *
 from ..constants import *
+from ..i18n import _
 
 class GraphTemplateIPv6Fragmentation(base.GraphTemplate):
 	name = "ipv6-fragmentation"
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			"CDEF:ip6_reasm_real_fails=ip6_reasm_fails,ip6_reasm_timeout,-",
 
@@ -96,8 +95,6 @@ class GraphTemplateIPv6Fragmentation(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
-
 		if self.object.interface:
 			return _("IPv6 Fragmentation on %s") % self.object.interface
 
@@ -105,8 +102,6 @@ class GraphTemplateIPv6Fragmentation(base.GraphTemplate):
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
-
 		return _("Packets/s")
 
 	@property
@@ -122,8 +117,6 @@ class GraphTemplateIPv4Fragmentation(base.GraphTemplate):
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			"CDEF:ip4_reasm_real_fails=ip4_reasm_fails,ip4_reasm_timeout,-",
 
@@ -186,8 +179,6 @@ class GraphTemplateIPv4Fragmentation(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
-
 		if self.object.interface:
 			return _("IPv4 Fragmentation on %s") % self.object.interface
 
@@ -195,7 +186,6 @@ class GraphTemplateIPv4Fragmentation(base.GraphTemplate):
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Packets/s")
 
 	@property

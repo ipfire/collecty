@@ -26,14 +26,13 @@ from . import base
 
 from ..colours import *
 from ..constants import *
+from ..i18n import _
 
 class GraphTemplateInterrupts(base.GraphTemplate):
 	name = "interrupts"
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			# Headline
 			"COMMENT:%s" % EMPTY_LABEL,
@@ -57,8 +56,6 @@ class GraphTemplateInterrupts(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
-
 		if self.object.irq is None:
 			return _("Interrupts")
 
@@ -66,8 +63,6 @@ class GraphTemplateInterrupts(base.GraphTemplate):
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
-
 		return _("Interrupts/s")
 
 

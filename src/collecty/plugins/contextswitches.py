@@ -25,14 +25,13 @@ from . import base
 
 from ..colours import *
 from ..constants import *
+from ..i18n import _
 
 class GraphTemplateContextSwitches(base.GraphTemplate):
 	name = "context-switches"
 
 	@property
 	def rrd_graph(self):
-		_ = self.locale.translate
-
 		return [
 			"COMMENT:%s" % EMPTY_LABEL,
 			"COMMENT:%s" % (COLUMN % _("Current")),
@@ -56,12 +55,10 @@ class GraphTemplateContextSwitches(base.GraphTemplate):
 
 	@property
 	def graph_title(self):
-		_ = self.locale.translate
 		return _("Context Switches")
 
 	@property
 	def graph_vertical_label(self):
-		_ = self.locale.translate
 		return _("Context Switches/s")
 
 
