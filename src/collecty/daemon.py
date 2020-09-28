@@ -115,12 +115,7 @@ class Collecty(object):
 		self._schedule_plugin(plugin)
 
 		# Run collection
-		try:
-			plugin.collect()
-
-		except Exception as e:
-			log.error("Unhandled exception in %s" % plugin, exc_info=True)
-			return
+		plugin.collect()
 
 	def _commit(self):
 		"""

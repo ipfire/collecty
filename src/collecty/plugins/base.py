@@ -147,25 +147,30 @@ class Plugin(object, metaclass=PluginRegistration):
 		time_start = time.time()
 
 		# Run through all objects of this plugin and call the collect method.
-		for o in self.objects:
+		for object in self.objects:
 			now = datetime.datetime.utcnow()
-			try:
-				result = o.collect()
 
-				result = self._format_result(result)
-			except:
-				self.log.warning(_("Unhandled exception in %s.collect()") % o, exc_info=True)
+			# Run collection
+			try:
+				result = object.collect()
+
+			# Catch any unhandled exceptions
+			except Exception as e:
+				self.log.warning(_("Unhandled exception in %s.collect()") % object, exc_info=True)
 				continue
 
 			if not result:
-				self.log.warning(_("Received empty result: %s") % o)
+				self.log.warning(_("Received empty result: %s") % object)
 				continue
 
-			self.log.debug(_("Collected %s: %s") % (o, result))
+			# Format the result for RRDtool
+			result = self._format_result(result)
+
+			self.log.debug(_("Collected %s: %s") % (object, result))
 
 			# Add the object to the write queue so that the data is written
 			# to the databases later.
-			self.collecty.write_queue.add(o, now, result)
+			self.collecty.write_queue.add(object, now, result)
 
 		# Returns the time this function took to complete.
 		delay = time.time() - time_start
@@ -173,6 +178,8 @@ class Plugin(object, metaclass=PluginRegistration):
 		# Log some warning when a collect method takes too long to return some data
 		if delay >= 60:
 			self.log.warning(_("A worker thread was stalled for %.4fs") % delay)
+		else:
+			self.log.debug(_("Collection finished in %.2fms") % (delay * 1000))
 
 	@staticmethod
 	def _format_result(result):
