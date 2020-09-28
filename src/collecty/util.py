@@ -47,6 +47,25 @@ def make_interval(interval):
 	except KeyError:
 		return "end-%s" % interval
 
+def guess_format(filename):
+	"""
+		Returns the best format by filename extension
+	"""
+	parts = filename.split(".")
+
+	if parts:
+		# The extension is the last part
+		extension = parts[-1]
+
+		# Image formats are all uppercase
+		extension = extension.upper()
+
+		if extension in SUPPORTED_IMAGE_FORMATS:
+			return extension
+
+	# Otherwise fall back to the default format
+	return DEFAULT_IMAGE_FORMAT
+
 class ProcNetSnmpParser(object):
 	"""
 		This class parses /proc/net/snmp{,6} and allows

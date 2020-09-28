@@ -19,7 +19,176 @@
 #                                                                             #
 ###############################################################################
 
-import collecty.client
+import argparse
+import collecty
+import os
+import sys
 
-client = collecty.client.CollectyClient()
-client.run_cli()
+from collecty.i18n import _
+
+class CLI(object):
+	def parse_cli(self):
+		parser = argparse.ArgumentParser(
+			description=_("Collecty Client")
+		)
+		subparsers = parser.add_subparsers(help="sub-command help")
+
+		# generate-graph
+		parser_generate_graph = subparsers.add_parser(
+			"generate-graph", help=_("Generate a graph image"),
+		)
+		parser_generate_graph.add_argument(
+			"--filename", help=_("filename"), required=True,
+		)
+		parser_generate_graph.add_argument(
+			"--format", help=_("image format"),
+		)
+		parser_generate_graph.add_argument(
+			"--interval", help=_("interval"),
+		)
+		parser_generate_graph.add_argument(
+			"--object", help=_("Object identifier"), default="default",
+		)
+		parser_generate_graph.add_argument(
+			"--template", help=_("The graph template identifier"), required=True,
+		)
+		parser_generate_graph.add_argument(
+			"--timezone", help=_("Generate the graph with timestamps plotted for the given timezone"),
+			default=os.environ.get("TZ", "UTC"),
+		)
+		parser_generate_graph.add_argument(
+			"--locale", help=_("Generate the graph with this locale"),
+			default=os.environ.get("LANG", "en_GB.utf8"),
+		)
+		# Dimensions
+		parser_generate_graph.add_argument(
+			"--height", type=int, default=0, help=_("Height of the generated image"),
+		)
+		parser_generate_graph.add_argument(
+			"--width", type=int, default=0, help=_("Width of the generated image"),
+		)
+		parser_generate_graph.set_defaults(func=self._generate_graph)
+
+		# last-update
+		parser_last_update = subparsers.add_parser(
+			"last-update", help=_("Fetch the last dataset in the database"),
+		)
+		parser_last_update.add_argument(
+			"--template", help=_("The graph template identifier"), required=True,
+		)
+		parser_last_update.add_argument(
+			"--object", help=_("Object identifier"), default="default",
+		)
+		parser_last_update.set_defaults(func=self._last_update)
+
+		# list-templates
+		parser_list_templates = subparsers.add_parser(
+			"list-templates", help=_("Lists all graph templates"),
+		)
+		parser_list_templates.set_defaults(func=self._list_templates)
+
+		# backup
+		backup = subparsers.add_parser(
+			"backup", help=_("Backup all RRD data"),
+		)
+		backup.add_argument(
+			"filename", nargs="?", help=_("Filename"),
+		)
+		backup.set_defaults(func=self._backup)
+
+		# version
+		parser_version = subparsers.add_parser(
+			"version", help=_("Show version"),
+		)
+		parser_version.set_defaults(func=self._version)
+
+		args = parser.parse_args()
+
+		# Print usage if no action was given
+		if not "func" in args:
+			parser.print_usage()
+			sys.exit(2)
+
+		return args
+
+	def run(self):
+		# Parse command line arguments
+		args = self.parse_cli()
+
+		# Initialise client
+		self.client = collecty.Collecty()
+
+		# Call function
+		ret = args.func(args)
+
+		# Return with exit code
+		if ret:
+			sys.exit(ret)
+
+		# Otherwise just exit
+		sys.exit(0)
+
+	def _backup(self, args):
+		print(_("Backing up..."))
+
+		self.client.backup(args.filename)
+
+	def _generate_graph(self, args):
+		kwargs = {
+			"format"    : args.format or collecty.util.guess_format(args.filename),
+			"object_id" : args.object,
+			"locale"    : args.locale,
+			"timezone"  : args.timezone,
+		}
+
+		if args.height or args.width:
+			kwargs.update({
+				"height" : args.height or 0,
+				"width"  : args.width or 0,
+			})
+
+		if args.interval:
+			kwargs["interval"] = args.interval
+
+		# Generate the graph image
+		graph = self.client.generate_graph(args.template, **kwargs)
+
+		# Add some useful information
+		info = self.client.graph_info(args.template, **kwargs)
+		if info:
+			graph.update(info)
+
+		# Write file to disk
+		with open(args.filename, "wb") as f:
+			f.write(graph["image"])
+
+		print(_("Title      : %(title)s (%(template)s - %(object_id)s)") % graph)
+		print(_("Image size : %(image_width)sx%(image_height)spx") % graph)
+
+	def _last_update(self, args):
+		last_update = self.client.last_update(args.template, object_id=args.object)
+
+		print(_("Last update: %s") % last_update.get("timestamp"))
+
+		dataset = last_update.get("dataset")
+		for k, v in dataset.items():
+			print("%16s = %s" % (k, v))
+
+	def _list_templates(self, args):
+		templates = self.client.list_templates()
+
+		for t in sorted(templates):
+			print(t)
+
+	def _version(self, args):
+		version = self.client.version()
+
+		print(version)
+
+
+def main():
+	# Run the command line interface
+	c = CLI()
+	c.run()
+
+main()

@@ -22,4 +22,6 @@
 # Initialize logging
 from . import logger
 
-from .client import CollectyClient
+from .client import CollectyClient as Collecty
+
+from . import util
